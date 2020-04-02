@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-firebaseui/FirebaseAuth.js b/node_modules/react-firebaseui/FirebaseAuth.js
+index e711df0..956c6b0 100644
+--- a/node_modules/react-firebaseui/FirebaseAuth.js
++++ b/node_modules/react-firebaseui/FirebaseAuth.js
+@@ -37,7 +37,7 @@ var FirebaseAuth = function (_React$Component) {
+   FirebaseAuth.prototype.componentDidMount = function componentDidMount() {
+     var _this2 = this;
+ 
+-    require('firebaseui/dist/firebaseui.css');
++    // require('firebaseui/dist/firebaseui.css');
+ 
+     var firebaseui = require('firebaseui');
+ 
