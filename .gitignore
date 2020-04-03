@@ -1,3 +1,6 @@
+# project/developer specific
+local.notes.md
+
 # dependencies
 /node_modules
 /.pnp
