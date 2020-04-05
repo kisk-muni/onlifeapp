@@ -2,7 +2,7 @@
 import { jsx, Link as Lstyle } from 'theme-ui'
 /* globals window */
 import React, { useEffect, useState } from 'react'
-import {FirebaseAuth} from 'react-firebaseui'
+import {FirebaseAuth} from 'react-firebaseui-cs'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import initFirebase from '../utils/auth/initFirebase'
@@ -11,7 +11,9 @@ import { Flex, Box } from 'reflexbox'
 
 // Init the Firebase app.
 // initFirebase()
-// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+firebase.auth().languageCode = 'cs'
+let auth = firebase.auth()
+// auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
 const firebaseAuthConfig = {
   signInFlow: 'popup',
@@ -20,7 +22,7 @@ const firebaseAuthConfig = {
   signInOptions: [
     {
       provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+      signInMethod: firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
       requireDisplayName: false,
     },
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
@@ -34,17 +36,26 @@ function MyFirebaseAuth() {
     <Flex>
       <Box
         sx={{
-          maxWidth: 512,
-          minWidth: 300,
+          maxWidth: 400,
+          width: '100%',
           mx: 'auto',
           px: 3
         }}>
       <FirebaseAuth
         uiConfig={firebaseAuthConfig}
-        firebaseAuth={firebase.auth()}
+        firebaseAuth={auth}
       />
       </Box>
       <style jsx global>{`
+      .firebaseui-idp-password .firebaseui-idp-text-long {
+          font-size: 0;
+      }
+        .firebaseui-idp-password .firebaseui-idp-text-long:after {
+            visibility: visible;
+            content: 'Pokračovat pomocí e-mailu';
+            font-size: 14px;
+            text-align: center;
+        }
         .firebaseui-button {
           box-sizing: border-box;
           min-width: 0px;
@@ -52,12 +63,12 @@ function MyFirebaseAuth() {
           display: inline-block;
           text-align: center;
           line-height: inherit;
-          font-size: inherit;
+          font-size: 14;
           padding-left: 16px;
           padding-right: 16px;
           padding-top: 8px;
           padding-bottom: 8px;
-          font-weight: 700;
+          font-weight: 600;
           margin: 0px;
           text-decoration: none;
           border-width: 0px;
@@ -96,15 +107,17 @@ function MyFirebaseAuth() {
           margin: 0px;
         }
         .firebaseui-idp-icon-wrapper {
-          margin-right: .5em;
-          float: left;
-          height: 1em;
+            border-radius: 3px;
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            left: 10px;
+            bottom: 2px;
+            float: left;
         }
         .firebaseui-idp-icon {
-          height: 24px;
-          margin-right: .4em;
-          display: inline-block;
-          float: left;
+            height: 22px;
+            margin-bottom: 0px;
         }
         .firebaseui-idp-list {
           list-style: none;
@@ -118,7 +131,10 @@ function MyFirebaseAuth() {
           margin-bottom: .4em;
         }
         .firebaseui-idp-google {
-          background-color: #111199!important;
+            background-color: #fff!important;
+            color: rgba(0, 0, 0, 0.54)!important;
+            border: 1px solid #92929285!important;
+            padding-top: 11px!important;
         }
         .firebaseui-idp-button {
           box-sizing: border-box;
@@ -131,11 +147,12 @@ function MyFirebaseAuth() {
           font-size: inherit;
           padding-left: 16px;
           padding-right: 16px;
-          padding-top: 8px;
-          padding-bottom: 8px;
-          color: #ffffff;
-          background-color: #111199;
-          font-weight: 700;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          color: #fff;
+          background-color: #fff;
+          font-weight: 600;
+          position: relative;
           margin: 0px;
           text-decoration: none;
           border-width: 0px;

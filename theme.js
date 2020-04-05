@@ -19,27 +19,7 @@ export default {
         highlight: '#29112c',
         gray: '#999999',
         accent: '#cc00ff',
-      },
-      deep: {
-        text: 'hsl(210, 50%, 96%)',
-        background: 'hsl(230, 25%, 18%)',
-        primary: 'hsl(260, 100%, 80%)',
-        secondary: 'hsl(290, 100%, 80%)',
-        highlight: 'hsl(260, 20%, 40%)',
-        accent: 'hsl(290, 100%, 80%)',
-        muted: 'hsla(230, 20%, 0%, 20%)',
-        gray: 'hsl(210, 50%, 60%)',
-      },
-      swiss: {
-        text: 'hsl(10, 20%, 20%)',
-        background: 'hsl(10, 10%, 98%)',
-        primary: 'hsl(10, 80%, 50%)',
-        secondary: 'hsl(10, 60%, 50%)',
-        highlight: 'hsl(10, 40%, 90%)',
-        accent: 'hsl(250, 60%, 30%)',
-        muted: 'hsl(10, 20%, 94%)',
-        gray: 'hsl(10, 20%, 50%)',
-      },
+      }
     },
   },
   fonts: {
@@ -52,7 +32,7 @@ export default {
   fontWeights: {
     body: 400,
     heading: 800,
-    bold: 700,
+    bold: 600,
     display: 800,
   },
   lineHeights: {
@@ -100,6 +80,43 @@ export default {
         bg: 'primary',
       },
     },
+    homepageprimary: {
+      color: 'text',
+      background: '#FFC107',
+      borderRadius: '8px',
+      padding: '16px 24px',
+      textAlign: 'center',
+      border: 'none',
+      marginTop: '32px',
+      fontWeight: 600,
+      fontSize: '18px',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.5)',
+      ':hover': {
+        background: '#f1b606',
+        cursor: 'pointer',
+      },
+      ':focus': {
+        background: '#e8b007'
+      }
+    },
+    createclass: {
+      color: 'text',
+      background: '#ffffff',
+      borderRadius: '6px',
+      padding: '16px 24px',
+      textAlign: 'center',
+      border: 'none',
+      marginTop: '16px',
+      fontWeight: 600,
+      fontSize: '16px',
+      ':hover': {
+        background: 'rgba(255,255,255,0.9)',
+        cursor: 'pointer',
+      },
+      ':focus': {
+        background: 'rgba(255,255,255,0.8)'
+      }
+    },
   },
   links: {
     button: {
@@ -133,6 +150,8 @@ export default {
       borderRadius: 2,
       '&:hover': {
         bg: 'highlight',
+        color: 'text',
+        textDecoration: 'none',
         cursor: 'pointer',
       },
       '&.active': {
@@ -245,6 +264,7 @@ export default {
   styles: {
     root: {
       margin: 0,
+      overflowX: 'hidden',
       fontFamily: 'body',
       lineHeight: 'body',
       fontWeight: 'body',
@@ -336,14 +356,117 @@ export default {
         outline: '1px solid rgba(0, 192, 255, .25)',
       },
     },
+    helpcard: {
+      boxSizing: 'border-box',
+      display: 'flex',
+      height: '208px',
+      padding: '20px',
+      backgroundColor: 'transparent',
+      borderRadius: '8px',
+      border: '1px solid rgba(0,0,0,.12)',
+      boxShadow: 'none'
+    },
+    header: {},
+    headerHomepage: {
+      position: 'fixed',
+      top: 0,
+      zIndex: '100'
+    },
+    decoratedBox: {
+      backgroundColor: '#b3ffff',
+      position: 'relative',
+    },
+    createclassIllustration: {
+      display: 'block',
+      position: 'absolute',
+      top: '0',
+      left: '50%',
+      right: '0',
+      bottom: 0,
+      backgroundImage: "url('/undraw_people_tax5.svg')",
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '400px',
+      backgroundPosition: 'left bottom',
+      zIndex: 4
+    },
+    decoratedBackground: {
+      display: 'block',
+      position: 'absolute',
+      top: '10%',
+      left: '10%',
+      right: '10%',
+      bottom: 0,
+      backgroundImage: "url('/ilustrace.jpg')",
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100%',
+      backgroundPosition: 'right',
+      zIndex: 2
+    },
+    decoratedOverlay: {
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: '#0167ffe0',
+      zIndex: 3
+    },
+    decoratedcontent: {
+      position: 'relative',
+      zIndex: 4
+    },
     navlink: {
       display: 'inline-block',
       fontWeight: 'bold',
       color: 'inherit',
       textDecoration: 'none',
       ':hover,:focus': {
-        color: 'primary',
+        color: 'text',
+        textDecoration: 'none'
       },
     },
+    navlogo: {
+      display: 'inline-block',
+      fontWeight: 'bold',
+      color: 'inherit',
+      textDecoration: 'none',
+      ':hover,:focus': {
+        color: 'text',
+        textDecoration: 'none'
+      },
+    },
+    navlogolight: {
+      display: 'inline-block',
+      fontWeight: 'bold',
+      color: '#ffffff',
+      textDecoration: 'none',
+      ':hover,:focus': {
+        color: '#ffffff',
+        textDecoration: 'none'
+      },
+    },
+    navlinklight: {
+      display: 'inline-block',
+      fontWeight: 'bold',
+      color: 'rgba(255,255,255,0.7)',
+      textDecoration: 'none',
+      ':hover,:focus': {
+        color: 'rgba(255,255,255,0.9)',
+        textDecoration: 'none'
+      },
+    },
+    footer: {
+      textAlign: 'center'
+    },
+    footerlink: {
+      display: 'inline',
+      fontWeight: 'body',
+      color: 'gray',
+      ':hover,:focus': {
+        color: 'text',
+        textDecoration: 'none'
+      },
+    }
   }
 }

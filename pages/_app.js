@@ -2,6 +2,7 @@ import React from 'react'
 import App from 'next/app'
 import { ThemeProvider, Styled } from 'theme-ui'
 import theme from '../theme'
+import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
 
 class MyApp extends App {
   // Only uncomment this method if you have blocking data requirements for

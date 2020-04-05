@@ -18,4 +18,21 @@ npm run dev
 ## Todo
 
 - [ ] fix withApollo usage
-- [ ] setup firestore connection
+- [ ] setup and try firestore connection: apollo-link-cloud-firestore
+- [ ] add example env to git
+
+## Other
+
+Illustrations are from https://undraw.co/illustrations
+
+Firebase tricks
+
+```bash
+firebase deploy --only functions:
+```
+
+Patching tricks
+
+```bash
+yarn patch-package --exclude ^$ --include package.json react-firebaseui
+```

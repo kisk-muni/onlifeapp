@@ -12,21 +12,14 @@ const Layout = props => (
       // set this to `minHeight: '100vh'` for full viewport height
       minHeight: '100vh',
     }}>
-    
     <main
     sx={{
       width: '100%',
+      pt: 150,
       flex: '1 1 auto',
     }}>
-      <Header />
       {props.children}
     </main>
-    <style jsx global>{`
-      body {
-        margin: 0;
-        padding: 0;
-      }
-    `}</style>
     <footer
       sx={{
         width: '100%',

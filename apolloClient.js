@@ -30,7 +30,6 @@ export default async function createApolloClient(initialState) {
     addTypename: true,
   })
 
-  if (typeof window !== 'undefined') {
     try {
       await persistCache({
         cache,
@@ -39,7 +38,6 @@ export default async function createApolloClient(initialState) {
     } catch (error) {
       console.error('Error restoring Apollo cache', error);
     }
-  }
 
   
   const typeDefs = `

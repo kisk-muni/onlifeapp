@@ -1,18 +1,18 @@
 /** @jsx jsx */
 import * as React from 'react'
 import Link from 'next/link'
-import { Container } from 'theme-ui'
 import { jsx, Link as Lstyle } from 'theme-ui'
 import withAuth from "../lib/withAuth"
+import ProfileDropdown from "./ProfileDropdown";
 
-const Header = ({ user, loading, error, pathname }) => (
+const Header = ({ user, loading, error, pathname, color, headerStyle, navlink, navlogo }) => (
   <header
   sx={{
-    variant: 'styles.header',
+    variant: headerStyle || 'styles.header',
+    width: '100%'
   }}>
   <div
     sx={{
-      maxWidth: 1240,
       mx: 'auto',
       px: 35,
       display: 'flex',
@@ -21,52 +21,30 @@ const Header = ({ user, loading, error, pathname }) => (
     <Link href="/">
       <Lstyle 
         sx={{
-          variant: 'styles.navlink',
-          fontSize: 5,
+          variant: navlogo || 'styles.navlogo',
+          fontSize: 4,
           py: 2,
         }}>
-        OnLife
+        Onlife
       </Lstyle>
     </Link>
     <div sx={{ mx: 'auto' }} />
-      <Link href="/example">
-        <Lstyle
-          sx={{
-            variant: 'styles.navlink',
-            ml: 4,
-            py: 2,
-          }}>
-          Studovat
-        </Lstyle>
-      </Link>
-      <Link href="/example">
-        <Lstyle
-          sx={{
-            variant: 'styles.navlink',
-            ml: 4,
-            py: 2,
-          }}>
-          O kurzu
-        </Lstyle>
-      </Link>
-      
+      <Lstyle href="https://kisk.phil.muni.cz/onlife"
+        sx={{
+          variant: navlink || 'styles.navlink',
+          ml: 4,
+          py: 2,
+        }}>
+        Web kurzu
+      </Lstyle>
       {
-        (!loading && user) && <Link href="/profile">
-          <Lstyle
-            sx={{
-              variant: 'styles.navlink',
-              ml: 4,
-              py: 2,
-            }}>
-              {user.photoURL && <img src={user.photoURL} style={{height: 28, marginRight: '.6em', position: 'relative', bottom: '-6px', borderRadius: '50%'}} /> }{user.displayName ? user.displayName : user.email }
-          </Lstyle>
-        </Link>
+        (!loading && user) && <ProfileDropdown navlink={navlink} photoURL={user.photoURL} name={user.displayName} email={user.email} />
       }
       {   
-        (!user && !loading) && <Link href="/signin">
+        (!user && !loading) && <Link href="/prihlaseni">
         <Lstyle
           sx={{
-            variant: 'styles.navlink',
+            variant: navlink || 'styles.navlink',
             ml: 4,
             py: 2,
           }}>
