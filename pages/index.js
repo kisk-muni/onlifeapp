@@ -1,16 +1,15 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../lib/apollo'
+import withApolloAuth from "../lib/withApolloAuth"
 import withAuth from "../lib/withAuth"
 import Link from 'next/link'
-import { useApolloClient } from "@apollo/react-hooks"
+import GroupsList from '../components/GroupsList'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Button, Grid } from 'theme-ui'
 
-const Index = () => {
-  
-  const user = true;
-  
+const Index = ({user}) => {
+
   if (!user) {
     return (<StarterLayout>
       <Flex flexWrap="wrap" minHeight="80vh" sx={{variant: 'styles.decoratedBox'}}>
@@ -44,7 +43,7 @@ const Index = () => {
           <Box>
             <Heading as='h3' sx={{color: 'text', fontSize: 3 }}>Feature 2</Heading>
             <Text sx={{fontSize: 2}}>lorem ipsum</Text> 
-          </Box>
+          </Box>  
           <Box>
             <Heading as='h3' sx={{color: 'text', fontSize: 3 }}>Výhoda 3</Heading>
             <Text sx={{fontSize: 2}}>lorem ipsum</Text> 
@@ -71,6 +70,7 @@ const Index = () => {
             <Heading sx={{color: 'background', mt: 5, fontWeight: 600, fontSize: 5}}>Vítejte v Onlife pro učitele!</Heading> 
             <Text sx={{color: 'background', fontSize: 2, my: 4, mb: 4}}>Mějte přehled o tom, jak si v kurzu vedou vaši studenti.</Text>
             <Button variant="createclass">Založit třídu</Button>
+            {GroupsList("8sXott8IxgU2Sfo2ipoX9aJ6Qu72")}
           </Box>
       </Flex>
       <Flex backgroundColor="#f6f6f6" flexWrap='wrap' width="100%">
@@ -90,4 +90,4 @@ const Index = () => {
   }
 }
 
-export default withApollo()(Index)
+export default withApollo()(withAuth(Index))
