@@ -2,7 +2,7 @@ export default {
   colors: {
     text: '#000000',
     background: '#ffffff',
-    primary: '#0000dc',
+    primary: '#1d7aff',
     secondary: '#111199',
     muted: '#f6f6f6',
     highlight: '#efeffe', // '#ffffcc',
@@ -28,12 +28,12 @@ export default {
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
-  fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 72],
+  fontSizes: [12, 14, 16, 18, 20, 24, 32, 48, 64, 72],
   fontWeights: {
     body: 400,
-    heading: 800,
+    heading: 600,
     bold: 600,
-    display: 800,
+    display: 600,
   },
   lineHeights: {
     body: 1.5,
@@ -45,12 +45,14 @@ export default {
   },
   text: {
     heading: {
+      display: 'block',
       fontFamily: 'heading',
       fontWeight: 'heading',
       lineHeight: 'heading',
     },
     display: {
       variant: 'text.heading',
+      display: 'block',
       fontSize: [5, 6],
       fontWeight: 'display',
       letterSpacing: '-0.03em',
@@ -62,15 +64,41 @@ export default {
     },
   },
   buttons: {
+    default: {
+      padding: '10px 18px',
+      borderRadius: 6,
+      fontWeight: 'bold',
+      '&:hover, &:focus': {
+        outline: 'none',
+      }
+    },
     primary: {
+      variant: 'buttons.default',
       color: 'background',
       bg: 'primary',
-      fontWeight: 'bold',
+      '&:hover': {
+        background: '#1973f3',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+        cursor: 'pointer' 
+      },
+      '&:focus': {
+        background: '#156eea',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+        cursor: 'pointer' 
+      }
     },
     secondary: {
-      variant: 'buttons.primary',
-      color: 'background',
-      bg: 'secondary',
+      variant: 'buttons.default',
+      color: 'rgba(0, 0, 0, .6)',
+      bg: 'transparent',
+      '&:hover': {
+        background: 'rgba(0,0,0,0.1)',
+        cursor: 'pointer' 
+      },
+      '&:focus': {
+        background: 'rgba(0,0,0,0.2)',
+        cursor: 'pointer' 
+      }
     },
     black: {
       fontWeight: 'bold',
@@ -119,21 +147,6 @@ export default {
     },
   },
   links: {
-    button: {
-      display: 'inline-block',
-      textDecoration: 'none',
-      fontWeight: 'bold',
-      fontSize: 2,
-      p: 3,
-      color: 'background',
-      bg: 'text',
-      borderRadius: 6,
-      '&:hover, &:focus': {
-        cursor: 'pointer',
-        color: 'background',
-        bg: 'primary',
-      },
-    },
     nav: {
       display: 'block',
       width: '100%',
@@ -211,6 +224,7 @@ export default {
       fontWeight: 'bold',
     },
     input: {
+      padding: '10px 12px',
       borderColor: 'gray',
       '&:focus': {
         borderColor: 'primary',
@@ -303,6 +317,32 @@ export default {
         color: 'secondary',
       },
     },
+    forms: {
+      simpleinput: {
+        padding: '10px 6px',
+        borderTop: 0,
+        borderLeft: 0,
+        borderRight: 0,
+        borderBottom: '2px solid',
+        borderColor: 'gray',
+        borderRadius: 0,
+        '&:focus': {
+          borderColor: 'primary',
+          boxShadow: 'none',
+          //boxShadow: t => `0 0 0 2px ${t.colors.primary}`,
+          outline: 'none',
+        },
+      },
+      simpleinputError: {
+        variant: 'styles.forms.simpleinput',
+        borderColor: 'red',
+        '&:focus': {
+          borderColor: 'red',
+          boxShadow: 'none',
+          outline: 'none'
+        },
+      }
+    },
     pre: {
       fontFamily: 'monospace',
       fontSize: 1,
@@ -357,8 +397,6 @@ export default {
       },
     },
     helpcard: {
-      boxSizing: 'border-box',
-      display: 'flex',
       height: '208px',
       padding: '20px',
       backgroundColor: 'transparent',
@@ -370,11 +408,12 @@ export default {
     headerHomepage: {
       position: 'fixed',
       top: 0,
-      zIndex: '100'
+      zIndex: '19'
     },
     decoratedBox: {
       backgroundColor: '#b3ffff',
       position: 'relative',
+      overflow: 'hidden'
     },
     createclassIllustration: {
       display: 'block',
@@ -382,7 +421,7 @@ export default {
       top: '0',
       left: '50%',
       right: '0',
-      bottom: 0,
+      bottom: '-3px',
       backgroundImage: "url('/undraw_people_tax5.svg')",
       backgroundRepeat: 'no-repeat',
       backgroundSize: '400px',
@@ -467,6 +506,10 @@ export default {
         color: 'text',
         textDecoration: 'none'
       },
+    },
+    simpleErrorMessageText: {
+      mt: 2,
+      color: 'red'
     }
   }
 }

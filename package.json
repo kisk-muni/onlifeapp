@@ -7,6 +7,7 @@
     "serve": "cross-env NODE_ENV=production firebase serve",
     "start": "NODE_ENV=production next start",
     "export": "next export",
+    "type-check": "tsc",
     "prepare": "patch-package"
   },
   "dependencies": {
@@ -43,6 +44,7 @@
     "react-dom": "^16.12.0",
     "react-firebaseui-cs": "^4.0.4",
     "react-hook-form": "^5.2.0",
+    "react-top-loading-bar": "^1.2.0",
     "react-with-firebase-auth": "^1.3.1",
     "reflexbox": "^4.0.6",
     "styled-components": "^5.0.1",
@@ -50,6 +52,13 @@
     "theme-ui": "^0.3.1"
   },
   "devDependencies": {
-    "postinstall-prepare": "^1.0.1"
+    "@types/graphql": "^14.5.0",
+    "@types/node": "^13.11.0",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.32",
+    "@types/react-dom": "^16.9.6",
+    "@types/theme-ui": "^0.3.1",
+    "postinstall-prepare": "^1.0.1",
+    "typescript": "^3.8.3"
   }
 }

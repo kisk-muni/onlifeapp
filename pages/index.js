@@ -1,15 +1,16 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
+import { DemoGroupBox, HelpBox } from "../components/HelpBox";
 import { withApollo } from '../lib/apollo'
 import { withAuthPage } from "../lib/withApolloAuth"
-import withAuth from "../lib/withAuth"
 import Link from 'next/link'
-import GroupsList from '../components/GroupsList'
+import {GroupsListM} from '../components/GroupsList'
+import { CreateGroupDialog } from '../components/CreateGroupDialog'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Button, Grid } from 'theme-ui'
 
-const Index = ({isLoggedIn}) => {
 
+const Index = ({isLoggedIn}) => {
   if (!isLoggedIn) {
     return (<StarterLayout>
       <Flex flexWrap="wrap" minHeight="80vh" sx={{variant: 'styles.decoratedBox'}}>
@@ -24,8 +25,8 @@ const Index = ({isLoggedIn}) => {
           alignSelf="center"
           width={[1, 5/6]}
           mx="auto">    
-          <Heading sx={{color: 'background', fontWeight: 600, fontSize: 6, maxWidth: '400px'}}>S učitelským profilem budete mít výuku pod kontrolou!</Heading> 
-          <Link href="/registrace"><Button variant="homepageprimary">Začít učit OnLife</Button></Link>
+            <Heading sx={{color: 'background', fontWeight: 600, fontSize: 7, maxWidth: '400px'}}>S učitelským profilem budete mít výuku pod kontrolou!</Heading> 
+            <Link href="/registrace"><Button variant="homepageprimary">Začít učit OnLife</Button></Link>
       </Box>
     </Flex>
     <Flex flexWrap='wrap' width="100%">
@@ -68,9 +69,9 @@ const Index = ({isLoggedIn}) => {
           pb={120}
           width={[1, 5/6]}
           mx="auto">   
-            <Heading sx={{color: 'background', mt: 5, fontWeight: 600, fontSize: 5}}>Vítejte v Onlife pro učitele!</Heading> 
+            <Heading sx={{color: 'background', mt: 5, fontWeight: 600, fontSize: 6}}>Vítejte v Onlife pro učitele!</Heading> 
             <Text sx={{color: 'background', fontSize: 2, my: 4, mb: 4}}>Mějte přehled o tom, jak si v kurzu vedou vaši studenti.</Text>
-            <Button variant="createclass">Založit třídu</Button>
+            <CreateGroupDialog />
           </Box>
       </Flex>
       <Flex backgroundColor="#f6f6f6" flexWrap='wrap' width="100%">
@@ -81,8 +82,10 @@ const Index = ({isLoggedIn}) => {
           px={35}
           py={60}
         >
-          <Box sx={{variant: 'styles.helpcard'}}>
-          </Box>
+          <Grid gap="4" columns={[1/3, '1fr 2fr']}>
+            <DemoGroupBox/>
+            <HelpBox/>
+          </Grid>
         </Box>
       </Flex>
     </StarterLayout>) 

@@ -1,23 +1,20 @@
 import gql from "graphql-tag";
 import * as firebase from 'firebase'
 import initFirebase from './utils/auth/initFirebase'
+import gql from 'graphql-tag'
 // Required for side-effects
 require("firebase/firestore");
 initFirebase()
 const db = firebase.firestore()
 
-export const typeDefs = gql`
-extend type Query {
-  isLoggedIn: Boolean!
-  cartItems: [ID!]!
-}
-
-extend type Launch {
-  isInCart: Boolean!
-}
-
-extend type Mutation {
-  addOrRemoveFromCart(id: ID!): [ID!]!
+export const GET_GROUPS = gql`
+query CurrentUserGroups($uid: String!) {
+  currentUserGroups(uid: $uid) @client {
+    groups {
+      name
+      id
+    }
+  }
 }
 `;
 
@@ -33,7 +30,18 @@ export const resolvers = {
             __typename: 'CurrentUser'
           }
         }
+      } catch (error) {
         
+      }
+    },
+    async currentUserGroups(obj, {id}, {cache}, info) {
+      try {
+        let group = await db.collection("groups").where("userId", "==", id)
+        console.log(group.data())
+        return {
+          id: id,
+          __typename: 'CurrentUserGroups'
+        }
       } catch (error) {
         
       }
@@ -89,6 +97,21 @@ export const resolvers = {
           }
           cache.writeData({ id, loggedOutUser });
           return null
+          
+        } catch (error) {
+          return null
+        }
+      },
+      async addGroup(obj, args, context, info) {
+
+        // console.log("addGroup", obj, args)
+
+        try {
+          return {
+            name: args.name,
+            id: 'něco',
+            __typename: 'Group'
+          }
           
         } catch (error) {
           return null

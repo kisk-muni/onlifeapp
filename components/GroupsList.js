@@ -1,6 +1,22 @@
 import { useQuery, useSubscription } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo';
+import { Mutation } from '@apollo/react-components'
+import { MenuDivider } from '@blueprintjs/core';
+
+const GET_GROUPS = gql`
+  query CurrentUserGroups($id: String!) {
+    currentUserGroups(id: $id) @client {
+      id
+    }
+  }
+`;
+
+export const GroupsListM = () => (
+  <Query query>
+
+  </Query>
+)
 
 /* const GetGroups = gql`
   query($userId: String!) {
