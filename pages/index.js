@@ -1,16 +1,16 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../lib/apollo'
-import withApolloAuth from "../lib/withApolloAuth"
+import { withAuthPage } from "../lib/withApolloAuth"
 import withAuth from "../lib/withAuth"
 import Link from 'next/link'
 import GroupsList from '../components/GroupsList'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Button, Grid } from 'theme-ui'
 
-const Index = ({user}) => {
+const Index = ({isLoggedIn}) => {
 
-  if (!user) {
+  if (!isLoggedIn) {
     return (<StarterLayout>
       <Flex flexWrap="wrap" minHeight="80vh" sx={{variant: 'styles.decoratedBox'}}>
         <div sx={{variant: 'styles.decoratedBackground'}}></div>
@@ -19,7 +19,7 @@ const Index = ({user}) => {
           sx={{ variant: 'styles.decoratedcontent' }}
           maxWidth={1240}
           px={35}
-          pt={80}
+          pt={130}
           pb={120}
           alignSelf="center"
           width={[1, 5/6]}
@@ -31,7 +31,8 @@ const Index = ({user}) => {
     <Flex flexWrap='wrap' width="100%">
       <Box
         width={[1, 5/6]}
-        maxWidth={1120}
+        maxWidth={1240}
+        px={35}
         mx="auto"
         py={60}
       >
@@ -54,7 +55,7 @@ const Index = ({user}) => {
   </StarterLayout>)
   }
   
-  if (user) {
+  if (isLoggedIn) {
     return (<StarterLayout>
       <Flex flexWrap="wrap" minHeight="50vh" sx={{variant: 'styles.decoratedBox'}}>
         <div sx={{variant: 'styles.decoratedOverlay'}}></div>
@@ -70,7 +71,6 @@ const Index = ({user}) => {
             <Heading sx={{color: 'background', mt: 5, fontWeight: 600, fontSize: 5}}>Vítejte v Onlife pro učitele!</Heading> 
             <Text sx={{color: 'background', fontSize: 2, my: 4, mb: 4}}>Mějte přehled o tom, jak si v kurzu vedou vaši studenti.</Text>
             <Button variant="createclass">Založit třídu</Button>
-            {GroupsList("8sXott8IxgU2Sfo2ipoX9aJ6Qu72")}
           </Box>
       </Flex>
       <Flex backgroundColor="#f6f6f6" flexWrap='wrap' width="100%">
@@ -82,7 +82,6 @@ const Index = ({user}) => {
           py={60}
         >
           <Box sx={{variant: 'styles.helpcard'}}>
-
           </Box>
         </Box>
       </Flex>
@@ -90,4 +89,4 @@ const Index = ({user}) => {
   }
 }
 
-export default withApollo()(withAuth(Index))
+export default withApollo()(withAuthPage(Index))

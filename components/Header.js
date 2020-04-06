@@ -2,10 +2,11 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { jsx, Link as Lstyle } from 'theme-ui'
-import withAuth from "../lib/withAuth"
+import {CURRENT_USER} from "../lib/withApolloAuth"
 import ProfileDropdown from "./ProfileDropdown";
+import { Query } from 'react-apollo';
 
-const Header = ({ user, loading, error, pathname, color, headerStyle, navlink, navlogo }) => (
+const Header = ({ data, loading, headerStyle, navlink, navlogo }) => (
   <header
   sx={{
     variant: headerStyle || 'styles.header',
@@ -37,24 +38,30 @@ const Header = ({ user, loading, error, pathname, color, headerStyle, navlink, n
         }}>
         Web kurzu
       </Lstyle>
-      {
-        (!loading && user) && <ProfileDropdown navlink={navlink} photoURL={user.photoURL} name={user.displayName} email={user.email} />
-      }
-      {   
-        (!user && !loading) && <Link href="/prihlaseni">
-        <Lstyle
-          sx={{
-            variant: navlink || 'styles.navlink',
-            ml: 4,
-            py: 2,
-          }}>
-          Přihlásit se
-        </Lstyle>
-      </Link>
-      }
-
+      <Query query={CURRENT_USER}>
+        {({loading, data}) => {
+          if (!loading && data.user.isLoggedIn) {
+            return <ProfileDropdown
+              navlink={navlink}
+              photoURL={data.user.photoURL}
+              name={data.user.name}
+              email={data.user.email} />
+          } else {
+            return <Link href="/prihlaseni">
+              <Lstyle
+                sx={{
+                  variant: navlink || 'styles.navlink',
+                  ml: 4,
+                  py: 2,
+                }}>
+                Přihlásit se
+              </Lstyle>
+            </Link>
+          }
+        }}
+      </Query>
     </div>
   </header>
 )
 
-export default withAuth(Header)
+export default Header

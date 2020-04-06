@@ -1,29 +1,33 @@
 import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/core"
 import firebase from "firebase/app"
 import Router from 'next/router'
-import { jsx, Link as Lstyle } from 'theme-ui'
+import { Link as Lstyle } from 'theme-ui'
 import { useApolloClient } from "@apollo/react-hooks"
+// import { Mutation } from "@apollo/react-components";
+import gql from 'graphql-tag'
+
 
 const ProfileDropdown = ({photoURL, name, email, navlink}) => {
     
     const client = useApolloClient();
 
-
     return (
         <Popover content={<Menu>
             {name && <MenuDivider title={email} />}
-            <MenuItem onClick={() => {
-                    firebase.auth().signOut().then(function() {
-                        client.writeData({ data: { isLoggedIn: false } });
-                        localStorage.clear();
-                        Router.push('/')
-                    }).catch(function(error) {
-                        // An error happened.
-                    });
-                }}
-                icon="log-out"
-                text="Odhlásit se" />
+                <MenuItem
+                    onClick={() => {
+                        firebase.auth().signOut().then(function() {
+                            localStorage.clear();
+                            client.resetStore()
+                            Router.push('/')
+                        }).catch(function(error) {
+                            // An error happened.
+                        });
+                    }}
+                    icon="log-out"
+                    text="Odhlásit se" />
             </Menu>}
+
         position={Position.BOTTOM}>
             <Lstyle
                 sx={{

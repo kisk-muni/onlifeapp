@@ -59,6 +59,7 @@ export const resolvers = {
             name: user.displayName ? user.displayName : '',
             email: user.email ? user.email : '',
             id: user.uid ? user.uid : '',
+            photoURL: user.photoURL ? user.photoURL : '',
             __typename: 'CurrentUser'
           }
         } catch (error) {
@@ -67,10 +68,31 @@ export const resolvers = {
             isLoggedIn: false,
             name: '',
             email: '',
+            photoURL: '',
             id: '',
             __typename: 'CurrentUser'
           }
         }
       },
+    },
+    Mutation: {
+      async logout(obj, args, {cache, getCacheKey}, info) {
+        try {
+          const id = getCacheKey({ __typename: 'CurrentUser' })
+          const loggedOutUser = {
+            isLoggedIn: false,
+            name: '',
+            email: '',
+            photoURL: '',
+            id: '',
+            __typename: 'CurrentUser'
+          }
+          cache.writeData({ id, loggedOutUser });
+          return null
+          
+        } catch (error) {
+          return null
+        }
+      }
     }
   };

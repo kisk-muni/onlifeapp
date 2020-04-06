@@ -399,7 +399,7 @@ export default {
       backgroundImage: "url('/ilustrace.jpg')",
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100%',
-      backgroundPosition: 'right',
+      backgroundPosition: 'bottom',
       zIndex: 2
     },
     decoratedOverlay: {

@@ -1,23 +1,12 @@
 import LoginLayout from '../components/LoginLayout'
 import { withApollo } from '../lib/apollo'
-import withAuth from "../lib/withAuth"
+import withAuthPage from "../lib/withApolloAuth"
 import FirebaseAuth from '../components/FirebaseAuth'
 import styled from 'styled-components'
 import { Flex, Box } from 'reflexbox'
 import { Heading, Text } from 'theme-ui'
 
-const MainLoading = styled.div`
-    height: 100 vh;
-    width: 100%;
-    font-size: 48px;
-    text-align: center;
-`
-
-const SignUp = ({loading, error, user}) => {
-    let load = true
-    if (user && !loading) {
-        load = false
-    }    
+const SignUp = ({loading, isLoggedIn}) => {
     return (<LoginLayout>
         <Flex flexWrap='wrap'>
             <Box
@@ -28,14 +17,17 @@ const SignUp = ({loading, error, user}) => {
                     Vyberte si jednu z možností pro vytvoření profilu. 
                 </Text>
             {
-                ((loading)) && <MainLoading>Načítání…</MainLoading>
+                loading && 
+                <Text sx={{textAlign: 'center', fontSize: 2, display: 'block', mt: 5}}>
+                    Načítání… 
+                </Text>
             }
             {   
-                (!user && !loading) && <FirebaseAuth />
+                (!isLoggedIn) && <FirebaseAuth />
             }
         </Box>
         </Flex>
     </LoginLayout>) 
   }
 
-export default withAuth(withApollo()(SignUp))  
+export default withApollo()(withAuthPage(SignUp))  
