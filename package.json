@@ -5,8 +5,9 @@
     "dev": "NODE_ENV=development next dev",
     "build": "NODE_ENV=production next build",
     "serve": "cross-env NODE_ENV=production firebase serve",
-    "start": "next build && NODE_ENV=production next start",
+    "start": "NODE_ENV=production next start -p $PORT",
     "export": "next export",
+    "heroku-postbuild": "npm run build",
     "type-check": "tsc",
     "prepare": "patch-package"
   },
