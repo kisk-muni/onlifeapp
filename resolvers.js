@@ -82,7 +82,7 @@ export const resolvers = {
             __typename: 'CurrentUser'
           }
         } catch (error) {
-          console.log('should not be logged')
+          // console.log('should not be logged')
           return {
             isLoggedIn: false,
             name: '',

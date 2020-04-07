@@ -27,7 +27,7 @@ const firebaseAuthConfig = {
     },
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ],
-  signInSuccessUrl: '/',
+  signInSuccessUrl: '/u',
   credentialHelper: 'none',
 }
 

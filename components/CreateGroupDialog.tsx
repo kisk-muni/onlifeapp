@@ -50,12 +50,13 @@ export function CreateGroupDialog(props: IProps) {
       <Button
         variant={props.hasUserGroup ? 'styles.groupListItemButton' : "createclass"}
         onClick={() => setIsOpen(true)}>
-          <div sx={{mb: 2, fontSize: 5, fontWeight: 400}}>+</div>Založit třídu
+          {props.hasUserGroup && <div sx={{mb: 2, fontSize: 7, fontWeight: 300}}>+</div>}Založit třídu
       </Button> 
       <Dialog
         autoFocus
+        sx={{background: '#f5f5f5'}}
         isOpen={isOpen}>
-          {mutation.loading && <Spinner intent="primary" size={32} sx={{my: 4}} />}
+          {mutation.loading && <Spinner intent="primary" size={32} sx={{my: '100px'}} />}
           {mutation.data?.addGroup?.id && 
             <div className={Classes.DIALOG_BODY}>
               <img

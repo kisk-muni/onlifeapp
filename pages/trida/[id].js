@@ -1,27 +1,194 @@
+/** @jsx jsx */
 import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
+import StarterLayout from '../../components/StarterLayout'
 import { withApollo } from '../../lib/apollo'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading } from 'theme-ui'
+import Link from 'next/link'
+import { jsx, Text, Button, Heading, Grid } from 'theme-ui'
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
+import { MenuItem, Icon } from "@blueprintjs/core"
+import { Select } from "@blueprintjs/select"
+
+const CURRENT_USER = gql`
+query CurrentUser {
+  user @client {
+    isLoggedIn
+    name
+    photoURL
+    email 
+    id
+  }
+}
+`
+
+const students = [
+  {id: '', name: 'Dalibor Černocký'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'Chief Keef'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'John Lennon'},
+  {id: '', name: 'Dalibor Černocký'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'Chief Keef'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'John Lennon'},
+  {id: '', name: 'Dalibor Černocký'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'Někdo'},
+  {id: '', name: 'Chief Keef'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'John Lennon'},
+  {id: '', name: 'Dalibor Černocký'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'Chief Keef'},
+  {id: '', name: 'Adam Melničák'},
+  {id: '', name: 'John Lennon'},
+]
+
+function itemRenderer(group, {modifiers}) {
+  return (
+    <Link href={group.link}><MenuItem
+        active={modifiers.active}
+        key={group.id}
+        text={group.name}
+    /></Link>
+);
+}
 
 const Trida = () => {
   const router = useRouter();
+  const { data, loading } = useQuery(CURRENT_USER)
+
+  if (loading === false) {
+    if (
+      typeof window !== 'undefined' &&
+      (typeof data?.user === 'undefined' || data?.user?.isLoggedIn === false)) {      
+        router.push('/prihlaseni')
+    }
+  }
 
   return (
-    <Layout>
-      <Flex flexWrap='wrap' width="100%">
+    <StarterLayout>
+      <Flex flexWrap="wrap" sx={{variant: 'styles.decoratedBox', overflow: 'display', background: 'transparent'}}>
+        <div sx={{variant: 'styles.decoratedOverlay', maxHeight: '300px'}}></div>
         <Box
-          width={[1, 5/6]}
+          sx={{variant: 'styles.decoratedcontent'}} 
           maxWidth={1240}
-          mx="auto"
           px={35}
-          py={60}
-        >
-          <Heading>Tady bude třída</Heading>
-          <Text>ID třídy: {router.query.id}</Text>
+          pt={50}
+          alignSelf="center"
+          width={[1, 5/6]}
+          mx="auto">
+            <Box sx={{mb: '50px'}}>
+              <Select
+                onItemSelect={(item) => {
+                  console.log('selected', item)
+                }}
+                items={[
+                  {link: '/u', name: 'Přehled tříd'},
+                  {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
+                  {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
+                  {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
+                  {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'}
+                ]}
+                filterable={false}
+                activeItem={{id: 'idecko', name: 'Jméno třídy'}}
+                itemRenderer={itemRenderer}
+                >
+                <Button variant="groupSelect">Změnit třídu <Icon icon="caret-down" iconSize={14} sx={{mb: '3px'}} /></Button>
+              </Select>
+              <Heading as="h3" sx={{fontSize: 5, color: 'background', mb: 4}}>Jméno třídy</Heading>
+              <Text sx={{color: 'background', fontSize: 2, color: 'rgba(255,255,255,0.9)'}}>Kód pro pozvání: 88-KKK</Text>
+            </Box>
+            <Box sx={{ mb: '50px' }}>
+              <Heading as="h3" sx={{fontSize: 3, color: 'rgba(255,255,255,0.9)'}}>Studenti ({students.length})</Heading>
+              <Box
+                sx={{ variant: 'styles.groupCard' }}
+                >
+                  <Grid gab={4} columns={5}>
+                    {
+                      students.map((student) => <Box>
+                        {student.name}
+                      </Box>)
+                    }
+                  </Grid>
+              </Box>
+            </Box>
+            <Box sx={{ mb: '50px' }}>
+              <Heading as="h3" sx={{fontSize: 3, color: '#333'}}>Výsledky</Heading>
+              <Box
+                sx={{ variant: 'styles.groupCard' }}
+                >
+                  <Grid gap={4} columns={2}>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 1</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 2</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 3</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 4</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 5</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                    <Box sx={{mb: 2}}>
+                      <Heading sx={{fontSize: 2, pb: 2, mb: 2, borderBottom: '1px solid #ddd'}}>
+                        Téma 6</Heading>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                      <Text>Kvíz A</Text>
+                    </Box>
+                  </Grid>
+              </Box>
+            </Box>
+            <Box>
+              <Box
+                sx={{ variant: 'styles.groupHelpCard', height: '208px'}}
+                >
+                <Heading as="h3" sx={{fontSize: 3, color: '#333', mb: 3}}>Nápověda</Heading>
+              </Box>
+            </Box>
         </Box>
       </Flex>
-    </Layout>
+    </StarterLayout>
   );
   
 }

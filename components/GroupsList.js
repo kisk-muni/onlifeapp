@@ -11,7 +11,7 @@ export const GroupsList = (props) => (
         key={group.id}
         sx={{ variant: 'styles.groupListItem' }}
         >
-          <Heading as="h3" sx={{fontSize: '18px'}}>
+          <Heading as="h3" sx={{fontSize: '20px'}}>
             {group.name}
           </Heading>
       </Box></Link>

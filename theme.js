@@ -100,6 +100,24 @@ export default {
         cursor: 'pointer' 
       }
     },
+    groupSelect: {
+      variant: 'buttons.default',
+      fontSize: 1,
+      px: '6px',
+      py: '4px',
+      mx: '-6px',
+      fontWeight: 400,
+      color: 'rgba(255,255,255,0.7)',
+      border: 'none',
+      background: 'transparent',
+      '&:hover, &:focus': {
+        cursor: 'pointer',
+        color: 'rgba(255,255,255,0.9)',
+        background: 'rgba(0,0,0,0.08)',
+        outline: 'none',
+        boxShadow: 'none'
+      }
+    },
     black: {
       fontWeight: 'bold',
       color: 'background',
@@ -511,14 +529,26 @@ export default {
       mt: 2,
       color: 'red'
     },
-    groupListItem: {
-      height: 210,
+    groupHelpCard: {
+      mt: '16px',
+      padding: '20px',
+      backgroundColor: 'transparent',
+      borderRadius: '8px',
+      border: '1px solid rgba(0,0,0,.12)',
+      boxShadow: 'none'
+    },
+    groupCard: {
       background: '#fff',
       py: 20,
       px: 20,
       borderRadius: '8px',
       mt: '16px',
+      mb: '-16px',
       boxShadow: '0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)',
+    },
+    groupListItem: {
+      variant: 'styles.groupCard',
+      height: 210,
       transition: 'background-color .1s cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
         background: '#f5f5f5',
@@ -533,6 +563,6 @@ export default {
       '&:hover, &:focus': {
         outline: 'none',
       }
-    }
+    },
   }
 }
