@@ -5,7 +5,7 @@
     "dev": "NODE_ENV=development next dev",
     "build": "NODE_ENV=production next build",
     "serve": "cross-env NODE_ENV=production firebase serve",
-    "start": "NODE_ENV=production next start",
+    "start": "next build && NODE_ENV=production next start",
     "export": "next export",
     "type-check": "tsc",
     "prepare": "patch-package"
