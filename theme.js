@@ -510,6 +510,29 @@ export default {
     simpleErrorMessageText: {
       mt: 2,
       color: 'red'
+    },
+    groupListItem: {
+      height: 210,
+      background: '#fff',
+      py: 20,
+      px: 20,
+      borderRadius: '8px',
+      mt: '16px',
+      boxShadow: '0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)',
+      transition: 'background-color .1s cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        background: '#f5f5f5',
+        cursor: 'pointer'
+      }
+    },
+    groupListItemButton: {
+      variant: 'styles.groupListItem',
+      color: 'primary',
+      fontSize: 2,
+      fontWeight: 600,
+      '&:hover, &:focus': {
+        outline: 'none',
+      }
     }
   }
 }

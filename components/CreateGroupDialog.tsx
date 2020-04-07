@@ -9,13 +9,18 @@ import { Button, Heading, Input, Text } from 'theme-ui'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 const ADD_GROUP = gql`
-  mutation AddGroup($name: String!) {
-    addGroup(name: $name) @client {
+  mutation AddGroup($name: String!, $uid: String!) {
+    addGroup(name: $name, uid: $uid) @client {
       id
       name
     }
   }
 `;
+
+interface IProps {
+  hasUserGroup: boolean
+  uid: string
+}
 
 interface TResult {
   addGroup: {
@@ -26,25 +31,31 @@ interface TResult {
 
 interface TVariables {
   name: string
+  uid: string
 }
 
 type FormData = {
   name: string
 };
 
-export function CreateGroupDialog(hasNoGroup: boolean) {
+export function CreateGroupDialog(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, errors } = useForm<FormData>()
 
+  console.log(props.uid)
 
   // zobrazovat button v kondicionalu
   return <Mutation<TResult, TVariables> mutation={ADD_GROUP}>
     {(addGroup: MutationFunction<TResult, TVariables>, mutation: MutationResult<TResult>) => (<Fragment>
-      <Button variant="createclass" onClick={() => setIsOpen(true)}>Založit třídu</Button> 
+      <Button
+        variant={props.hasUserGroup ? 'styles.groupListItemButton' : "createclass"}
+        onClick={() => setIsOpen(true)}>
+          <div sx={{mb: 2, fontSize: 5, fontWeight: 400}}>+</div>Založit třídu
+      </Button> 
       <Dialog
         autoFocus
         isOpen={isOpen}>
-          {mutation.loading && <Spinner intent="primary" size={32} />}
+          {mutation.loading && <Spinner intent="primary" size={32} sx={{my: 4}} />}
           {mutation.data?.addGroup?.id && 
             <div className={Classes.DIALOG_BODY}>
               <img
@@ -78,7 +89,7 @@ export function CreateGroupDialog(hasNoGroup: boolean) {
                   Třída  založena
               </Text>
               <div sx={{textAlign: 'center'}}>
-                <Link href="/trida">
+                <Link href={"/trida/" + mutation.data.addGroup.id}>
                   <Button sx={{mx: 'auto'}} type="submit" title="Pokračovat">Pokračovat</Button>
                 </Link>  
               </div>
@@ -115,7 +126,8 @@ export function CreateGroupDialog(hasNoGroup: boolean) {
                   <Button
                     type="submit"
                     onClick={handleSubmit((data: FormData) => {
-                      addGroup({variables: {name: data.name}})
+                      console.log(data)
+                      addGroup({variables: {name: data.name, uid: props.uid}})
                     })}
                     title="Založit">Založit</Button>
                 </div>

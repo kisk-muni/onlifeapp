@@ -1,20 +1,23 @@
 import gql from "graphql-tag";
 import * as firebase from 'firebase'
 import initFirebase from './utils/auth/initFirebase'
-import gql from 'graphql-tag'
 // Required for side-effects
 require("firebase/firestore");
 initFirebase()
 const db = firebase.firestore()
 
-export const GET_GROUPS = gql`
-query CurrentUserGroups($uid: String!) {
-  currentUserGroups(uid: $uid) @client {
-    groups {
-      name
-      id
-    }
-  }
+export const typeDefs = gql`
+extend type Query {
+  isLoggedIn: Boolean!
+  cartItems: [ID!]!
+}
+
+extend type Launch {
+  isInCart: Boolean!
+}
+
+extend type Mutation {
+  addOrRemoveFromCart(id: ID!): [ID!]!
 }
 `;
 
@@ -36,10 +39,18 @@ export const resolvers = {
     },
     async currentUserGroups(obj, {id}, {cache}, info) {
       try {
-        let group = await db.collection("groups").where("userId", "==", id)
-        console.log(group.data())
+        let group = await db.collection("groups").where("userId", "==", id).get()
+        let groups = []
+        group.forEach(doc => {
+          groups.push({
+            id: doc.id,
+            ...doc.data(),
+            __typename: 'Group'
+          })
+        });
+        console.log(groups)
         return {
-          id: id,
+          groups: groups,
           __typename: 'CurrentUserGroups'
         }
       } catch (error) {
@@ -102,14 +113,19 @@ export const resolvers = {
           return null
         }
       },
-      async addGroup(obj, args, context, info) {
-
-        // console.log("addGroup", obj, args)
-
+      async addGroup(obj, {name, uid}, context, info) {
         try {
+          let docref = await db.collection("groups").add({
+            name: name,
+            userId: uid
+          })
+          console.log({
+            name: name,
+            userId: uid
+          })
           return {
-            name: args.name,
-            id: 'něco',
+            name: name,
+            id: docref.id,
             __typename: 'Group'
           }
           
