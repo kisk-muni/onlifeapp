@@ -1,8 +1,15 @@
 import React from 'react'
 import App from 'next/app'
+import Router from 'next/router'
 import { ThemeProvider, Styled } from 'theme-ui'
 import theme from '../theme'
+//import { includePageLoading } from "../utils/pageLoading"
+//import { getAuthCookieFromReq } from "../utils/auth/getAuthCookieFromReq"
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
+
+// includePageLoading()
+
+//export const isOnSecuredPath = path => !["/u"].includes(pathname)
 
 class MyApp extends App {
   // Only uncomment this method if you have blocking data requirements for

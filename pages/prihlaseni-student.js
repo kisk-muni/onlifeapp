@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
-import { withApollo } from '../apollo/client'
+import { withApollo } from '../lib/apollo'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
@@ -9,8 +9,9 @@ import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Grid, Button } from 'theme-ui'
 
 export const CURRENT_USER = gql`
-{
-  user {
+query CurrentUser {
+  user @client {
+    isLoggedIn
     name
     photoURL
     email 
@@ -19,19 +20,19 @@ export const CURRENT_USER = gql`
 }
 `
 
-const Index = () => {
+const StudentLogin = () => {
   const router = useRouter()
-  const { data, loading, error } = useQuery(CURRENT_USER)
+  const { data, loading } = useQuery(CURRENT_USER)
 
   if (
     loading === false &&
-    typeof data !== 'undefined' &&
     data.user !== null &&
+    data.user.isLoggedIn &&
     typeof window !== 'undefined'
   ) {
     router.push('/u')
   }
-
+  
   return (
     <StarterLayout>
       <Flex flexWrap="wrap" minHeight="80vh" sx={{variant: 'styles.decoratedBox'}}>
@@ -79,4 +80,4 @@ const Index = () => {
 
 }
 
-export default withApollo(Index)
+export default withApollo({ssr: true})(StudentLogin)

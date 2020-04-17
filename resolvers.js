@@ -57,7 +57,8 @@ export const resolvers = {
         
       }
     },
-    async user() {
+    async user(obj, args, context, info) {
+
       try {
         const user = await new Promise((resolve, reject) =>
         firebase.auth().onAuthStateChanged(
@@ -92,6 +93,47 @@ export const resolvers = {
             __typename: 'CurrentUser'
           }
         }
+      },
+      async topics(obj, args, {cache}, info) {
+        try {
+          console.log('trying get topics')
+          let topics = await firebase.database().ref('/sheets').once('value')
+          let topics_array = []
+          topics.forEach(topic => {
+            let subtopics = []
+            for (let [key, value] of Object.entries(topic.val())) {
+              subtopics.push({
+                __typename: 'SubTopic',
+                name: key,
+                display: value.display || false,
+                link: value.link  || 'false' 
+              })
+            }
+            topics_array.push({
+              __typename: 'Topic',
+              name: topic.key,
+              subtopics: subtopics
+            })
+          })
+          console.log(topics_array)
+          return {
+            topics: topics_array,
+            __typename: 'Topics'
+          }
+        } catch (error) {
+          
+        }  
+      },
+      async quizz(obj, {quizz}, {cache}, info) {
+        try {
+          let quizz_ref = await firebase.database().ref('sheets/' + quizz).once('value')
+          return {
+            ...quizz_ref.val(),
+            __typename: 'Quizz'
+          }
+        } catch (error) {
+          
+        }  
       },
     },
     Mutation: {

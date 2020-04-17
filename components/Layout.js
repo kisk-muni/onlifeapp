@@ -11,7 +11,7 @@ const Layout = props => (
       flexDirection: 'column',
       // set this to `minHeight: '100vh'` for full viewport height
       minHeight: '100vh',
-      background: '#f5f5f5'
+      background: '#fff'
     }}>
     
     <main

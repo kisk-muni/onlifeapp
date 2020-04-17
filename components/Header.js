@@ -2,11 +2,23 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { jsx, Link as Lstyle } from 'theme-ui'
-import {CURRENT_USER} from "../lib/withApolloAuth"
-import ProfileDropdown from "./ProfileDropdown";
-import { Query } from 'react-apollo';
+import ProfileDropdown from "./ProfileDropdown"
+import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
+import { Sticky } from 'react-sticky'
 
-const Header = ({ data, loading, headerStyle, navlink, navlogo }) => (
+export const CURRENT_USER = gql`
+{
+  user {
+    name
+    photoURL
+    email 
+    id
+  }
+}
+`
+
+const Header = ({ headerStyle, navlink, navlogo }) => (
   <header
   sx={{
     variant: headerStyle || 'styles.header',
@@ -38,9 +50,9 @@ const Header = ({ data, loading, headerStyle, navlink, navlogo }) => (
         }}>
         Web kurzu
       </Lstyle>
-      <Query query={CURRENT_USER}>
+      <Query query={CURRENT_USER} >
         {({loading, data}) => {
-          if (!loading && data.user.isLoggedIn) {
+          if (loading === false && data.user !== null) {
             return <ProfileDropdown
               navlink={navlink}
               photoURL={data.user.photoURL}

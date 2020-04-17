@@ -424,9 +424,7 @@ export default {
     },
     header: {},
     headerHomepage: {
-      position: 'fixed',
-      top: 0,
-      zIndex: '19'
+      background: '#2879fe',
     },
     decoratedBox: {
       backgroundColor: '#b3ffff',

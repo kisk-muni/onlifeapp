@@ -7,7 +7,7 @@ import { jsx, Heading } from 'theme-ui'
 export const GroupsList = (props) => (
   <Fragment>
     {props.groups.map(group => (
-      <Link href={"/trida/" + group.id}><Box
+      <Link href={"/trida/[id]"} as={"/trida/" + group.id}><Box
         key={group.id}
         sx={{ variant: 'styles.groupListItem' }}
         >

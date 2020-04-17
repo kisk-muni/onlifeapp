@@ -1,26 +1,11 @@
 /** @jsx jsx */
-import { useRouter } from 'next/router'
 import StarterLayout from '../../components/StarterLayout'
-import { withApollo } from '../../lib/apollo'
+import { withApollo } from '../../apollo/client'
 import { Flex, Box } from 'reflexbox'
 import Link from 'next/link'
 import { jsx, Text, Button, Heading, Grid } from 'theme-ui'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
 import { MenuItem, Icon } from "@blueprintjs/core"
 import { Select } from "@blueprintjs/select"
-
-const CURRENT_USER = gql`
-query CurrentUser {
-  user @client {
-    isLoggedIn
-    name
-    photoURL
-    email 
-    id
-  }
-}
-`
 
 const students = [
   {id: '', name: 'Dalibor Černocký'},
@@ -57,17 +42,6 @@ function itemRenderer(group, {modifiers}) {
 }
 
 const Trida = () => {
-  const router = useRouter();
-  const { data, loading } = useQuery(CURRENT_USER)
-
-  if (loading === false) {
-    if (
-      typeof window !== 'undefined' &&
-      (typeof data?.user === 'undefined' || data?.user?.isLoggedIn === false)) {      
-        router.push('/prihlaseni')
-    }
-  }
-
   return (
     <StarterLayout>
       <Flex flexWrap="wrap" sx={{variant: 'styles.decoratedBox', overflow: 'display', background: 'transparent'}}>
@@ -193,4 +167,4 @@ const Trida = () => {
   
 }
 
-export default withApollo()(Trida)
+export default withApollo(Trida)

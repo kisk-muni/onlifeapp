@@ -1,4 +1,4 @@
-# Onlife app
+# Onlife
 
 ## How to use
 
@@ -15,16 +15,6 @@ npm install
 npm run dev
 ```
 
-## Todo
-
-- [ ] fix withApollo usage
-- [ ] setup and try firestore connection: apollo-link-cloud-firestore
-- [ ] add example env to git
-
-## Other
-
-Illustrations are from https://undraw.co/illustrations
-
 Firebase tricks
 
 ```bash
@@ -36,3 +26,23 @@ Patching tricks
 ```bash
 yarn patch-package --exclude ^$ --include package.json react-firebaseui
 ```
+
+## Todo
+
+- [ ] known bug: apollo client ssr not passing context (header cookie): https://github.com/apollographql/apollo-client/issues/5089
+- [x] fix withApollo usage
+- [x] setup and try firestore connection: apollo-link-cloud-firestore
+- [ ] add example env to git
+- [ ] nprogress
+- [ ] check lib and utils for unused code
+
+## Quiz workflow
+
+1. Žák přistoupí na stránku kvízu. Z url se veme ID kvízu.
+2. V databázi se vytvoří pokus o vyplnění kvízu.
+3. Id pokusu se předvyplní v URL wireframu.
+4. Žák vyplní kvíz. Odeslaný kvíz se pošle do results databáze.
+
+## Other
+
+Illustrations are from https://undraw.co/illustrations

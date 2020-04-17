@@ -7,7 +7,6 @@ const FullPageLoading = () => (
     flexDirection: 'column',
     flex: 1,
     minHeight: '100vh',
-    textAlign: 'center',
     justifyContent: 'center',
     background: '#f5f5f5'
     }}>
