@@ -47,10 +47,8 @@ const NewFirebaseAuth = () => {
     <Flex>
       <Box
         sx={{
-          maxWidth: 400,
           width: '100%',
-          mx: 'auto',
-          px: 3
+          px: 0
         }}>
       {renderAuth ? (
         <FirebaseAuth
@@ -66,7 +64,8 @@ const NewFirebaseAuth = () => {
         .firebaseui-idp-password .firebaseui-idp-text-long:after {
             visibility: visible;
             content: 'Pokračovat pomocí e-mailu';
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 500;
             text-align: center;
         }
         .firebaseui-button {
@@ -76,26 +75,29 @@ const NewFirebaseAuth = () => {
           display: inline-block;
           text-align: center;
           line-height: inherit;
-          font-size: 14;
+          font-size: 16px;
           padding-left: 16px;
           padding-right: 16px;
           padding-top: 8px;
           padding-bottom: 8px;
-          font-weight: 600;
+          font-weight: 500;
           margin: 0px;
           text-decoration: none;
           border-width: 0px;
           border-style: initial;
           border-color: initial;
           border-image: initial;
-          border-radius: 4px;
+          border-radius: 6px;
+        }
+        .firebaseui-button:hover {
+            cursor: pointer;
         }
         .firebaseui-form-actions {
           text-align: right;
         }
         .firebaseui-id-submit {
           color: #ffffff;
-          background-color: #111199;
+          background-color: #0000dc;
         }
         h1.firebaseui-title {
           box-sizing: border-box;
@@ -141,11 +143,11 @@ const NewFirebaseAuth = () => {
         }
         .firebaseui-list-item {
           display: block;
-          margin-bottom: .4em;
+          margin-bottom: 12px;
         }
         .firebaseui-idp-google {
             background-color: #fff!important;
-            color: rgba(0, 0, 0, 0.54)!important;
+            color: #333!important;
             border: 1px solid #92929285!important;
             padding-top: 11px!important;
         }
@@ -157,14 +159,14 @@ const NewFirebaseAuth = () => {
           display: inline-block;
           text-align: center;
           line-height: inherit;
-          font-size: inherit;
+          font-size: 16px;
           padding-left: 16px;
           padding-right: 16px;
           padding-top: 12px;
           padding-bottom: 12px;
           color: #fff;
           background-color: #fff;
-          font-weight: 600;
+          font-weight: 500;
           position: relative;
           margin: 0px;
           text-decoration: none;
@@ -172,7 +174,7 @@ const NewFirebaseAuth = () => {
           border-style: initial;
           border-color: initial;
           border-image: initial;
-          border-radius: 4px;
+          border-radius: 6px;
         }
         .mdl-textfield__input {
           box-sizing: border-box;
@@ -189,7 +191,10 @@ const NewFirebaseAuth = () => {
           border-width: 1px;
           border-style: solid;
           border-image: initial;
-          border-radius: 4px;
+          border-radius: 6px;
+        }
+        .firebaseui-idp-button:hover {
+            cursor: pointer;
         }
         .firebaseui-input {
           border-color: #777;
@@ -213,7 +218,8 @@ const NewFirebaseAuth = () => {
           left: 0;
           position: absolute;
           top: 55px;
-          width: 100%}
+          width: 100%
+        }
         .mdl-spinner.firebaseui-busy-indicator {
             height: 56px;
             left: 0px;

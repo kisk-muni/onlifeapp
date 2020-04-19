@@ -2,7 +2,7 @@ export default {
   colors: {
     text: '#000000',
     background: '#ffffff',
-    primary: '#1d7aff',
+    primary: '#0000dc',
     secondary: '#111199',
     muted: '#f6f6f6',
     highlight: '#efeffe', // '#ffffcc',
@@ -23,21 +23,20 @@ export default {
     },
   },
   fonts: {
-    body:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+    body: '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
   fontSizes: [12, 14, 16, 18, 20, 24, 32, 48, 64, 72],
   fontWeights: {
     body: 400,
-    heading: 600,
+    heading: 700,
     bold: 600,
     display: 600,
   },
   lineHeights: {
     body: 1.5,
-    heading: 1.25,
+    heading: 1.2,
   },
   sizes: {
     sidebar: 256,
@@ -77,12 +76,12 @@ export default {
       color: 'background',
       bg: 'primary',
       '&:hover': {
-        background: '#1973f3',
+        background: '#1515f7',
         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
         cursor: 'pointer' 
       },
       '&:focus': {
-        background: '#156eea',
+        background: '#2626fb',
         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
         cursor: 'pointer' 
       }
@@ -102,17 +101,17 @@ export default {
     },
     groupSelect: {
       variant: 'buttons.default',
-      fontSize: 1,
+      fontSize: 3,
       px: '6px',
       py: '4px',
-      mx: '-6px',
-      fontWeight: 400,
-      color: 'rgba(255,255,255,0.7)',
+      mx: 3,
+      fontWeight: 600,
+      color: 'text',
       border: 'none',
       background: 'transparent',
       '&:hover, &:focus': {
         cursor: 'pointer',
-        color: 'rgba(255,255,255,0.9)',
+        color: 'text',
         background: 'rgba(0,0,0,0.08)',
         outline: 'none',
         boxShadow: 'none'
@@ -127,41 +126,29 @@ export default {
       },
     },
     homepageprimary: {
-      color: 'text',
-      background: '#FFC107',
+      color: 'background',
+      background: '#0000dc',
       borderRadius: '8px',
       padding: '16px 24px',
       textAlign: 'center',
       border: 'none',
       marginTop: '32px',
-      fontWeight: 600,
-      fontSize: '18px',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.5)',
+      fontWeight: 400,
+      fontSize: 2,
       ':hover': {
-        background: '#f1b606',
+        background: '#0000dc',
         cursor: 'pointer',
+        outline: 'none',
+        boxShadow: 'none'
       },
       ':focus': {
-        background: '#e8b007'
+        background: '#0000dc'
       }
     },
     createclass: {
-      color: 'text',
-      background: '#ffffff',
-      borderRadius: '6px',
-      padding: '16px 24px',
-      textAlign: 'center',
-      border: 'none',
-      marginTop: '16px',
-      fontWeight: 600,
-      fontSize: '16px',
-      ':hover': {
-        background: 'rgba(255,255,255,0.9)',
-        cursor: 'pointer',
-      },
-      ':focus': {
-        background: 'rgba(255,255,255,0.8)'
-      }
+      variant: 'buttons.primary',
+      fontSize: 4,
+      fontWeight: 500
     },
   },
   links: {
@@ -361,6 +348,11 @@ export default {
         },
       }
     },
+    topicCard: {
+      '&:hover div, &focus div': {
+        boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)'
+      }
+    },
     pre: {
       fontFamily: 'monospace',
       fontSize: 1,
@@ -422,14 +414,9 @@ export default {
       border: '1px solid rgba(0,0,0,.12)',
       boxShadow: 'none'
     },
-    header: {},
-    headerHomepage: {
-      background: '#2879fe',
-    },
-    decoratedBox: {
-      backgroundColor: '#b3ffff',
-      position: 'relative',
-      overflow: 'hidden'
+    header: {
+      py: 2,
+      background: 'rgba(255, 255, 255, .8)',
     },
     createclassIllustration: {
       display: 'block',
@@ -542,7 +529,7 @@ export default {
       borderRadius: '8px',
       mt: '16px',
       mb: '-16px',
-      boxShadow: '0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)',
+      boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
     },
     groupListItem: {
       variant: 'styles.groupCard',
@@ -555,12 +542,33 @@ export default {
     },
     groupListItemButton: {
       variant: 'styles.groupListItem',
-      color: 'primary',
+      color: 'rgba(0, 0, 0, .7)',
       fontSize: 2,
       fontWeight: 600,
       '&:hover, &:focus': {
         outline: 'none',
       }
     },
+    dashboard: {
+      header: {
+        py: 2,
+        background: 'rgba(255, 255, 255, .8)',
+      },
+      navlink: {
+        display: 'inline-block',
+        fontWeight: 400,
+        color: '#666',
+        textDecoration: 'none',
+        ':hover,:focus': {
+          color: 'text',
+          textDecoration: 'none'
+        },
+      },
+      navlinkactive: {
+        variant: 'styles.dashboard.navlink',
+        color: 'text',
+        borderBottom: '2px solid #000'
+      }
+    }
   }
 }

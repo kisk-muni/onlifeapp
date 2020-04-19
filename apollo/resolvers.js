@@ -15,9 +15,7 @@ if (!admin.apps.length) {
   })
 }
 const rdb = admin.database();
-//require("firebase/firestore");
-// initFirebase()
-//const db = firebase.firestore()
+const db = admin.firestore()
 
 const JWT_SECRET = getConfig().serverRuntimeConfig.JWT_SECRET
 
@@ -39,28 +37,44 @@ function validPassword(user, password) {
 
 export const resolvers = {
   Query: {
-    async groups(obj, args, {user}, info) {
+    async group(obj, {id}, {user}, info) {
       //console.log(user)
-      return await [{name: 'neco', id: 'nejkakeid'}, {name: 'neco jineho', id: 'dsfasf'}]
-      
-      /* try {
-        let group = await db.collection("groups").where("userId", "==", user.id).get()
-        let groups = []
-        group.forEach(doc => {
-          groups.push({
-            id: doc.id,
-            ...doc.data(),
-            __typename: 'Group'
-          })
-        });
-        console.log(groups)
+      try {
+        let group = await db.collection("groups").doc(id).get()
+        if (!group.exists) {
+          throw 'No such document!'
+        }
+        let groupData = group.data()
+        if (groupData.userId !== user.id) {
+          throw "User is not owner of group."
+        }
         return {
-          groups: groups,
-          __typename: 'CurrentUserGroups'
+          id: group.id,
+          name: groupData.name,
+          color: 'orange',
         }
       } catch (error) {
-        
-      } */
+        return null
+      }
+    },
+    async groups(obj, args, {user}, info) {
+      //console.log(user)
+      try {
+        let groupsRef = await db.collection("groups").where("userId", "==", user.id).get()
+        let groups = []
+        groupsRef.forEach(doc => {
+          let data = doc.data()
+          groups.push({
+            id: doc.id,
+            name: data.name,
+            color: 'orange',
+          })
+        });
+        return groups
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     },
     async user(obj, args, {user}) {
       console.log('User Resolver:', user)
@@ -90,6 +104,21 @@ export const resolvers = {
     }
   },
   Mutation: {
+    async addGroup(_parent, {input}, {user}, _info) {
+      try {
+        let docRef = await db.collection("groups").add({
+          name: input.name,
+          userId: user.id
+        })
+        return {
+          name: input.name,
+          color: 'orange',
+          id: docRef.id
+        }
+      } catch (error) {
+        return null
+      }
+    },
     async signUp(_parent, args, _context, _info) {
       const user = createUser(args.input)
 

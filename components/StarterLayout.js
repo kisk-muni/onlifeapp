@@ -6,35 +6,34 @@ import { jsx, Text } from 'theme-ui'
 import { Sticky, StickyContainer } from 'react-sticky'
 import { Flex, Box } from 'reflexbox'
 // <MasarykBar />
-const StarterLayout = props => (
+const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = false, ...props }) => (
   <StickyContainer>
-    <Sticky>
-      {({ style, distanceFromTop }) => 
-        <div style={style}
-          className={(distanceFromTop == 0 ? 'not-sticky' : 'is-sticky')}  
-          sx={{
-            zIndex: 90
-          }}>
-        <Header headerStyle="styles.headerHomepage" navlink="styles.navlinklight"  navlogo="styles.navlogolight" />
-      </div>
-      }
-    </Sticky>
-      <style jsx>{`
-        .is-sticky {
-          box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
-        }
-        .not-sticky {
-          box-shadow: none;
-        }
-      `}</style>
     <div
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        background: "#f6f6f6",
-        // set this to `minHeight: '100vh'` for full viewport height
         minHeight: '100vh',
       }}>
+      <Sticky>
+      {({ style, distanceFromTop, distanceFromBottom }) => 
+        <div style={style}
+          className={((stickHeaderByDefault || (distanceFromTop != 0)) ? 'is-sticky' : 'not-sticky')}>
+        <Header showDescription={showDescription(distanceFromTop, distanceFromBottom)}/>
+      </div>
+      }
+    </Sticky>
+    <style jsx>{`
+      .is-sticky {
+        box-shadow: 0 1px 0 0 rgba(0,0,0,0.1);
+        transition: box-shadow .1s ease 0s;
+        -webkit-backdrop-filter: saturate(180%) blur(5px);
+        backdrop-filter: saturate(180%) blur(5px);
+      }
+      .not-sticky {
+        transition: box-shadow .1s ease 0s;
+        box-shadow: none;
+      }
+    `}</style>
       <main sx={{ width: '100%', flex: '1 1 auto' }}>
         {props.children}
       </main>

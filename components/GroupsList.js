@@ -9,9 +9,10 @@ export const GroupsList = (props) => (
     {props.groups.map(group => (
       <Link href={"/trida/[id]"} as={"/trida/" + group.id}><Box
         key={group.id}
-        sx={{ variant: 'styles.groupListItem' }}
+        sx={{variant: 'styles.groupListItem' }}
         >
-          <Heading as="h3" sx={{fontSize: '20px'}}>
+          <span sx={{ borderRadius: '8px', display: 'block', height: '16px', width: '32px', mb: 2, position: 'relative', bottom: '-1px', background: group.color}}></span>
+          <Heading as="h3" sx={{fontSize: 5}}>
             {group.name}
           </Heading>
       </Box></Link>

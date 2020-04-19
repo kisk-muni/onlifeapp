@@ -5,8 +5,10 @@ import initFirebase from '../utils/auth/initFirebase'
 import firebase from "firebase"
 import { Flex, Box } from 'reflexbox'
 import Router from 'next/router'
-import { jsx, Text, Heading } from 'theme-ui'
-import LoginLayout from '../components/LoginLayout'
+import Link from 'next/link'
+import { jsx, Text, Link as Lstyle, Heading } from 'theme-ui'
+import StarterLayout from '../components/StarterLayout'
+import { withApollo } from '../apollo/client'
 
 
 class Login extends Component {
@@ -43,20 +45,28 @@ class Login extends Component {
     }
   
     render() {
-      return (<LoginLayout>
-        <Flex flexWrap='wrap'>
+      return (<StarterLayout showDescription={() => true}>
+        <Flex flexDirection="column" justifyContent="center" alignItems="stretch">
             <Box
-                width={[ 1 ]}
-                p={3}>
-                <Heading sx={{fontWeight: 600, textAlign: 'center', fontSize: 4, display: 'block', mb: 4}}>Zaregistrujte se do OnLife</Heading>
-                <Text sx={{textAlign: 'center', fontSize: 2, display: 'block', mb: 4}}>
-                    Vyberte si jednu z možností pro přihlášení. 
-                </Text>
-                <NewFirebaseAuth />
+              mt={5}
+              width={[ 1 ]}
+              p={3}>
+              <Heading sx={{color: 'text', fontWeight: 700, fontSize: 7, textAlign: 'center'}}>
+                Přihlaste se do OnLife
+              </Heading>
+              <Text sx={{textAlign: 'center', fontSize: 4, display: 'block', mt: 3, mb: 4}}>
+                  Vyberte si jednu z možností pro přihlášení. 
+              </Text>
+            </Box>
+            <Box width="400px" mx="auto">
+              <NewFirebaseAuth />
+              <Text sx={{mb: 6, mt: 3, textAlign: 'center', fontSize: 2, fontWeight: 400}}>
+                Nemáte účet? <Link href="/registrace"><Lstyle>Zaregistrujte se</Lstyle></Link> 
+              </Text>
             </Box>
         </Flex>
-        </LoginLayout>);
+      </StarterLayout>);
     }
 }
 
-export default Login
+export default withApollo(Login)

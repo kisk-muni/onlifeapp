@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Group {
     id: ID!
     name: String!
+    color: String!
   }
 
   type Quizz {
@@ -31,6 +32,16 @@ export const typeDefs = gql`
     photoURL: String
   }
 
+  input AddGroupInput {
+    name: String!
+  }
+
+  type AddGroupPayload {
+    name: String!
+    id: String!
+    color: String!
+  }
+
   input SignUpInput {
     email: String!
     password: String!
@@ -53,11 +64,13 @@ export const typeDefs = gql`
     user: User
     viewer: User
     groups: [Group]
+    group(id: ID!): Group
     quizz: Quizz
     topics: [Topic]
   }
 
   type Mutation {
+    addGroup(input: AddGroupInput!): AddGroupPayload!
     signUp(input: SignUpInput!): SignUpPayload!
     signIn(input: SignInInput!): SignInPayload!
     signOut: Boolean!

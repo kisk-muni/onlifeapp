@@ -9,8 +9,8 @@ import { Button, Heading, Input, Text } from 'theme-ui'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 const ADD_GROUP = gql`
-  mutation AddGroup($name: String!, $uid: String!) {
-    addGroup(name: $name, uid: $uid) @client {
+  mutation AddGroup($input: AddGroupInput!) {
+    addGroup(input: $input) {
       id
       name
     }
@@ -19,7 +19,6 @@ const ADD_GROUP = gql`
 
 interface IProps {
   hasUserGroup: boolean
-  uid: string
 }
 
 interface TResult {
@@ -30,8 +29,9 @@ interface TResult {
 };
 
 interface TVariables {
-  name: string
-  uid: string
+  input: {
+    name: string
+  }
 }
 
 type FormData = {
@@ -41,8 +41,6 @@ type FormData = {
 export function CreateGroupDialog(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, errors } = useForm<FormData>()
-
-  console.log(props.uid)
 
   // zobrazovat button v kondicionalu
   return <Mutation<TResult, TVariables> mutation={ADD_GROUP}>
@@ -128,7 +126,7 @@ export function CreateGroupDialog(props: IProps) {
                     type="submit"
                     onClick={handleSubmit((data: FormData) => {
                       console.log(data)
-                      addGroup({variables: {name: data.name, uid: props.uid}})
+                      addGroup({variables: {input: {name: data.name}}})
                     })}
                     title="Založit">Založit</Button>
                 </div>
