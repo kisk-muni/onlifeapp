@@ -27,15 +27,6 @@ Patching tricks
 yarn patch-package --exclude ^$ --include package.json react-firebaseui
 ```
 
-## Todo
-
-- [ ] known bug: apollo client ssr not passing context (header cookie): https://github.com/apollographql/apollo-client/issues/5089
-- [x] fix withApollo usage
-- [x] setup and try firestore connection: apollo-link-cloud-firestore
-- [ ] add example env to git
-- [ ] nprogress
-- [ ] check lib and utils for unused code
-
 ## Quiz workflow
 
 1. Žák přistoupí na stránku kvízu. Z url se veme ID kvízu.
