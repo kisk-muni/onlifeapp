@@ -2,6 +2,14 @@ import SignInPage from '../components/auth/SignInPage'
 
 const features = [
   {
+    heading: 'Kurz informační gramotnosti',
+    description: 'Lorem ipsum dolor sit amet',
+  },
+  {
+    heading: 'Kurz připravila Masarykova Univerzita',
+    description: 'Odborníci z Masarykovy univerzity :-',
+  },
+  {
     heading: 'Výuka pod kontrolou',
     description: 'Lorem ipsum dolor sit amet',
   },
@@ -19,6 +27,11 @@ const features = [
   },
 ]
 
-const SignIn = () => <SignInPage features={features} logo="OnLife" heading="Studujte s námi informační gramotnost" />
+const SignIn = () => <SignInPage
+    features={features}
+    logo="OnLife pro učitele"
+    isForStudents={false}
+    heading="Učte s námi informační gramotnost"
+  />
 
 export default SignIn

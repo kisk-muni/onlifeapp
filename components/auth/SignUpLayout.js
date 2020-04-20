@@ -1,7 +1,6 @@
 /** @jsx jsx */
-import Header from './Header'
-import Footer from './Footer'
-import MasarykBar from './MasarykBar'
+import Footer from '../Footer'
+import MasarykBar from '../MasarykBar'
 import { jsx } from 'theme-ui'
 import { Flex, Box } from 'reflexbox'
 // <MasarykBar />
