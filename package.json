@@ -2,10 +2,9 @@
   "name": "onlife-serverless-app",
   "version": "1.0.0",
   "scripts": {
-    "dev": "NODE_ENV=development next dev",
+    "dev": "NODE_ENV=development node server.js",
     "build": "NODE_ENV=production next build",
-    "serve": "cross-env NODE_ENV=production firebase serve",
-    "start": "NODE_ENV=production next start -p $PORT",
+    "start": "NODE_ENV=production node server.js -p $PORT",
     "export": "next export",
     "heroku-postbuild": "npm run build",
     "type-check": "tsc",
