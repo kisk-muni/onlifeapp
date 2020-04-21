@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
 import * as firebase from 'firebase'
 import initFirebase from '../utils/auth/initFirebase'
+import topics from '../data/topics'
 // Required for side-effects
 import * as admin from 'firebase-admin'
 if (!admin.apps.length) {
@@ -91,16 +92,12 @@ export const resolvers = {
       }  
     },
     async topics(obj, args, context, info) {
-      return {
-        topics: []
-      }
       try {
-        let topics = await rdb.ref('/sheets').once('value')
+        console.log(topics)
+        return topics
       } catch (error) {
-        return {
-          topics: []
-        }
-      }
+        return []
+      } 
     }
   },
   Mutation: {

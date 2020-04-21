@@ -7,6 +7,12 @@ export const typeDefs = gql`
     color: String!
   }
 
+  type GroupsSelectItem {
+    id: ID!
+    link: String!
+    name: String!
+  }
+
   type Quizz {
     link: String!
     display: Boolean!
@@ -14,19 +20,23 @@ export const typeDefs = gql`
   }
 
   type SubTopic {
-    link: String!
+    gFormURL: String!
     display: Boolean!
     id: ID!
+    name: String!
   }
 
   type Topic {
     id: ID!
+    picture: String!
+    thumbnail: String!
     name: String!
     subtopics: [SubTopic]
   }
 
   type User {
     id: ID!
+    isTeacher: Boolean!
     email: String!
     name: String
     photoURL: String
@@ -64,6 +74,7 @@ export const typeDefs = gql`
     user: User
     viewer: User
     groups: [Group]
+    groupsSelect: [GroupsSelectItem]
     group(id: ID!): Group
     quizz: Quizz
     topics: [Topic]

@@ -8,31 +8,48 @@ import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Grid, Button } from 'theme-ui'
 
-export const CURRENT_USER = gql`
+export const GET_TOPICS = gql`
 {
-  user {
+  topics {
+    thumbnail
     name
-    photoURL
-    email 
     id
   }
 }
 `
 
-const Topic = ({name, link, photo}) => 
+const placeholderTopicsArray = [0, 1, 2, 3, 4, 5]
+
+const TopicPlaceholder = () => 
   <Box sx={{variant: 'styles.topicCard', mb: 3}}>
-    <Link href="#neco" passHref>
+    <Box sx={{
+      height: '300px',
+      background: '#fafafa',
+      borderRadius: '6px'
+      }}></Box>
+    <Box sx={{
+      height: '28px',
+      width: '230px',
+      background: '#eee',
+      mt: 2,
+      borderRadius: '6px'
+      }}></Box>
+  </Box>
+
+const Topic = ({name, id, picture}) => 
+  <Box sx={{variant: 'styles.topicCard', mb: 3}}>
+    <Link href={"/tema/"+id} passHref>
       <a sx={{
         '&:hover, &:focus': {
           textDecoration: 'none'
         }
       }}>
-        <Box sx={{
-          height: '300px',
+        <img src={picture} sx={{
+          width: '100%',
           borderRadius: '6px',
           border: '1px solid #e5e5e5',
           transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}></Box>
+          }} />
         <Heading as='h3' sx={{
           mt: 3,
           color: 'text',
@@ -45,38 +62,37 @@ const Topic = ({name, link, photo}) =>
 
 const Index = () => {
   const router = useRouter()
-  const { data, loading, error } = useQuery(CURRENT_USER)
+  const { data, loading, error } = useQuery(GET_TOPICS)
 
   return (
   <StarterLayout
     showDescription={(fromTop, fromBottom) => -fromTop > 180}>
-      <Flex flexWrap="wrap" minHeight="50vh">
+      <Flex flexWrap="wrap">
         <Box
           px={35}
-          pt={130}
-          pb={20}
+          mt={5}
+          mb={6}
           width={[1]}>    
             <Heading sx={{color: 'text', textAlign: 'center', fontWeight: 700, fontSize: 7}}>
-            Kurz informační gramotnosti<br />pro studenty středních škol
+              Kurz informační gramotnosti<br />pro studenty středních škol
             </Heading>
         </Box>
       </Flex>
     
     <Flex flexWrap='wrap'>
       <Box
-        width={[1, 5/6]}
+        width={[1]}
         maxWidth={1240}
         px={35}
         mx="auto"
         pb={80}
       >
         <Grid gap="4" columns={2}>
-          <Topic name="Fáze práce s informacemi" />
-          <Topic name="Práce s informacemi a učení" />
-          <Topic name="Média a občanství" />
-          <Topic name="Práce s dokumenty" />
-          <Topic name="Interakce, vzájemnost a zpětná vazba" />
-          <Topic name="Bezpečí a férovost" />
+          { loading ? 
+            placeholderTopicsArray.map(() => <TopicPlaceholder />)
+            :
+            data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
+          }
         </Grid>
       </Box>
     </Flex>
@@ -117,15 +133,15 @@ const Index = () => {
         py={60}
       >
         <Grid gap="4" columns={3}>
-          <Box>
+          <Box key={1}>
             <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>Proč?</Heading> 
             <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
           </Box>
-          <Box>
+          <Box key={2}>
             <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>K čemu?</Heading>
             <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
           </Box>  
-          <Box>
+          <Box key={3}>
             <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>Proč?</Heading>
             <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
           </Box>

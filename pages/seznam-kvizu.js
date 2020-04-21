@@ -9,12 +9,10 @@ import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Grid, Button } from 'theme-ui'
 import FullPageLoading from "../components/FullPageLoading"
 
-export const USER_TOPICS = gql`
-query MyQueryName {
-  user {
+export const GET_TOPICS = gql`
+{
+  topics {
     name
-    photoURL
-    email 
     id
   }
 }
@@ -22,7 +20,7 @@ query MyQueryName {
 
 const KvizPage = () => {
   const router = useRouter()
-  const { data, loading, error } = useQuery(USER_TOPICS)
+  const { data, loading, error } = useQuery(GET_TOPICS)
 
   return <div>{JSON.stringify({data, loading, error})}</div>
 
@@ -37,7 +35,6 @@ const KvizPage = () => {
   if (loading) {
     return <FullPageLoading />
   }
-  return <FullPageLoading />
 
   
   return (
