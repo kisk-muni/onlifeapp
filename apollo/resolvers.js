@@ -37,6 +37,9 @@ function validPassword(user, password) {
 
 export const resolvers = {
   Query: {
+    async topic(obj, {id}, context, info) {    
+      return topics.find(topic => topic.id === id)
+    },
     async group(obj, {id}, {user}, info) {
       //console.log(user)
       try {

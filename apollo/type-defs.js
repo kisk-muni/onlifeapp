@@ -78,6 +78,7 @@ export const typeDefs = gql`
     group(id: ID!): Group
     quizz: Quizz
     topics: [Topic]
+    topic(id: ID!): Topic
   }
 
   type Mutation {
