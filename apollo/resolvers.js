@@ -5,7 +5,6 @@ import getConfig from 'next/config'
 import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
 import * as firebase from 'firebase'
-import initFirebase from '../utils/auth/initFirebase'
 import topics from '../data/topics'
 // Required for side-effects
 import * as admin from 'firebase-admin'
