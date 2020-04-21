@@ -165,60 +165,59 @@ const Trida = () => {
   const router = useRouter();
   const { data, loading, error } = useQuery(GROUP, {variables: {id: router.query.id}})
 
-  if (loading || error) {
-    return <FullPageLoading />
-  }
   return (
     <DashboardLayout
       header={<GroupHeader />}
       stickHeaderByDefault>
-      <Flex flexWrap="wrap">
-        <Box
-          maxWidth={1240}
-          px={35}
-          pt={50}
-          alignSelf="center"
-          width={[1, 5/6]}
-          mx="auto">
-            <Box sx={{ mb: '42px' }}>
-              <Heading as="h3" sx={{fontSize: 7, color: 'text', mb: 3}}>Výsledky studenta: {students.find(x => x.active === true).name} ╳</Heading>
-              <Text sx={{fontSize: 4, mb: '42px', color: 'text'}}>Vyberte studenta pro filtrování výsledků</Text>
-              <Grid gab={4} columns={4} sx={{position: 'relative', zIndex: '2'}}>
-                {
-                  students.map((student) => <Box sx={{mb: '12px', position: 'relative', zIndex: 1}}>
-                    {student.picture && <img src={student.picture} sx={{boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)', opacity: (student.active ? '1' : '.5'), display: 'inline-block', height: '32px', borderRadius: '16px', mr: '14px', mb: -2,}} />}
-                <Text sx={{fontSize: 3, fontWeight: (student.active ? 700 : 400), color: (student.active ? 'text' : 'gray'), textDecoration: (student.active ? 'underline' : 'none'),  display: 'inline-block' }}>{student.name} {student.active && '╳'}</Text>
-                  </Box>)
-                }
-              </Grid>
-            </Box>
-            <Box sx={{ mb: '50px' }}>
+      { loading ? <FullPageLoading dashboard /> : 
+        <Flex flexWrap="wrap">
+          <Box
+            maxWidth={1240}
+            px={35}
+            pt={50}
+            alignSelf="center"
+            width={[1, 5/6]}
+            mx="auto">
+              <Box sx={{ mb: '42px' }}>
+                <Heading as="h3" sx={{fontSize: 7, color: 'text', mb: 3}}>Výsledky studenta: {students.find(x => x.active === true).name} ╳</Heading>
+                <Text sx={{fontSize: 4, mb: '42px', color: 'text'}}>Vyberte studenta pro filtrování výsledků</Text>
+                <Grid gab={4} columns={4} sx={{position: 'static', zIndex: 2}}>
+                  {
+                    students.map((student) => <Box sx={{mb: '12px'}}>
+                      {student.picture && <img src={student.picture} sx={{boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)', position: 'static', zIndex: 2, opacity: (student.active ? '1' : '.5'), display: 'inline-block', height: '32px', borderRadius: '16px', mr: '14px', mb: -2,}} />}
+                  <Text sx={{fontSize: 3, fontWeight: (student.active ? 700 : 400), color: (student.active ? 'text' : 'gray'), textDecoration: (student.active ? 'underline' : 'none'),  display: 'inline-block' }}>{student.name} {student.active && '╳'}</Text>
+                    </Box>)
+                  }
+                </Grid>
+              </Box>
+              <Box sx={{ mb: '50px' }}>
+                <Box>
+                    <Grid gap={4} columns={2}>
+                      {topics.map((topic) => 
+                        <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
+                          <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
+                            {topic.name}
+                          </Heading>
+                            {topic.subtopics.map((subtopic, index) => (
+                              <Flex justifyContent="space-between" sx={{pb: '2px', pt: '6px', px: 2, background: (index % 2 == 1 ? '#fff' : '#f6f6f6'), borderRadius: '6px', }}>
+                                <Box><Text sx={{fontSize: 2}}>{subtopic}</Text></Box>
+                                <Box><SuccessIcon /></Box>
+                              </Flex>
+                            ))}
+                        </Box>)}
+                    </Grid>
+                </Box>
+              </Box>
               <Box>
-                  <Grid gap={4} columns={2}>
-                    {topics.map((topic) => 
-                      <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
-                        <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
-                          {topic.name}
-                        </Heading>
-                          {topic.subtopics.map((subtopic, index) => (
-                            <Flex justifyContent="space-between" sx={{pb: '2px', pt: '6px', px: 2, background: (index % 2 == 1 ? '#fff' : '#f6f6f6'), borderRadius: '6px', }}>
-                              <Box><Text sx={{fontSize: 2}}>{subtopic}</Text></Box>
-                              <Box><SuccessIcon /></Box>
-                            </Flex>
-                          ))}
-                      </Box>)}
-                  </Grid>
+                <Box
+                  sx={{ variant: 'styles.groupHelpCard', height: '208px'}}
+                  >
+                  <Heading as="h3" sx={{fontSize: 3, color: '#333', mb: 3}}>Nápověda</Heading>
+                </Box>
               </Box>
-            </Box>
-            <Box>
-              <Box
-                sx={{ variant: 'styles.groupHelpCard', height: '208px'}}
-                >
-                <Heading as="h3" sx={{fontSize: 3, color: '#333', mb: 3}}>Nápověda</Heading>
-              </Box>
-            </Box>
-        </Box>
-      </Flex>
+          </Box>
+        </Flex>
+      }
     </DashboardLayout>
   );
   
