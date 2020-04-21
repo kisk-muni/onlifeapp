@@ -15,11 +15,15 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
         minHeight: '100vh',
       }}>
       <Sticky>
-      {({ style, distanceFromTop, distanceFromBottom }) => 
-        <div style={style}
-          className={((stickHeaderByDefault || (distanceFromTop != 0)) ? 'is-sticky' : 'not-sticky')}>
-        <Header showDescription={showDescription(distanceFromTop, distanceFromBottom)}/>
-      </div>
+      {({ style, distanceFromTop, distanceFromBottom }) => {
+        const isSticky = !(!stickHeaderByDefault && (distanceFromTop == 0)) 
+        return (
+          <div style={style}
+            className={(isSticky ? 'is-sticky' : 'not-sticky')}>
+            <Header showDescription={showDescription(distanceFromTop, distanceFromBottom)}/>
+          </div>
+        )
+      }
       }
     </Sticky>
     <style jsx>{`

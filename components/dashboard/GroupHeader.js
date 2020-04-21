@@ -7,6 +7,7 @@ import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { MenuItem, Icon } from "@blueprintjs/core"
 import { Select } from "@blueprintjs/select"
+import { useRouter } from 'next/router'
 
 function itemRenderer(group, {modifiers}) {
   return (
@@ -15,21 +16,32 @@ function itemRenderer(group, {modifiers}) {
         key={group.id}
         text={group.name}
     /></Link>
-);
+  );
 }
 
-export const CURRENT_USER = gql`
-{
+export const GROUP_HEADER = gql`
+query Group($id: ID!) {
   user {
     name
     photoURL
     email 
     id
   }
+  groupsSelect {
+    name
+    link
+  }
+  group(id: $id) {
+    id
+    name
+  }
 }
 `
 
-const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => (
+const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => {
+  const router = useRouter();
+
+  return (
   <header sx={{
       variant: 'styles.dashboard.header',
       width: '100%',
@@ -38,75 +50,120 @@ const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty
     <Flex sx={{
       mx: 'auto',
       px: 35,
-      alignItems: 'baseline',
+      alignItems: 'center',
     }}>
       <Link passHref href="/">
         <Lstyle 
           sx={{
             variant: 'styles.navlogo',
-            letterSpacing: '.03em',
+            fontWeight: 700,
             fontSize: 5,
           }}>
           OnLife
         </Lstyle>
       </Link>
-      <Select
-        onItemSelect={(item) => {
-          console.log('selected', item)
-        }}
-        items={[
-          {link: '/u', name: 'Přehled tříd'},
-          {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
-          {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
-          {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'},
-          {link: '/trida/ldksahfhjskldafsldfks', name: 'Jiná třída'}
-        ]}
-        filterable={false}
-        activeItem={{id: 'idecko', name: 'Jméno třídy'}}
-        itemRenderer={itemRenderer}
-        >
-        <Button variant="groupSelect">Jméno třídy <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
-      </Select>
-      <Text sx={{display: 'inline'}}>Kód pro pozvání: KJMNDFSA</Text>
-      <div sx={{ mx: 'auto' }} />
-      <Query query={CURRENT_USER} >
-        {({loading, data}) => {
-          if (loading === false && data.user !== null) {
-            return <Fragment>
-                <ProfileDropdown
-                  sx={{ml: 4}}
-                  photoURL={data.user.photoURL}
-                  name={data.user.name}
-                  email={data.user.email} />
-              </Fragment>
-          } else {
-            return <Fragment>
-              <Link passHref href="/prihlaseni">
+      <Query query={GROUP_HEADER} variables={{id: router.query.id}} >
+      {({loading, data, error}) => {
+        if (loading === false && data.user !== null) {
+          return (
+            <Fragment>
+              <Select
+                onItemSelect={(item) => {
+                  console.log('selected', item)
+                }}
+                items={data.groupsSelect}
+                filterable={false}
+                activeItem={{id: data.group.id, name: data.group.name, link: '/trida/' + data.group.id}}
+                itemRenderer={itemRenderer}
+                >
+                <Button variant="groupSelect">{data.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
+              </Select>
+              <Text sx={{display: 'inline'}}>Kód pro pozvání: KJMNDFSA</Text>
+              <div sx={{ mx: 'auto' }} />
+              <Link passHref href="/">
                 <Lstyle
                   sx={{
-                    variant: 'styles.dashboard.navlink',
+                    variant: 'styles.navlink',
                     ml: 4,
                     py: 2,
                   }}>
-                  Přihlásit se
+                  Kurz
                 </Lstyle>
               </Link>
-              <Link passHref href="/registrace">
-                <Button
+              <Link passHref href="/ucitel">
+                <Lstyle
                   sx={{
+                    variant: 'styles.navlink',
                     ml: 4,
                     py: 2,
-                    px: 3
                   }}>
-                  Zaregistrovat se
-                </Button>
+                  Učitelský přehled
+                </Lstyle>
               </Link>
+              <ProfileDropdown
+                sx={{ml: 4}}
+                photoURL={data.user.photoURL}
+                name={data.user.name}
+                email={data.user.email} />
             </Fragment>
-          }
-        }}
+          )
+        }
+        return <Fragment>
+          <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            height: '32px',
+            my: 2,
+            width: '124px',
+          }}></span>
+          <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            py: 2,
+            height: '18px',
+            width: '124px',
+          }}></span>
+          <div sx={{ mx: 'auto' }} />
+          <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            py: 2,
+            height: '18px',
+            width: '124px',
+          }}></span>
+          <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            py: 2,
+            height: '18px',
+            width: '124px',
+          }}></span>
+          <div sx={{
+              display: 'inline-block',
+              height: '32px',
+              width: '32px',
+              marginLeft: '.6em',
+              background: '#eee',
+              borderRadius: '50%'
+          }}></div>
+        </Fragment>
+      }}
       </Query>
     </Flex>
   </header>
-)
+  )
+}
 
 export default GroupHeader

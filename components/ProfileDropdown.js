@@ -2,17 +2,37 @@
 import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/core"
 import Router from 'next/router'
 import { Link as Lstyle } from 'theme-ui'
+import { Box, Flex } from 'reflexbox'
 import { jsx } from 'theme-ui'
 import { useApolloClient } from "@apollo/react-hooks"
-import logout from '../utils/auth/logout'
-// import { Mutation } from "@apollo/react-components";
-import gql from 'graphql-tag'
 
+export const ProfileDropdownPlaceholder = () => 
+    <Flex alignItems="center">
+        <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            py: 2,
+            height: '18px',
+            width: '124px',
+        }}></span>
+        <div sx={{
+            display: 'inline-block',
+            height: '32px',
+            width: '32px',
+            marginLeft: '.6em',
+            background: '#eee',
+            borderRadius: '50%'
+        }}></div>
+    </Flex>
 
-const ProfileDropdown = ({photoURL, name, email}) => {
-    
+const ProfileDropdown = ({photoURL, name, email, loading}) => {
     const client = useApolloClient();
-
+    if (loading) {
+        return ProfileDropdownPlaceholder
+    }
     return (
         <Popover
             content={
@@ -37,11 +57,11 @@ const ProfileDropdown = ({photoURL, name, email}) => {
                     sx={{
                         variant: 'styles.navlink',
                         ml: 4,
-                        position: 'relative',
                         py: 2,
-                        pr: '50px',
                     }}>
-                    {name ? name : email } {photoURL && <img src={photoURL} sx={{height: '32px', marginLeft: '.6em', position: 'absolute', right: 0, bottom: '2px', borderRadius: '50%'}} /> }
+                    <Flex alignItems="center">
+                        {name ? name : email } {photoURL && <img src={photoURL} sx={{height: '32px', width: '32px', marginLeft: '.6em', display: 'inline-block', borderRadius: '50%'}} /> }
+                    </Flex>
                 </Lstyle>
         </Popover>
     )

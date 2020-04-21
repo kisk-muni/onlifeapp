@@ -11,6 +11,7 @@ export const CURRENT_USER = gql`
 {
   user {
     name
+    isTeacher
     photoURL
     email 
     id
@@ -18,7 +19,7 @@ export const CURRENT_USER = gql`
 }
 `
 
-const Header = ({ description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => (
+const Header = ({description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => (
   <header
   sx={{
     variant: 'styles.header',
@@ -30,13 +31,13 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
       mx: 'auto',
       px: 35,
       display: 'flex',
-      alignItems: 'baseline',
+      alignItems: 'center',
     }}>
     <Link passHref href="/">
     <Lstyle 
       sx={{
         variant: 'styles.navlogo',
-        letterSpacing: '.03em',
+        fontWeight: 700,
         fontSize: 5,
       }}>
       OnLife
@@ -48,16 +49,29 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
         {({loading, data}) => {
           if (loading === false && data.user !== null) {
             return <Fragment>
-                <Link passHref href="/ucitel">
-                  <Lstyle
-                    sx={{
-                      variant: 'styles.navlink',
-                      ml: 4,
-                      py: 2,
-                    }}>
-                    Učitel
-                  </Lstyle>
-                </Link>
+                { data.user.isTeacher ? 
+                  <Link passHref href="/ucitel">
+                    <Lstyle
+                      sx={{
+                        variant: 'styles.navlink',
+                        ml: 4,
+                        py: 2,
+                      }}>
+                      Učitelský přehled
+                    </Lstyle>
+                  </Link>
+                  :
+                  <Link passHref href="/seznam-kvizu">
+                    <Lstyle
+                      sx={{
+                        variant: 'styles.navlink',
+                        ml: 4,
+                        py: 2,
+                      }}>
+                      Seznam Kvízů
+                    </Lstyle>
+                  </Link>
+                }
                 <ProfileDropdown
                   sx={{ml: 4}}
                   photoURL={data.user.photoURL}
