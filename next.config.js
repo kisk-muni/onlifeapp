@@ -1,4 +1,6 @@
 require('./env.js')
+const webpack = require('webpack')
+const nextSourceMaps = require('@zeit/next-source-maps')()
 
 module.exports = {
   // Public, build-time env vars.
@@ -10,7 +12,20 @@ module.exports = {
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
     FIREBASE_PUBLIC_API_KEY: process.env.FIREBASE_PUBLIC_API_KEY,
   },
-  serverRuntimeConfig: {
+  /* serverRuntimeConfig: {
     JWT_SECRET: process.env.JWT_SECRET,
+  }, */
+  webpack: (config, { isServer, buildId }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.SENTRY_RELEASE': JSON.stringify(buildId),
+      })
+    )
+
+    if (!isServer) {
+      config.resolve.alias['@sentry/node'] = '@sentry/browser'
+    }
+
+    return config
   },
 }
