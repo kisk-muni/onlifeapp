@@ -11,7 +11,7 @@ import { jsx, Text, Heading, Grid } from 'theme-ui'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import { DemoGroupBox, HelpBox } from "../components/HelpBox";
 import FullPageLoading from "../components/FullPageLoading";
-import Header from "../components/Header";
+import Header from "../components/dashboard/Header";
 
 const GET_GROUPS = gql`
   query Groups {
@@ -23,16 +23,19 @@ const GET_GROUPS = gql`
   }
 `;
 
-const UserIndex = () => 
+const GroupsOverview = () => 
 <Query query={GET_GROUPS}>
   {({ loading, error, data }) => {
     
     if (loading) {
-      return <FullPageLoading />
+      return <DashboardLayout
+      header={<Header />}
+      sx={{background: '#fafafa'}} 
+      stickHeaderByDefault><FullPageLoading dashboard /></DashboardLayout>
     }
 
-    console.log({loading, error, data})
-
+    // console.log({loading, error, data})
+    
     if (data?.groups?.length > 0) {
       return <DashboardLayout
         header={<Header />}
@@ -57,7 +60,10 @@ const UserIndex = () =>
           </Flex>
         </DashboardLayout>
     } else {
-      return <DashboardLayout stickHeaderByDefault header={<Header />}>
+      return <DashboardLayout
+        header={<Header />}
+        sx={{background: '#fafafa'}} 
+        stickHeaderByDefault>
         <Flex flexWrap="wrap" minHeight="50vh">
             <Box
               maxWidth={1240}
@@ -90,4 +96,4 @@ const UserIndex = () =>
   }}
 </Query>
 
-export default withApollo(UserIndex)
+export default withApollo(GroupsOverview)
