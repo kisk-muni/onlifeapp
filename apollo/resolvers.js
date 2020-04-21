@@ -63,15 +63,38 @@ export const resolvers = {
       try {
         let groupsRef = await db.collection("groups").where("userId", "==", user.id).get()
         let groups = []
+        let colors = ['orange', 'green', 'blue', 'red', 'black']
+        let i = 0
         groupsRef.forEach(doc => {
           let data = doc.data()
           groups.push({
             id: doc.id,
             name: data.name,
-            color: 'orange',
+            color: colors[i%colors.length],
+          })
+          i+=1
+        });
+        return groups.reverse()
+      } catch (error) {
+        console.log(error)
+        return null
+      }
+    },
+    async groupsSelect(obj, args, {user}, info) {
+      //console.log(user)
+      try {
+        let groupsRef = await db.collection("groups").where("userId", "==", user.id).get()
+        let groups = []
+        groupsRef.forEach(doc => {
+          let data = doc.data()
+          groups.push({
+            id: doc.id,
+            name: data.name,
+            link: "/trida/" + doc.id,
           })
         });
-        return groups
+        groups.push({link: '/ucitel', name: 'Přehled tříd'})
+        return groups.reverse()
       } catch (error) {
         console.log(error)
         return null
