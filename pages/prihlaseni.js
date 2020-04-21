@@ -29,12 +29,15 @@ class Login extends Component {
       initFirebase();
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
   
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged( async (user) => {
         if (user) {
+          const userId = user.uid
           return setSession(user)
             .then(() => firebase.auth().signOut())
-//           .then(() => clearAuthDataCache(apolloClient))
-            .then(() => Router.push("/"));
+            // .then(() => clearAuthDataCache(apolloClient))
+            .then(() => {
+              Router.push("/")
+            })
         }
       });
     }

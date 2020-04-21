@@ -31,6 +31,7 @@ const SignIn = () => <SignInPage
     features={features}
     logo="OnLife pro učitele"
     isForStudents={false}
+    registerTeacher
     heading="Učte s námi informační gramotnost"
   />
 

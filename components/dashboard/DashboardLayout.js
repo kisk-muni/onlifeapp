@@ -16,9 +16,9 @@ const DashboardLayout = ({header, showDescription = () => false, stickHeaderByDe
         background: '#fafafa'
       }}>
       <Sticky>
-      {({ style, distanceFromTop, distanceFromBottom }) => 
-        <div style={style}
-          className={((stickHeaderByDefault || (distanceFromTop != 0)) ? 'is-sticky' : 'not-sticky')}>
+      {({ style }) => 
+        <div style={style} sx={{zIndex: 18}}
+          className="is-sticky">
           {header}
       </div>
       }
@@ -29,10 +29,6 @@ const DashboardLayout = ({header, showDescription = () => false, stickHeaderByDe
         transition: box-shadow .1s ease 0s;
         -webkit-backdrop-filter: saturate(180%) blur(5px);
         backdrop-filter: saturate(180%) blur(5px);
-      }
-      .not-sticky {
-        transition: box-shadow .1s ease 0s;
-        box-shadow: none;
       }
     `}</style>
       <main sx={{ width: '100%', flex: '1 1 auto' }}>

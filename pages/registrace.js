@@ -19,6 +19,11 @@ const features = [
   },
 ]
 
-const SignIn = () => <SignInPage features={features} logo="OnLife" heading="Studujte s námi informační gramotnost" />
+const SignIn = () => <SignInPage
+  features={features}
+  isForStudents
+  logo="OnLife"
+  heading="Studujte s námi informační gramotnost"
+/>
 
 export default SignIn

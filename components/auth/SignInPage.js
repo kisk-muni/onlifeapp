@@ -9,46 +9,16 @@ import Router from 'next/router'
 import Link from 'next/link'
 import { jsx, Text, Heading, Link as Lstyle } from 'theme-ui'
 import SignUpLayout from './SignUpLayout'
+import Feature from './Feature'
 
-const Feature = ({heading, description}) => (
-  <Flex sx={{mb: 4}}>
-    <Box sx={{mr: '20px'}}>
-      <svg
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-        stroke="#0000dc"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        shapeRendering="geometricPrecision"
-        style={{color:'#0000dc', fill: '#0000dc', stroke: '#fff'}}>
-        <path
-          d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z"
-          fill="#0000dc"
-          stroke="#0000dc">
-        </path>
-        <path
-          d="M8 11.8571L10.5 14.3572L15.8572 9"
-          fill="none" stroke="#fff">
-        </path>
-      </svg>
-    </Box>
-    <Box>
-      <Heading as="h2" mb={3}>{heading}</Heading>
-      <Text sx={{fontSize: 2, color: 'gray'}}>{description}</Text>
-    </Box>
-  </Flex>
-)
 
-class SignIn extends Component {
+class SignInPage extends Component {
     constructor(props) {
       super(props);
     }
   
     async componentDidMount() {
       //const { apolloClient } = this.props;
-  
       // If the user is already signed, they don't need to be here
       //const { loggedInUser } = await checkLoggedIn(apolloClient);
       //if (loggedInUser.user) {
@@ -59,12 +29,26 @@ class SignIn extends Component {
       initFirebase();
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
   
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged( async (user) => {
         if (user) {
+          const userId = user.uid
+          if (this.props.registerTeacher) {
+            let userRef = await firebase.firestore().collection("users").doc(userId).set({
+              isTeacher: true
+            }, {merge: true})
+          }
           return setSession(user)
             .then(() => firebase.auth().signOut())
-//           .then(() => clearAuthDataCache(apolloClient))
-            .then(() => Router.push("/"));
+            // .then(() => clearAuthDataCache(apolloClient))
+            .then(() => {
+              if (this.props.registerTeacher) {
+                // teacher
+                Router.push("/ucitel")
+              } else {
+                // student
+                Router.push("/")
+              }
+            })
         }
       });
     }
@@ -121,7 +105,7 @@ class SignIn extends Component {
             width={[ 1/2 ]}
             pr={6}>
             <Flex flexDirection="column" justifyContent="flex-start" alignItems="stretch">
-              {features.map(({heading, description}) => <Feature heading={heading} description={description} />)}
+              {features.map(({heading, description}, index) => <Feature key={index} heading={heading} description={description} />)}
             </Flex>
           </Box>
           <Box
@@ -153,4 +137,4 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn
+export default SignInPage
