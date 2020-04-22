@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { jsx, Text, Link as Lstyle, Heading } from 'theme-ui'
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
+import clearAuthDataCache from '../lib/clearAuthDataCache'
+import { ApolloConsumer } from 'react-apollo'
 
 
 class Login extends Component {
@@ -17,7 +19,7 @@ class Login extends Component {
     }
   
     async componentDidMount() {
-      //const { apolloClient } = this.props;
+      const { apolloClient } = this.props;
   
       // If the user is already signed, they don't need to be here
       //const { loggedInUser } = await checkLoggedIn(apolloClient);
@@ -34,7 +36,7 @@ class Login extends Component {
           const userId = user.uid
           return setSession(user)
             .then(() => firebase.auth().signOut())
-            // .then(() => clearAuthDataCache(apolloClient))
+            .then(() => clearAuthDataCache(apolloClient))
             .then(() => {
               Router.push("/")
             })
@@ -72,4 +74,6 @@ class Login extends Component {
     }
 }
 
-export default withApollo(Login)
+const LoginWithApolloConsumer = () => <ApolloConsumer>{ client => <Login apolloClient={client} /> }</ApolloConsumer>
+
+export default withApollo(LoginWithApolloConsumer)

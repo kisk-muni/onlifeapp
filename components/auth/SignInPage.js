@@ -10,7 +10,8 @@ import Link from 'next/link'
 import { jsx, Text, Heading, Link as Lstyle } from 'theme-ui'
 import SignUpLayout from './SignUpLayout'
 import Feature from './Feature'
-
+import clearAuthDataCache from '../../lib/clearAuthDataCache'
+import { ApolloConsumer } from "react-apollo"
 
 class SignInPage extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class SignInPage extends Component {
     }
   
     async componentDidMount() {
-      //const { apolloClient } = this.props;
+      const { apolloClient } = this.props;
       // If the user is already signed, they don't need to be here
       //const { loggedInUser } = await checkLoggedIn(apolloClient);
       //if (loggedInUser.user) {
@@ -39,7 +40,7 @@ class SignInPage extends Component {
           }
           return setSession(user)
             .then(() => firebase.auth().signOut())
-            // .then(() => clearAuthDataCache(apolloClient))
+            .then(() => clearAuthDataCache(apolloClient))
             .then(() => {
               if (this.props.registerTeacher) {
                 // teacher
@@ -137,4 +138,6 @@ class SignInPage extends Component {
     }
 }
 
-export default SignInPage
+const SignInWithApolloConsumer = (props) => <ApolloConsumer>{ client => <SignInPage apolloClient={client} {...props} /> }</ApolloConsumer>
+
+export default SignInWithApolloConsumer

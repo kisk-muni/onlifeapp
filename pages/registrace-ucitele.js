@@ -1,4 +1,5 @@
 import SignInPage from '../components/auth/SignInPage'
+import { withApollo } from '../apollo/client'
 
 const features = [
   {
@@ -35,4 +36,4 @@ const SignIn = () => <SignInPage
     heading="Učte s námi informační gramotnost"
   />
 
-export default SignIn
+export default withApollo(SignIn)
