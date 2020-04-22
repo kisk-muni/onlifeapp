@@ -1,5 +1,6 @@
 # project/developer specific
 local.notes.md
+/.vscode/
 
 # dependencies
 /node_modules
