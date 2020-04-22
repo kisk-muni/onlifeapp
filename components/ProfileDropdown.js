@@ -7,7 +7,7 @@ import { jsx } from 'theme-ui'
 import { useApolloClient } from "@apollo/react-hooks"
 
 export const ProfileDropdownPlaceholder = () => 
-    <Flex alignItems="center">
+    <Flex alignItems="center" py="8px">
         <span sx={{
             display: 'inline-block',
             ml: 4,
@@ -15,7 +15,7 @@ export const ProfileDropdownPlaceholder = () =>
             borderRadius: '6px',
             position: 'relative',
             py: 2,
-            height: '18px',
+            height: '21px',
             width: '124px',
         }}></span>
         <div sx={{

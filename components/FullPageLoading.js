@@ -8,7 +8,7 @@ const FullPageLoading = ({dashboard = false}) => (
     flex: 1,
     minHeight: (dashboard ? '80vh' : '100vh'),
     justifyContent: 'center',
-    background: (dashboard ? '#f5f5f5' : '#fff')
+    background: (dashboard ? '#fafafa' : '#fff')
     }}>
     <Box>
       <Spinner intent="none" size={32} />

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { jsx, Link as Lstyle, Button } from 'theme-ui'
+import { jsx, Link as Lstyle, Button, Flex } from 'theme-ui'
 import ProfileDropdown, { ProfileDropdownPlaceholder } from "../ProfileDropdown"
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
@@ -76,7 +76,18 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
                   email={data.user.email} />
               </Fragment>
           }
-          return <ProfileDropdownPlaceholder />
+          return <Fragment>
+                <span sx={{
+                    display: 'inline-block',
+                    ml: 4,
+                    background: '#eee',
+                    borderRadius: '6px',
+                    position: 'relative',
+                    height: '21px',
+                    width: '145px',
+                }}></span>
+              <ProfileDropdownPlaceholder />
+            </Fragment>
         }}
       </Query>
     </div>
