@@ -3,6 +3,9 @@ import gql from 'graphql-tag'
 export const typeDefs = gql`
   type Group {
     id: ID!
+	type Group {
+		id: ID!
+		invitationCode: String
     name: String!
     color: String!
   }

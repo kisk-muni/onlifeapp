@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import getConfig from 'next/config'
 import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
+import { customAlphabet } from 'nanoid'
 import * as firebase from 'firebase'
 import topics from '../data/topics'
 // Required for side-effects
@@ -54,6 +55,7 @@ export const resolvers = {
         return {
           id: group.id,
           name: groupData.name,
+          invitationCode: groupData.invitationCode || '',
           color: 'orange',
         }
       } catch (error) {
@@ -127,15 +129,18 @@ export const resolvers = {
   },
   Mutation: {
     async addGroup(_parent, {input}, {user}, _info) {
+      const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ', 6)
       try {
-        let docRef = await db.collection("groups").add({
+        let groupRef = await db.collection("groups").add({
           name: input.name,
-          userId: user.id
+          userId: user.id,
+          invitationCode: nanoid()
         })
+        
         return {
           name: input.name,
           color: 'orange',
-          id: docRef.id
+          id: groupRef.id
         }
       } catch (error) {
         return null

@@ -34,6 +34,7 @@ query Group($id: ID!) {
   group(id: $id) {
     id
     name
+    invitationCode
   }
 }
 `
@@ -78,7 +79,7 @@ const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty
                 >
                 <Button variant="groupSelect">{data.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
               </Select>
-              <Text sx={{display: 'inline'}}>Kód pro pozvání: KJMNDFSA</Text>
+              <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data.group.invitationCode}</span></Text>
               <div sx={{ mx: 'auto' }} />
               <Link passHref href="/">
                 <Lstyle
