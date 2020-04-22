@@ -66,19 +66,18 @@ const Index = () => {
 
   return (
   <StarterLayout
-    showDescription={(fromTop, fromBottom) => -fromTop > 180}>
-      <Flex flexWrap="wrap">
-        <Box
-          px={35}
-          mt={5}
-          mb={6}
-          width={[1]}>    
-            <Heading sx={{color: 'text', textAlign: 'center', fontWeight: 700, fontSize: 7}}>
-              Kurz informační gramotnosti<br />pro studenty středních škol
-            </Heading>
-        </Box>
-      </Flex>
-    
+    showDescription={(fromTop, fromBottom) => -fromTop > 180}>  
+    <Heading sx={{
+      color: 'text',
+      textAlign: 'center',
+      fontWeight: 700,
+      fontSize: 7,
+      px: 35,
+      mt: 5,
+      mb: 6,
+    }}>
+      Kurz informační gramotnosti<br />pro studenty středních škol
+    </Heading>
     <Flex flexWrap='wrap'>
       <Box
         width={[1]}
