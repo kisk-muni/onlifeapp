@@ -6,7 +6,9 @@ import { useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, Grid, Button } from 'theme-ui'
+import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Button } from 'theme-ui'
+import Reveal from '../components/Reveal'
+import { keyframes } from '@emotion/core'
 
 export const GET_TOPICS = gql`
 {
@@ -20,18 +22,40 @@ export const GET_TOPICS = gql`
 
 const placeholderTopicsArray = [0, 1, 2, 3, 4, 5]
 
+const changeBg = keyframes({
+  from: {
+    background: 'background',
+  },
+  to: {
+    background: '#fafafa',
+  }
+})
+
 const TopicPlaceholder = () => 
   <Box sx={{variant: 'styles.topicCard', mb: 3}}>
+    <AspectRatio
+      ratio={16/9}
+      sx={{
+        background: 'white',
+        animationName: changeBg.toString(),
+        animationTimingFunction: 'linear',
+        animationDuration: '100 ms',
+        animationDelay: '1000 ms',
+        animationFillMode: 'forwards',
+        borderRadius: '6px'
+      }}
+    >
+    </AspectRatio>
     <Box sx={{
-      height: '300px',
-      background: '#fafafa',
-      borderRadius: '6px'
-      }}></Box>
-    <Box sx={{
+      background: 'white',
+      animationName: changeBg.toString(),
+      animationTimingFunction: 'linear',
+      animationDuration: '100 ms',
+      animationDelay: '1000 ms',
+      animationFillMode: 'forwards',
       height: '28px',
       width: '230px',
-      background: '#eee',
-      mt: 2,
+      mt: '16px',
       borderRadius: '6px'
       }}></Box>
   </Box>
@@ -44,12 +68,19 @@ const Topic = ({name, id, picture}) =>
           textDecoration: 'none'
         }
       }}>
-        <img src={picture} sx={{
-          width: '100%',
-          borderRadius: '6px',
-          border: '1px solid #e5e5e5',
-          transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
-          }} />
+        <div
+          className="aspect-image"
+          sx={{
+            width: '100%',
+            borderRadius: '6px',
+            overflow: 'hidden',
+            transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}>
+          <AspectImage 
+            ratio={16/9}
+            src={picture}
+          />
+        </div>
         <Heading as='h3' sx={{
           mt: 3,
           color: 'text',
@@ -86,13 +117,17 @@ const Index = () => {
         mx="auto"
         pb={80}
       >
-        <Grid gap="4" columns={2}>
-          { loading ? 
-            placeholderTopicsArray.map(() => <TopicPlaceholder />)
-            :
-            data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
-          }
-        </Grid>
+        { loading ? 
+          <Grid gap="4" columns={2}>
+            { placeholderTopicsArray.map(() => <TopicPlaceholder />) }
+          </Grid>
+          :
+          <Reveal duration={800}>
+            <Grid gap="4" columns={2}>
+              {data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)}
+            </Grid>
+          </Reveal>
+        }
       </Box>
     </Flex>
 
