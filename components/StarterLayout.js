@@ -16,11 +16,15 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
       }}>
       <Sticky>
       {({ style, distanceFromTop, distanceFromBottom }) => {
-        const isSticky = !(!stickHeaderByDefault && (distanceFromTop == 0)) 
+        let newDistanceFromTop = 0
+        if (typeof distanceFromTop !== 'undefined') {
+          newDistanceFromTop = distanceFromTop
+        }
+        const isSticky = stickHeaderByDefault || (newDistanceFromTop == 0) 
         return (
-          <div style={style}
-            className={(isSticky ? 'is-sticky' : 'not-sticky')}>
-            <Header showDescription={showDescription(distanceFromTop, distanceFromBottom)}/>
+          <div style={{zIndex: 100, ...style}}
+            className={(isSticky ? 'not-sticky' : 'is-sticky')}>
+            <Header showDescription={showDescription(newDistanceFromTop, distanceFromBottom)}/>
           </div>
         )
       }
