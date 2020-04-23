@@ -30,6 +30,7 @@ const Header = ({description = 'Kurz informační gramotnosti pro studenty stře
     sx={{
       mx: 'auto',
       px: 35,
+      minHeight: '48px',
       display: 'flex',
       alignItems: 'center',
     }}>
