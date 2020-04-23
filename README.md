@@ -1,5 +1,13 @@
 # Onlife
 
+## Design decisions
+
+- Apollo graphql server and client
+- Firebase realtime and firestore database used for data storage
+- Firebase auth
+- Theme-ui styling options utilized to develop layouts and styles asap
+- Typescript used for data-heavy operations, processes, which are hard to debug otherwise
+
 ## How to use
 
 Set up Firebase:
