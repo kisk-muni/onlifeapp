@@ -5,7 +5,7 @@ import { withApollo } from '../../apollo/client'
 import { Flex, Box } from 'reflexbox'
 // import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { jsx, Text, Heading, Grid } from 'theme-ui'
+import { jsx, Text, Heading, Grid, Close } from 'theme-ui'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import FullPageLoading from "../../components/FullPageLoading";
@@ -179,14 +179,17 @@ const Trida = () => {
             width={[1, 5/6]}
             mx="auto">
               <Box sx={{ mb: '42px' }}>
-                <Heading as="h3" sx={{fontSize: 7, color: 'text', mb: 3}}>Výsledky studenta: {students.find(x => x.active === true).name} ╳</Heading>
+                <Heading as="h3" sx={{fontSize: 7, color: 'text', mb: 3}}>Výsledky studenta: {students.find(x => x.active === true).name} <Close sx={{transform: 'scale(1.5)'}} /></Heading>
                 <Text sx={{fontSize: 4, mb: '42px', color: 'text'}}>Vyberte studenta pro filtrování výsledků</Text>
                 <Grid gab={4} columns={4} sx={{position: 'static', zIndex: 2}}>
                   {
-                    students.map((student) => <Box sx={{mb: '12px'}}>
-                      {student.picture && <img src={student.picture} sx={{boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)', position: 'static', zIndex: 2, opacity: (student.active ? '1' : '.5'), display: 'inline-block', height: '32px', borderRadius: '16px', mr: '14px', mb: -2,}} />}
-                  <Text sx={{fontSize: 3, fontWeight: (student.active ? 700 : 400), color: (student.active ? 'text' : 'gray'), textDecoration: (student.active ? 'underline' : 'none'),  display: 'inline-block' }}>{student.name} {student.active && '╳'}</Text>
-                    </Box>)
+                    students.map((student) =>
+                      <Box sx={{mb: '12px'}}>
+                        {student.picture && <img src={student.picture} sx={{boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)', position: 'static', zIndex: 2, opacity: (student.active ? '1' : '.5'), display: 'inline-block', height: '32px', borderRadius: '16px', mr: '14px', mb: -2,}} />}
+                        <Text sx={{fontSize: 3, fontWeight: (student.active ? 700 : 400), color: (student.active ? 'text' : 'gray'), textDecoration: (student.active ? 'underline' : 'none'),  display: 'inline-block' }}>
+                          {student.name} {student.active && <Close sx={{position: 'relative', top: '6px'}} />}
+                        </Text>
+                      </Box>)
                   }
                 </Grid>
               </Box>
