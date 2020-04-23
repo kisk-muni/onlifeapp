@@ -1,11 +1,17 @@
 import gql from 'graphql-tag'
 
-export const typeDefs = gql`
-  type Group {
-    id: ID!
+export const typeDefs = gql`	
+	type Student {
+		id: ID!
+		name: String
+		email: String!
+		picture: String
+	}
+
 	type Group {
 		id: ID!
 		invitationCode: String
+		students: [Student]
     name: String!
     color: String!
   }
@@ -65,7 +71,11 @@ export const typeDefs = gql`
     password: String!
   }
 
-  type SignUpPayload {
+	type JoinGroupPayload {
+    joined: Boolean!
+  }
+
+	type SignUpPayload {
     user: User!
   }
 
@@ -73,8 +83,17 @@ export const typeDefs = gql`
     user: User!
   }
 
+  input JoinGroupAttemptInput {
+    code: String!
+  }
+
+  type JoinGroupAttemptPayload {
+    name: String!
+    surpassedMaxAttempts: Boolean!
+  }
+
   type Query {
-    user: User
+		user: User
     viewer: User
     groups: [Group]
     groupsSelect: [GroupsSelectItem]
@@ -85,7 +104,9 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    addGroup(input: AddGroupInput!): AddGroupPayload!
+    joinGroupAttempt(input: JoinGroupAttemptInput!): JoinGroupAttemptPayload!
+		joinGroup: JoinGroupPayload!
+		addGroup(input: AddGroupInput!): AddGroupPayload!
     signUp(input: SignUpInput!): SignUpPayload!
     signIn(input: SignInInput!): SignInPayload!
     signOut: Boolean!

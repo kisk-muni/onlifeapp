@@ -52,6 +52,7 @@ export const resolvers = {
         if (groupData.userId !== user.id) {
           throw "User is not owner of group."
         }
+        console.log(groupData)
         return {
           id: group.id,
           name: groupData.name,
@@ -128,8 +129,25 @@ export const resolvers = {
     }
   },
   Mutation: {
+    async joinGroupAttempt(_paremt, {input}, {user}, _info) {
+      console.log('resolver joinGroupAttempt invoked')
+      // check input.code
+      // check last attempt
+      return {
+        name: 'Jméno skupiny',
+        surpassedMaxAttempts: false
+      }
+    },
+    async joinGroup(_parent, args, {user}, _info) {
+      console.log('resolver joinGroup invoked')
+      // check last attempt
+      // join group
+      return {
+        joined: true
+      }
+    },
     async addGroup(_parent, {input}, {user}, _info) {
-      const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ', 6)
+      const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 6)
       try {
         let groupRef = await db.collection("groups").add({
           name: input.name,

@@ -84,7 +84,12 @@ export default {
         background: '#2626fb',
         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
         cursor: 'pointer' 
-      }
+      },
+      '&:disabled': {
+        cursor: 'not-allowed!important',
+        boxShadow: 'none',
+        opacity: 0.3
+      },
     },
     secondary: {
       variant: 'buttons.default',
