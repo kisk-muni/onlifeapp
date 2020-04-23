@@ -16,7 +16,7 @@ query {
     email 
     id
   }
-  quizz (quizz: $path) {
+  quizz (id: $path) {
     link
     display
   }
@@ -59,4 +59,4 @@ const KvizPage = () => {
 
 }
 
-export default withApollo({ssr: true})(KvizPage)
+export default withApollo(KvizPage)
