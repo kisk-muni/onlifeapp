@@ -37,7 +37,7 @@ const MasarykBar = () => (
             }
             div {
                 margin: 0 auto;
-                max-width: 1240px;
+                max-width: 1280px;
                 padding: 0 35px;
                 position: relative;   
             }
