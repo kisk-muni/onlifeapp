@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Button } from 'theme-ui'
+import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Image } from 'theme-ui'
 import Reveal from '../components/Reveal'
 import { keyframes } from '@emotion/core'
 
@@ -71,9 +71,9 @@ const Topic = ({name, id, picture}) =>
         <div
           className="aspect-image"
           sx={{
-            width: '100%',
             borderRadius: '6px',
             overflow: 'hidden',
+            width: '100%',
             transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
           }}>
           <AspectImage 
@@ -135,12 +135,44 @@ const Index = () => {
       <Box
         px={35}
         pt={130}
-        pb={20}
+        pb={60}
         width={[1]}>    
-          <Heading sx={{color: 'text', textAlign: 'center', mb: 4, fontWeight: 700, fontSize: 7}}>
-            Kurz s láskou připravila <br /> Masarykova Univerzita v Brně
+          <Heading sx={{color: 'text', textAlign: 'center', mb: 4, fontWeight: 700, fontSize: '40px'}}>
+            Kurz připravili odborníci z Masarykovy Univerzity
           </Heading>
-          <Text sx={{textAlign: 'center', fontSize: 4, color: 'gray'}}>Propagace univerzity, KISKU, dnu otevřených dveří.</Text>
+          <Text sx={{textAlign: 'center', fontSize: 5, color: 'gray'}}>Propagace univerzity, KISKU, dnu otevřených dveří.</Text>
+          <Flex width={[1]} mt="5" mb="5" flexDirection="row" justifyContent="center" alignItems="center">
+            <Flex flexDirection="row" mr="4" >
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, px: 48, width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
+                <Image src="/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
+              </Flex>
+              <Flex sx={{borderRadius: 9999, ml: -4, overflow: 'hidden', width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#0000dc'}}>
+                <Image src="/muni-lg-white.png" width='100%' sx={{alignSelf: 'center'}} />
+              </Flex>
+            </Flex>
+            <Flex mx="4" justifyContent="center" flexDirection="column" alignItems="center">
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', FlexShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
+                <Image src="/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+              </Flex>
+              <Heading as='h3' sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'text',
+                fontSize: 4
+                }}>Hanka Tulinská</Heading>
+            </Flex>
+            <Flex ml="4" mr="5" justifyContent="center" flexDirection="column" alignItems="center">
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
+                <Image src="/michal-cerny.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+              </Flex>
+              <Heading as='h3' sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'text',
+                fontSize: 4
+                }}>Michal Černý</Heading>
+            </Flex>
+          </Flex>
       </Box>
     </Flex>
 
@@ -157,32 +189,6 @@ const Index = () => {
           <Text sx={{textAlign: 'center', fontSize: 4, mb: 4, color: 'gray'}}>Ikonky sociálních sítí</Text>
       </Box>
     </Flex>
-
-    <Flex flexWrap='wrap'>
-      <Box
-        width={[1, 5/6]}
-        maxWidth={1240}
-        px={35}
-        mx="auto"
-        py={60}
-      >
-        <Grid gap="4" columns={3}>
-          <Box key={1}>
-            <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>Proč?</Heading> 
-            <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
-          </Box>
-          <Box key={2}>
-            <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>K čemu?</Heading>
-            <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
-          </Box>  
-          <Box key={3}>
-            <Heading as='h3' sx={{color: 'text', fontSize: 5, mb: 2 }}>Proč?</Heading>
-            <Text sx={{fontSize: 4, color: 'gray'}}>Lorem ipsum</Text>
-          </Box>
-        </Grid>
-      </Box>
-    </Flex>
-
   </StarterLayout>
   )
 

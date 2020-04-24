@@ -9,6 +9,7 @@ export default {
     gray: '#777777',
     accent: '#660099',
     darken: 'rgba(0, 0, 0, .25)',
+    lighten: 'rgba(255, 255, 255, .25)',
     modes: {
       dark: {
         text: '#ffffff',
