@@ -18,7 +18,7 @@ export const CURRENT_USER = gql`
 }
 `
 
-const Header = ({description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => (
+const Header = ({description = 'Kurz informační gramotnosti', showDescription = false }) => (
   <header
   sx={{
     variant: 'styles.header',
@@ -43,7 +43,20 @@ const Header = ({description = 'Kurz informační gramotnosti pro studenty stře
       OnLife
     </Lstyle>
     </Link>
-      <span sx={{color: 'text', borderLeft: '1px solid #ddd', pl: 2, ml: 2, lineHeight: '16px', opacity: showDescription ? 1 : 0, visibility: showDescription ? 'visible' : 'hidden', transition: 'opacity .2s ease 0s, visibility .2s ease 0s'}}>{description}</span>
+      <span sx={{
+        color: 'text',
+        borderLeft: '1px solid',
+        borderColor: '#ddd',
+        pl: 2,
+        ml: 2,
+        fontSize: 2,
+        lineHeight: '16px',
+        opacity: showDescription ? 1 : 0,
+        visibility: showDescription ? 'visible' : 'hidden',
+        transition: 'opacity .2s ease 0s',
+        visibility: '.2s ease 0s'
+        }}
+      >{description}</span>
     <div sx={{ mx: 'auto' }} />
       <Query query={CURRENT_USER} >
         {({loading, data}) => {
