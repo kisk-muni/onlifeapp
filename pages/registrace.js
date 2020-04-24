@@ -3,15 +3,11 @@ import { withApollo } from '../apollo/client'
 
 const features = [
   {
-    heading: 'Výuka pod kontrolou',
-    description: 'Lorem ipsum dolor sit amet',
-  },
-  {
     heading: 'Zpětná vazba',
     description: 'Lorem ipsum dolor sit amet',
   },
   {
-    heading: 'Služba je zcela zdarma',
+    heading: 'Kurz je zcela zdarma',
     description: 'Lorem ipsum dolor sit amet',
   },
   {

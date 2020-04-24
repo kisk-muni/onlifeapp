@@ -107,6 +107,10 @@ class SignInPage extends Component {
             pr={6}>
             <Flex flexDirection="column" justifyContent="flex-start" alignItems="stretch">
               {features.map(({heading, description}, index) => <Feature key={index} heading={heading} description={description} />)}
+              <Box mt="3">
+                <Heading sx={{textTransform: 'uppercase', mb: 3, color: 'gray', fontSize: 2}}>Kurz pro vás připravila</Heading>
+                <img src="/muni-lg-cze-black.png" width="212px" />
+              </Box>
             </Flex>
           </Box>
           <Box
