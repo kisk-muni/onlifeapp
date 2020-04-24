@@ -5,7 +5,7 @@ import { jsx, Link as Lstyle, Button } from 'theme-ui'
 import ProfileDropdown from "./ProfileDropdown"
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import { Sticky } from 'react-sticky'
+import Reveal from '../components/Reveal'
 
 export const CURRENT_USER = gql`
 {
@@ -48,66 +48,71 @@ const Header = ({description = 'Kurz informační gramotnosti pro studenty stře
     <div sx={{ mx: 'auto' }} />
       <Query query={CURRENT_USER} >
         {({loading, data}) => {
-          if (loading === false && data.user !== null) {
-            return <Fragment>
-                { data.user.isTeacher ? 
-                  <Link passHref href="/ucitel">
-                    <Lstyle
-                      sx={{
-                        variant: 'styles.navlink',
-                        ml: 4,
-                        py: 2,
-                      }}>
-                      Učitelský přehled
-                    </Lstyle>
-                  </Link>
-                  :
-                  <Link passHref href="/pridat-se-ke-tride">
-                    <Lstyle
-                      sx={{
-                        variant: 'styles.navlink',
-                        ml: 4,
-                      }}>
-                        <Button
-                          sx={{
-                            py: 2,
-                            px: 3
-                          }}>
-                          Přidat se ke třídě
-                        </Button>
-                    </Lstyle>
-                  </Link>
-                }
-                <ProfileDropdown
-                  sx={{ml: 4}}
-                  photoURL={data.user.photoURL}
-                  name={data.user.name}
-                  email={data.user.email} />
+          if (loading === false) {
+
+            if (data?.user !== null) {
+              return <Fragment>
+                  { data?.user.isTeacher ? 
+                    <Link passHref href="/ucitel">
+                      <Lstyle
+                        sx={{
+                          variant: 'styles.navlink',
+                          ml: 4,
+                          py: 2,
+                        }}>
+                        Učitelský přehled
+                      </Lstyle>
+                    </Link>
+                    :
+                    <Link passHref href="/pridat-se-ke-tride">
+                      <Lstyle
+                        sx={{
+                          variant: 'styles.navlink',
+                          ml: 4,
+                        }}>
+                          <Button
+                            sx={{
+                              py: 2,
+                              px: 3
+                            }}>
+                            Přidat se ke třídě
+                          </Button>
+                      </Lstyle>
+                    </Link>
+                  }
+                  <ProfileDropdown
+                    sx={{ml: 4}}
+                    photoURL={data?.user.photoURL}
+                    name={data?.user.name}
+                    email={data?.user.email} />
+                </Fragment>
+            } else {
+              return <Fragment>
+                  <Link passHref href="/prihlaseni">
+                  <Lstyle
+                    sx={{
+                      variant: 'styles.navlink',
+                      ml: 4,
+                      py: 2,
+                    }}>
+                    Přihlásit se
+                  </Lstyle>
+                </Link>
+                <Link passHref href="/registrace">
+                  <Button
+                    sx={{
+                      ml: 4,
+                      py: 2,
+                      px: 3
+                    }}>
+                    Zaregistrovat se
+                  </Button>
+                </Link>
               </Fragment>
-          } else {
-            return <Fragment>
-              <Link passHref href="/prihlaseni">
-                <Lstyle
-                  sx={{
-                    variant: 'styles.navlink',
-                    ml: 4,
-                    py: 2,
-                  }}>
-                  Přihlásit se
-                </Lstyle>
-              </Link>
-              <Link passHref href="/registrace">
-                <Button
-                  sx={{
-                    ml: 4,
-                    py: 2,
-                    px: 3
-                  }}>
-                  Zaregistrovat se
-                </Button>
-              </Link>
-            </Fragment>
+            }
           }
+          return <div></div>
+
         }}
       </Query>
     </div>
