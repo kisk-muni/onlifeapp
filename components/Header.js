@@ -5,7 +5,6 @@ import { jsx, Link as Lstyle, Button } from 'theme-ui'
 import ProfileDropdown from "./ProfileDropdown"
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import Reveal from '../components/Reveal'
 
 export const CURRENT_USER = gql`
 {
