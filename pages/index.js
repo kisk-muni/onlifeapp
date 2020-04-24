@@ -151,7 +151,7 @@ const Index = () => {
               </Flex>
             </Flex>
             <Flex mx="4" justifyContent="center" flexDirection="column" alignItems="center">
-              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', FlexShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', BoxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
                 <Image src="/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
               </Flex>
               <Heading as='h3' sx={{
