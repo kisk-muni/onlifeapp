@@ -88,8 +88,7 @@ export const typeDefs = gql`
   }
 
   type JoinGroupAttemptPayload {
-    name: String!
-    surpassedMaxAttempts: Boolean!
+    name: String
   }
 
   type Query {

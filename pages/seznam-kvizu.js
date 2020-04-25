@@ -41,7 +41,6 @@ const KvizPage = () => {
     <Layout>
       <Flex flexWrap="wrap" minHeight="80vh">
         <Box
-          sx={{ variant: 'styles.decoratedcontent' }}
           py={50}
           maxWidth={1240}
           width={[1, 5/6]}

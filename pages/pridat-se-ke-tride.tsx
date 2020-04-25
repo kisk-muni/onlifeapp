@@ -38,19 +38,6 @@ const GroupThumbnail = ({ name }: { name: string }) => <Reveal delay={0} duratio
     </Heading>
 </Box></Reveal>
 
-const SurpassedMaxAttempts = () => 
-  <Fragment>
-    <Heading as="h3" sx={{
-      fontSize: 4,
-      textAlign: 'center',
-      mb: 4,
-      display: 'block',
-      fontWeight: 500
-    }}>
-      Překročili jste maximální počet pokusů.<br/>Zkuste to prosím později.
-    </Heading>
-  </Fragment>
-
 interface JoinResult {
   joinGroup: {
     joined: boolean
@@ -143,7 +130,6 @@ const JOIN_GROUP_ATTEMPT = gql`
   mutation JoinGroupAttempt($input: JoinGroupAttemptInput!) {
     joinGroupAttempt(input: $input) {
       name
-      surpassedMaxAttempts
     }
   }
 `;
@@ -151,7 +137,6 @@ const JOIN_GROUP_ATTEMPT = gql`
 interface AttemptResult {
   joinGroupAttempt: {
     name: string
-    surpassedMaxAttempts: string
   }
 };
 
@@ -163,7 +148,6 @@ interface AttemptVariables {
 }
 
 const JoinGroupPage = () => {
-  const [clickedJoin, setClickedJoin] = useState(false)
   const [invitationCode, setInvitationCode] = useState('')
 
   return (
@@ -174,8 +158,7 @@ const JoinGroupPage = () => {
             {mutation.loading && <FadeSpinner />}
             {
               !mutation.loading &&
-              !mutation?.data?.joinGroupAttempt?.name &&
-              !mutation?.data?.joinGroupAttempt?.surpassedMaxAttempts && 
+              !mutation?.data?.joinGroupAttempt?.name && 
               <Fragment>
                 <Heading sx={{
                   fontSize: 7,
@@ -214,8 +197,16 @@ const JoinGroupPage = () => {
                     color: 'red',
                   }}
                 />
+                {
+                  mutation.error && 
+                  <div sx={{mt: 3, color: 'error'}}>{mutation.error.graphQLErrors.map(({ message }, i) => (
+                    <span key={i}>{message}</span>
+                  ))}</div>
+                }
                 <Button
-                  disabled={(invitationCode.length !== 6)}
+                  disabled={(
+                    invitationCode.length !== 6
+                  )}
                   onClick={() => joinGroupAttempt({variables: {input: {code: invitationCode}}})}
                   sx={{
                     bg: (invitationCode.length !== 6) ? 'gray!important' : 'primary',
@@ -232,11 +223,6 @@ const JoinGroupPage = () => {
             {
               !mutation.loading && mutation?.data?.joinGroupAttempt?.name && 
               <JoinGroupWithConsent name={mutation.data.joinGroupAttempt.name} />
-            }
-            {
-              !mutation.loading &&
-              mutation?.data?.joinGroupAttempt?.surpassedMaxAttempts && 
-                <SurpassedMaxAttempts />
             }
           </Flex>
         )}

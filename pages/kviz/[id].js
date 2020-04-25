@@ -46,7 +46,6 @@ const KvizPage = () => {
     <Layout>
       <Flex flexWrap="wrap" minHeight="80vh" sx={{background: 'pink'}}>
         <Box
-          sx={{ variant: 'styles.decoratedcontent' }}
           width={[1]}
           mx="auto">
             {!!quizz && 

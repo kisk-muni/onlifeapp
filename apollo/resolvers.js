@@ -2,6 +2,7 @@ import { AuthenticationError, UserInputError } from 'apollo-server-micro'
 import cookie from 'cookie'
 import jwt from 'jsonwebtoken'
 import getConfig from 'next/config'
+import * as moment from 'moment'
 import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
 import { customAlphabet } from 'nanoid'
@@ -21,6 +22,18 @@ const db = admin.firestore()
 const JWT_SECRET = getConfig().serverRuntimeConfig.JWT_SECRET
 
 const users = []
+
+async function createGroupInvitationCode(groupRef) {
+  const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 6)
+  // generate invitation code and check if exists until its unique
+  let id = ''
+  do {
+    id = nanoid()
+  } while (await db.collection('invitationCodes').doc(id).get().exists);
+  // now we have unique id guaranteed
+  await db.collection('invitationCodes').doc(id).set({group: groupRef})
+  return id
+}
 
 function createUser(data) {
   const salt = bcrypt.genSaltSync()
@@ -130,12 +143,52 @@ export const resolvers = {
   },
   Mutation: {
     async joinGroupAttempt(_paremt, {input}, {user}, _info) {
-      console.log('resolver joinGroupAttempt invoked')
-      // check input.code
-      // check last attempt
+      const maxAttemptsCount = 6
+      const maxTotalAttemptsCount = 60
+      let attemptRef = await db.collection('joinGroupAttempts').doc(user.id).get() 
+      if (attemptRef.exists) {
+
+        if (attemptRef.data().used) {
+          throw new UserInputError('Vaše možnost připojení ke třídě již byla vyčerpána.')
+        }
+        let count = attemptRef.data().count + 1
+        if (count > maxAttemptsCount) {
+          if (moment(attemptRef.data().lastUpdateAt.toDate()).isAfter(moment().subtract(1, 'hours'))) {
+            // surpased max counts in time window
+            throw new UserInputError('Překročili jste maximální počet pokusů. Zkuste to prosím později.')
+          } else {
+            // surpased max counts but should be able to continue
+            count = 1
+          }
+        }
+        let totalCount = attemptRef.data().totalCount + 1
+        if (totalCount > maxTotalAttemptsCount) {
+          throw new UserInputError('Překročili jste celkový maximální počet pokusů. Pokud chcete pokračovat, kontaktujte nás.')
+        }
+        // update existing attempt
+        attemptRef = await db.collection('joinGroupAttempts').doc(user.id).update({
+          count: count,
+          totalCount: totalCount,
+          lastUpdateAt: admin.firestore.FieldValue.serverTimestamp()
+        })
+      } else {
+        // attempt does not exist create an attempt
+        attemptRef = await db.collection('joinGroupAttempts').doc(user.id).set({
+          count: 1,
+          used: false,
+          totalCount: 1,
+          lastUpdateAt: admin.firestore.FieldValue.serverTimestamp(),
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        })
+      }
+      // check code
+      let invitationCodeRef = await db.collection('invitationCodes').doc(input.code).get()
+      if (!invitationCodeRef.exists) {
+        throw new UserInputError('Zadaný kód je neplatný.')
+      }
+      // user is allowed to continue
       return {
-        name: 'Jméno skupiny',
-        surpassedMaxAttempts: false
+        name: 'sfafasd'
       }
     },
     async joinGroup(_parent, args, {user}, _info) {
@@ -147,14 +200,13 @@ export const resolvers = {
       }
     },
     async addGroup(_parent, {input}, {user}, _info) {
-      const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 6)
       try {
         let groupRef = await db.collection("groups").add({
           name: input.name,
           userId: user.id,
-          invitationCode: nanoid()
         })
-        
+        let invitationId = await createGroupInvitationCode(groupRef)
+        groupRef.update({invitationCode: invitationId})
         return {
           name: input.name,
           color: 'orange',
