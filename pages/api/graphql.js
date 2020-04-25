@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-micro'
+import { ApolloServer, AuthenticationError, UserInputError } from 'apollo-server-micro'
 import { schema } from '../../apollo/schema'
 import * as admin from 'firebase-admin'
 
@@ -42,6 +42,18 @@ const context = async ({ req, res }) => {
 
 const apolloServer = new ApolloServer({
   schema,
+  formatError: (err) => {
+    if (
+      err.originalError instanceof AuthenticationError ||
+      err.originalError instanceof UserInputError
+    ) {
+      console.log('condition not')
+      return err;
+    }
+    // Don't give the other errors to the client.
+    console.log(err)
+    return new Error('Internal server error');
+  },
   context
 })
 
