@@ -131,7 +131,7 @@ const Index = () => {
       </Box>
     </Flex>
 
-    <Flex flexWrap="wrap" minHeight="60vh" backgroundColor="#fafafa">
+    <Flex flexWrap="wrap" minHeight="60vh" backgroundColor="promobg">
       <Box
         px={35}
         pt={130}

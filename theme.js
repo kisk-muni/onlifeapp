@@ -5,23 +5,14 @@ export default {
     primary: '#0000dc',
     secondary: '#111199',
     muted: '#f6f6f6',
+    error: 'red', 
     highlight: '#efeffe', // '#ffffcc',
     gray: '#777777',
     accent: '#660099',
+    accentOne: '#f5f5f5',
     darken: 'rgba(0, 0, 0, .25)',
     lighten: 'rgba(255, 255, 255, .25)',
-    modes: {
-      dark: {
-        text: '#ffffff',
-        background: '#060606',
-        primary: '#33ccff',
-        secondary: '#ee00ff',
-        muted: '#191919',
-        highlight: '#29112c',
-        gray: '#999999',
-        accent: '#cc00ff',
-      }
-    },
+    promobg: '#f5f5f5',
   },
   fonts: {
     body: '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif',
@@ -133,7 +124,7 @@ export default {
     },
     homepageprimary: {
       color: 'background',
-      background: '#0000dc',
+      background: 'primary',
       borderRadius: '8px',
       padding: '16px 24px',
       textAlign: 'center',
@@ -142,13 +133,13 @@ export default {
       fontWeight: 400,
       fontSize: 2,
       ':hover': {
-        background: '#0000dc',
+        background: 'primary',
         cursor: 'pointer',
         outline: 'none',
         boxShadow: 'none'
       },
       ':focus': {
-        background: '#0000dc'
+        background: 'primary'
       }
     },
     createclass: {
@@ -346,9 +337,9 @@ export default {
       },
       simpleinputError: {
         variant: 'styles.forms.simpleinput',
-        borderColor: 'red',
+        borderColor: 'error',
         '&:focus': {
-          borderColor: 'red',
+          borderColor: 'error',
           boxShadow: 'none',
           outline: 'none'
         },
@@ -424,46 +415,6 @@ export default {
       py: 2,
       background: 'rgba(255, 255, 255, .8)',
     },
-    createclassIllustration: {
-      display: 'block',
-      position: 'absolute',
-      top: '0',
-      left: '50%',
-      right: '0',
-      bottom: '-3px',
-      backgroundImage: "url('/undraw_people_tax5.svg')",
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '400px',
-      backgroundPosition: 'left bottom',
-      zIndex: 4
-    },
-    decoratedBackground: {
-      display: 'block',
-      position: 'absolute',
-      top: '10%',
-      left: '10%',
-      right: '10%',
-      bottom: 0,
-      backgroundImage: "url('/ilustrace.jpg')",
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100%',
-      backgroundPosition: 'bottom',
-      zIndex: 2
-    },
-    decoratedOverlay: {
-      display: 'block',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: '#0167ffe0',
-      zIndex: 3
-    },
-    decoratedcontent: {
-      position: 'relative',
-      zIndex: 4
-    },
     navlink: {
       display: 'inline-block',
       fontWeight: 'bold',
@@ -487,10 +438,10 @@ export default {
     navlogolight: {
       display: 'inline-block',
       fontWeight: 'bold',
-      color: '#ffffff',
+      color: 'background',
       textDecoration: 'none',
       ':hover,:focus': {
-        color: '#ffffff',
+        color: 'background',
         textDecoration: 'none'
       },
     },
@@ -518,7 +469,7 @@ export default {
     },
     simpleErrorMessageText: {
       mt: 2,
-      color: 'red'
+      color: 'error'
     },
     groupHelpCard: {
       mt: '16px',
@@ -529,7 +480,7 @@ export default {
       boxShadow: 'none'
     },
     groupCard: {
-      background: '#fff',
+      backgroundColor: 'background',
       py: 20,
       px: 20,
       borderRadius: '8px',
@@ -542,7 +493,7 @@ export default {
       height: 210,
       transition: 'background-color .1s cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
-        background: '#f5f5f5',
+        backgroundColor: 'accentOne',
         cursor: 'pointer'
       }
     },
@@ -563,7 +514,7 @@ export default {
       navlink: {
         display: 'inline-block',
         fontWeight: 400,
-        color: '#666',
+        color: 'gray',
         textDecoration: 'none',
         ':hover,:focus': {
           color: 'text',
@@ -573,7 +524,8 @@ export default {
       navlinkactive: {
         variant: 'styles.dashboard.navlink',
         color: 'text',
-        borderBottom: '2px solid #000'
+        borderBottom: '2px solid',
+        borderColor: 'text'
       }
     }
   }
