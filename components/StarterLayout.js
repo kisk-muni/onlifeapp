@@ -1,10 +1,8 @@
 /** @jsx jsx */
 import Header from './Header'
 import Footer from './Footer'
-import MasarykBar from './MasarykBar'
 import { jsx, Text } from 'theme-ui'
 import { Sticky, StickyContainer } from 'react-sticky'
-import { Flex, Box } from 'reflexbox'
 // <MasarykBar />
 const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = false, ...props }) => (
   <StickyContainer>
@@ -20,7 +18,7 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
         if (typeof distanceFromTop !== 'undefined') {
           newDistanceFromTop = distanceFromTop
         }
-        const isSticky = stickHeaderByDefault || (newDistanceFromTop == 0) 
+        const isSticky = stickHeaderByDefault || (newDistanceFromTop >= 0) 
         return (
           <div style={{zIndex: 100, ...style}}
             className={(isSticky ? 'not-sticky' : 'is-sticky')}>
