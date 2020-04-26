@@ -6,10 +6,12 @@ import { useRouter } from 'next/router'
 import { withApollo } from '../apollo/client'
 import { Spinner } from "@blueprintjs/core"
 import gql from 'graphql-tag'
+//import { options } from '../utils/session'
 import { MutationFunction, MutationResult } from 'react-apollo'
 import StarterLayout from '../components/StarterLayout'
 import Reveal from '../components/Reveal'
 import ReactCodeInput from 'react-code-input'
+
 
 const FadeSpinner = () => <Reveal delay={1000} duration={1000}><Spinner intent="none" size={32} sx={{my: 7}} /></Reveal> 
 
@@ -55,17 +57,15 @@ const JOIN_GROUP = gql`
 const JoinGroupWithConsent = ({ name }: { name: string }) => {
   const router = useRouter()
   return (
-    <Mutation<JoinResult> mutation={JOIN_GROUP} onCompleted={(data: JoinResult) => {
+    <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={['user']} onCompleted={(data: JoinResult) => {
       if (data.joinGroup.joined) {
         router.push('/')
       }
     }}>
       {(joinGroup: MutationFunction, mutation: MutationResult<JoinResult>) => {
-
         if (mutation.loading) {
           return <FadeSpinner />
         }
-
         if (!mutation.loading && mutation.data) {
           if (mutation.data?.joinGroup.joined) {
             return <Heading sx={{
@@ -84,7 +84,6 @@ const JoinGroupWithConsent = ({ name }: { name: string }) => {
               Něco se porouchalo, zkuste to prosím později :(
             </Heading>
         }
-
         return (
           <Reveal delay={0} duration={300} >
             <Flex sx={{alignSelf: 'center', height: '100%', flexDirection: 'column', alignItems: 'center'}}>
@@ -94,30 +93,50 @@ const JoinGroupWithConsent = ({ name }: { name: string }) => {
                 textAlign: 'center',
                 mt: 4
               }}>Souhlasíte s udělením přístupu majiteli třídy k Vaší<br/>aktivitě a výsledkům v kurzu OnLife?</Heading>
-              <Button
-                onClick={() => {
-                  console.log('Join Group clicked')
-                  joinGroup()
-                }}
-                sx={{
-                  mt: 4,
-                  fontWeight: 500,
-                  fontSize: 4
-                }}
-              >
-                Souhlasím, přidat se ke třídě
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => router.reload()}
-                sx={{
-                  mt: 4,
-                  fontWeight: 500,
-                  fontSize: 4
-                }}
-              >
-                Nesouhlasím
-              </Button>
+              {
+                mutation.error ? 
+                  <Fragment>
+                    <div sx={{mt: 3, color: 'error'}}>{mutation.error.graphQLErrors.map(({ message }, i) => (
+                      <span key={i}>{message}</span>
+                      ))}</div>
+                    <Button
+                      onClick={() => router.reload()}
+                      sx={{
+                        mt: 4,
+                        fontWeight: 500,
+                        fontSize: 4
+                      }}
+                    >
+                      Zadat kód znovu
+                    </Button>
+                  </Fragment>
+                  :
+                  <Fragment>
+                    <Button
+                      onClick={() => {
+                        joinGroup()
+                      }}
+                      sx={{
+                        mt: 4,
+                        fontWeight: 500,
+                        fontSize: 4
+                      }}
+                      >
+                      Souhlasím, přidat se ke třídě
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => router.reload()}
+                      sx={{
+                        mt: 4,
+                        fontWeight: 500,
+                        fontSize: 4
+                      }}
+                      >
+                      Nesouhlasím
+                    </Button>
+                </Fragment>
+              }
             </Flex>
           </Reveal>
         )

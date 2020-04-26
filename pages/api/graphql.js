@@ -1,4 +1,4 @@
-import { ApolloServer, AuthenticationError, UserInputError } from 'apollo-server-micro'
+import { ApolloServer, AuthenticationError, UserInputError, ValidationError } from 'apollo-server-micro'
 import { schema } from '../../apollo/schema'
 import * as admin from 'firebase-admin'
 
@@ -23,12 +23,15 @@ const context = async ({ req, res }) => {
     
     let userRef = await admin.firestore().collection("users").doc(firebaseUser.uid).get()
     let isTeacher = false
+    let isInGroup = false
     if (userRef.exists) {
       isTeacher = userRef.data().isTeacher
+      isInGroup = userRef.data().isInGroup
     }
     const user = {
       id: firebaseUser.uid,
-      isTeacher: isTeacher,
+      isTeacher: isTeacher || false,
+      isInGroup: isInGroup || false,
       email: firebaseUser.email || '',
       name: firebaseUser.name || '',
       photoURL: firebaseUser.picture || '',
@@ -45,7 +48,8 @@ const apolloServer = new ApolloServer({
   formatError: (err) => {
     if (
       err.originalError instanceof AuthenticationError ||
-      err.originalError instanceof UserInputError
+      err.originalError instanceof UserInputError ||
+      err.originalError instanceof ValidationError
     ) {
       console.log('condition not')
       return err;

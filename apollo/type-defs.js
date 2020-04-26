@@ -46,6 +46,7 @@ export const typeDefs = gql`
   type User {
     id: ID!
     isTeacher: Boolean!
+    isInGroup: Boolean!
     email: String!
     name: String
     photoURL: String

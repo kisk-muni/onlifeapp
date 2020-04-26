@@ -1,4 +1,4 @@
-import { AuthenticationError, UserInputError } from 'apollo-server-micro'
+import { AuthenticationError, UserInputError, ValidationError } from 'apollo-server-micro'
 import cookie from 'cookie'
 import jwt from 'jsonwebtoken'
 import getConfig from 'next/config'
@@ -143,17 +143,23 @@ export const resolvers = {
   },
   Mutation: {
     async joinGroupAttempt(_paremt, {input}, {user}, _info) {
+      if (
+        typeof input.code !== 'string' ||
+        input.code.length !== 6
+      ) {
+        throw new ValidationError('Zadaný kód je neplatný.')
+      }
       const maxAttemptsCount = 6
       const maxTotalAttemptsCount = 60
-      let attemptRef = await db.collection('joinGroupAttempts').doc(user.id).get() 
-      if (attemptRef.exists) {
-
-        if (attemptRef.data().used) {
+      let attemptRef = db.collection('joinGroupAttempts').doc(user.id) 
+      let attempt = await attemptRef.get()
+      if (attempt.exists) {
+        if (attempt.data().used) {
           throw new UserInputError('Vaše možnost připojení ke třídě již byla vyčerpána.')
         }
-        let count = attemptRef.data().count + 1
+        let count = attempt.data().count + 1
         if (count > maxAttemptsCount) {
-          if (moment(attemptRef.data().lastUpdateAt.toDate()).isAfter(moment().subtract(1, 'hours'))) {
+          if (moment(attempt.data().lastUpdateAt.toDate()).isAfter(moment().subtract(1, 'hours'))) {
             // surpased max counts in time window
             throw new UserInputError('Překročili jste maximální počet pokusů. Zkuste to prosím později.')
           } else {
@@ -161,40 +167,73 @@ export const resolvers = {
             count = 1
           }
         }
-        let totalCount = attemptRef.data().totalCount + 1
+        let totalCount = attempt.data().totalCount + 1
         if (totalCount > maxTotalAttemptsCount) {
           throw new UserInputError('Překročili jste celkový maximální počet pokusů. Pokud chcete pokračovat, kontaktujte nás.')
         }
         // update existing attempt
-        attemptRef = await db.collection('joinGroupAttempts').doc(user.id).update({
+        let attemptUpdated = await attemptRef.update({
           count: count,
           totalCount: totalCount,
+          lastGroup: '',
           lastUpdateAt: admin.firestore.FieldValue.serverTimestamp()
         })
       } else {
         // attempt does not exist create an attempt
-        attemptRef = await db.collection('joinGroupAttempts').doc(user.id).set({
+        let attemptCreated = await attemptRef.set({
           count: 1,
           used: false,
           totalCount: 1,
+          lastGroup: '',
           lastUpdateAt: admin.firestore.FieldValue.serverTimestamp(),
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
         })
       }
       // check code
-      let invitationCodeRef = await db.collection('invitationCodes').doc(input.code).get()
-      if (!invitationCodeRef.exists) {
+      let invitationCode = await db.collection('invitationCodes').doc(input.code).get()
+      if (!invitationCode.exists) {
         throw new UserInputError('Zadaný kód je neplatný.')
       }
-      // user is allowed to continue
+      let group = await invitationCode.data().group.get()
+      if (!group.exists) {
+        throw new UserInputError('Zadaný kód je neplatný.')
+      }
+      await attemptRef.update({
+        lastGroup: 'groups/' + group.id,
+        lastUpdateAt: admin.firestore.FieldValue.serverTimestamp()
+      })
+      // user is allowed to join
       return {
-        name: 'sfafasd'
+        name: group.data().name
       }
     },
     async joinGroup(_parent, args, {user}, _info) {
-      console.log('resolver joinGroup invoked')
-      // check last attempt
-      // join group
+      const maxAttemptsCount = 6
+      const maxTotalAttemptsCount = 60
+      let attemptRef = db.collection('joinGroupAttempts').doc(user.id) 
+      let attempt = await attemptRef.get()
+      if (
+        !attempt.exists ||
+        attempt.data().used ||
+        attempt.data().count > maxAttemptsCount ||
+        attempt.data().totalCount > maxTotalAttemptsCount ||
+        attempt.data().lastGroup === ''
+      ) {
+        throw new Error('Neplatná akce.')
+      }
+      if (moment(attempt.data().lastUpdateAt.toDate()).isBefore(moment().subtract(1, 'hours'))) {
+        throw new UserInputError('Od zadání kódu uplynula hodina. Zadejte kód znovu.')
+      }
+      let userInDB = await db.collection('users').doc(user.id).set({
+        isInGroup: true,
+        group: attempt.data().lastGroup
+      }, {merge: true})
+      /* let studentObject = {};
+      studentObject['students.' + user.id + '.name'] = user.name
+      studentObject['students.' + user.id + '.photoURL'] = user.photoURL
+      studentObject['merge'] = true;
+      await invitationCode.data().group.update(studentObject) */
+      await attemptRef.update({used: true})
       return {
         joined: true
       }

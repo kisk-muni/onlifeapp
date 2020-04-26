@@ -11,6 +11,7 @@ export const CURRENT_USER = gql`
   user {
     name
     isTeacher
+    isInGroup
     photoURL
     email 
     id
@@ -64,7 +65,7 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
 
             if (data?.user !== null) {
               return <Fragment>
-                  { data?.user.isTeacher ? 
+                  { data?.user.isTeacher && 
                     <Link passHref href="/ucitel">
                       <Lstyle
                         sx={{
@@ -75,7 +76,9 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
                         Učitelský přehled
                       </Lstyle>
                     </Link>
-                    :
+                  }
+                  {
+                    (!data?.user.isTeacher && !data?.user.isInGroup) &&
                     <Link passHref href="/pridat-se-ke-tride">
                       <Lstyle
                         sx={{
