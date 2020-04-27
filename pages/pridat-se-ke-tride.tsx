@@ -12,6 +12,7 @@ import StarterLayout from '../components/StarterLayout'
 import Reveal from '../components/Reveal'
 import ReactCodeInput from 'react-code-input'
 import { CURRENT_USER } from '../components/Header'
+import { AppNotifier } from '../utils/notifier'
 
 const FadeSpinner = () => <Reveal delay={1000} duration={1000}><Spinner intent="none" size={32} sx={{my: 7}} /></Reveal> 
 
@@ -59,6 +60,13 @@ const JoinGroupWithConsent = ({ name }: { name: string }) => {
   return (
     <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={[{query: CURRENT_USER}]} onCompleted={(data: JoinResult) => {
       if (data.joinGroup.joined) {
+        // prevent ssr
+        if (AppNotifier !== null) {
+          AppNotifier.show({
+            message: 'Nyní jste ve třídě',
+            intent: 'success',
+          })
+        }
         router.push('/')
       }
     }}>
