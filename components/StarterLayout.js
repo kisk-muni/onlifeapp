@@ -20,7 +20,7 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
         }
         const isSticky = stickHeaderByDefault || (newDistanceFromTop >= 0) 
         return (
-          <div style={{zIndex: 100, ...style}}
+          <div style={{zIndex: 18, ...style}}
             className={(isSticky ? 'not-sticky' : 'is-sticky')}>
             <Header showDescription={showDescription(newDistanceFromTop, distanceFromBottom)}/>
           </div>

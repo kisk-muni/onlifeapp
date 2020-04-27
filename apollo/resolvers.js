@@ -208,32 +208,50 @@ export const resolvers = {
       }
     },
     async joinGroup(_parent, args, {user}, _info) {
+      if (user.isInGroup) {
+        throw new Error('User already is in group.')
+      }
       const maxAttemptsCount = 6
       const maxTotalAttemptsCount = 60
       let attemptRef = db.collection('joinGroupAttempts').doc(user.id) 
       let attempt = await attemptRef.get()
-      if (
-        !attempt.exists ||
-        attempt.data().used ||
-        attempt.data().count > maxAttemptsCount ||
-        attempt.data().totalCount > maxTotalAttemptsCount ||
-        attempt.data().lastGroup === ''
-      ) {
-        throw new Error('Neplatná akce.')
+      if (!attempt.exists) {
+        throw new Error('Attempt does not exist.')
+      }
+      if (attempt.data().used) {
+        throw new Error('Attempt is already used.')
+      }
+      if (attempt.data().count > maxAttemptsCount) {
+        throw new Error('Attempts count surpassed.')
+      }
+      if (attempt.data().totalCount > maxTotalAttemptsCount) {
+        throw new Error('Total attempts count surpassed.')
+      }
+      if (attempt.data().lastGroup === '') {
+        throw new Error('Group reference is empty.')
       }
       if (moment(attempt.data().lastUpdateAt.toDate()).isBefore(moment().subtract(1, 'hours'))) {
         throw new UserInputError('Od zadání kódu uplynula hodina. Zadejte kód znovu.')
       }
-      let userInDB = await db.collection('users').doc(user.id).set({
-        isInGroup: true,
-        group: attempt.data().lastGroup
-      }, {merge: true})
-      /* let studentObject = {};
+      let attemptGroupRef = db.doc(attempt.data().lastGroup)
+      let attemptGroup = await attemptGroupRef.get()
+      if (!attemptGroup.exists) {
+        throw new Error('Attempt group does not exist in database.')
+      }
+      let batch = db.batch()
+      // assign group to user
+      let userRef = db.collection('users').doc(user.id)
+      batch.set(userRef, { isInGroup: true, group: attemptGroupRef }, {merge: true})
+      // assign user to group
+      let studentObject = {};
       studentObject['students.' + user.id + '.name'] = user.name
       studentObject['students.' + user.id + '.photoURL'] = user.photoURL
+      studentObject['students.' + user.id + '.user'] = userRef
       studentObject['merge'] = true;
-      await invitationCode.data().group.update(studentObject) */
-      await attemptRef.update({used: true})
+      batch.update(attemptGroupRef, studentObject)
+      // disable further group joining
+      batch.update(attemptRef, {used: true})
+      batch.commit()
       return {
         joined: true
       }

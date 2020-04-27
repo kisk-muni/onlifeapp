@@ -11,7 +11,7 @@ import { MutationFunction, MutationResult } from 'react-apollo'
 import StarterLayout from '../components/StarterLayout'
 import Reveal from '../components/Reveal'
 import ReactCodeInput from 'react-code-input'
-
+import { CURRENT_USER } from '../components/Header'
 
 const FadeSpinner = () => <Reveal delay={1000} duration={1000}><Spinner intent="none" size={32} sx={{my: 7}} /></Reveal> 
 
@@ -57,7 +57,7 @@ const JOIN_GROUP = gql`
 const JoinGroupWithConsent = ({ name }: { name: string }) => {
   const router = useRouter()
   return (
-    <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={['user']} onCompleted={(data: JoinResult) => {
+    <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={[{query: CURRENT_USER}]} onCompleted={(data: JoinResult) => {
       if (data.joinGroup.joined) {
         router.push('/')
       }
