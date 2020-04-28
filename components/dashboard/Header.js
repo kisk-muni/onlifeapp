@@ -66,7 +66,7 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
                       ml: 4,
                       py: 2,
                     }}>
-                    Učitelský přehled
+                    Přehled tříd
                   </Lstyle>
                 </Link>
                 <ProfileDropdown

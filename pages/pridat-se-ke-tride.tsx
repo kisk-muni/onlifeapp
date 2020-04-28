@@ -175,8 +175,9 @@ interface AttemptVariables {
 }
 
 const JoinGroupPage = () => {
-  const [invitationCode, setInvitationCode] = useState('')
-
+  const router = useRouter()
+  const [invitationCode, setInvitationCode] = useState(typeof router.query.invitation == 'string' ? router.query.invitation : '')
+  
   return (
     <StarterLayout>
       <Mutation<AttemptResult, AttemptVariables> mutation={JOIN_GROUP_ATTEMPT}>
@@ -200,6 +201,7 @@ const JoinGroupPage = () => {
                 }}>Kód získáte od svého učitele<br/></Text>
                 <ReactCodeInput
                   type='text'
+                  value={invitationCode}
                   onChange={(value: string) => setInvitationCode(value)}
                   fields={6}
                   inputStyle={{

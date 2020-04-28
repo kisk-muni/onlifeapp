@@ -55,25 +55,32 @@ export const resolvers = {
       return topics.find(topic => topic.id === id)
     },
     async group(obj, {id}, {user}, info) {
-      //console.log(user)
-      try {
-        let group = await db.collection("groups").doc(id).get()
-        if (!group.exists) {
-          throw 'No such document!'
+      console.log('resolve group')
+      let group = await db.collection("groups").doc(id).get()
+      if (!group.exists) {
+        throw new Error ('No such document!')
+      }
+      let groupData = group.data()
+      if (groupData.userId !== user.id) {
+        throw new Error ("User is not owner of group.")
+      }
+      let students = []
+      if (groupData.students) {
+        for (let [key, student] of Object.entries(groupData.students)) {
+          students.push({
+            id: key,
+            name: student.name,
+            email: student.email,
+            picture: student.photoURL
+          })
         }
-        let groupData = group.data()
-        if (groupData.userId !== user.id) {
-          throw "User is not owner of group."
-        }
-        console.log(groupData)
-        return {
-          id: group.id,
-          name: groupData.name,
-          invitationCode: groupData.invitationCode || '',
-          color: 'orange',
-        }
-      } catch (error) {
-        return null
+      }
+      return {
+        id: group.id,
+        name: groupData.name,
+        students: students,
+        invitationCode: groupData.invitationCode || '',
+        color: 'orange',
       }
     },
     async groups(obj, args, {user}, info) {
@@ -99,24 +106,23 @@ export const resolvers = {
       }
     },
     async groupsSelect(obj, args, {user}, info) {
-      //console.log(user)
-      try {
-        let groupsRef = await db.collection("groups").where("userId", "==", user.id).get()
-        let groups = []
-        groupsRef.forEach(doc => {
-          let data = doc.data()
-          groups.push({
-            id: doc.id,
-            name: data.name,
-            link: "/trida/" + doc.id,
-          })
-        });
-        groups.push({link: '/ucitel', name: 'Přehled tříd'})
-        return groups.reverse()
-      } catch (error) {
-        console.log(error)
-        return null
-      }
+      let groupsDoc = await db.collection("groups").where("userId", "==", user.id).get()
+      let groupsRes = []
+      groupsDoc.forEach(doc => {
+        let data = doc.data()
+        groupsRes.push({
+          id: doc.id,
+          name: data.name,
+          link: "/trida/" + doc.id,
+        })
+      });
+      groupsRes.push({
+        id: 'ucitel',
+        name: 'Přehled tříd',
+        link: '/ucitel'
+      })
+      console.log(groupsRes)
+      return groupsRes.reverse()
     },
     async user(obj, args, {user}) {
       console.log('User Resolver:', user)
@@ -245,6 +251,7 @@ export const resolvers = {
       // assign user to group
       let studentObject = {};
       studentObject['students.' + user.id + '.name'] = user.name
+      studentObject['students.' + user.id + '.email'] = user.email
       studentObject['students.' + user.id + '.photoURL'] = user.photoURL
       studentObject['students.' + user.id + '.user'] = userRef
       studentObject['merge'] = true;

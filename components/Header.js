@@ -73,7 +73,7 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
                           ml: 4,
                           py: 2,
                         }}>
-                        Učitelský přehled
+                        Přehled tříd
                       </Lstyle>
                     </Link>
                   }

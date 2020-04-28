@@ -9,7 +9,27 @@ import { MenuItem, Icon } from "@blueprintjs/core"
 import { Select } from "@blueprintjs/select"
 import { useRouter } from 'next/router'
 
-function itemRenderer(group, {modifiers}) {
+interface Student {
+  id: string
+  name: string
+  email: string
+  picture: string
+}
+
+interface Group {
+  id: string
+  name: string
+  invitationCode: string
+  students: Student[]
+}
+
+interface GroupSelectItem {
+  id: string
+  name: string
+  link: string
+}
+
+function itemRenderer(group: GroupSelectItem, {modifiers}: {modifiers: {active: boolean} }) {
   return (
     <Link href={group.link}><MenuItem
         active={modifiers.active}
@@ -28,6 +48,7 @@ query Group($id: ID!) {
     id
   }
   groupsSelect {
+    id
     name
     link
   }
@@ -35,11 +56,32 @@ query Group($id: ID!) {
     id
     name
     invitationCode
+    students {
+      id
+      name
+      picture
+      email
+    }
   }
 }
 `
 
-const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty středních škol', showDescription = false }) => {
+interface HeaderQueryData {
+  user: {
+    name: string
+    photoURL: string
+    email: string
+    id: string
+  },
+  groupsSelect: GroupSelectItem[],
+  group: Group
+}
+
+interface HeaderQueryVars {
+  id: string | string[]
+}
+
+const GroupHeader = () => {
   const router = useRouter();
 
   return (
@@ -63,23 +105,25 @@ const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty
           OnLife
         </Lstyle>
       </Link>
-      <Query query={GROUP_HEADER} variables={{id: router.query.id}} >
+      <Query<HeaderQueryData, HeaderQueryVars> query={GROUP_HEADER} variables={{id: router.query.id}} >
       {({loading, data, error}) => {
-        if (loading === false && data.user !== null) {
+        if (loading === false && data && data?.user && data?.group && data?.groupsSelect) {
           return (
             <Fragment>
               <Select
                 onItemSelect={(item) => {
                   console.log('selected', item)
                 }}
-                items={data.groupsSelect}
+                items={data!.groupsSelect}
                 filterable={false}
-                activeItem={{id: data.group.id, name: data.group.name, link: '/trida/' + data.group.id}}
+                activeItem={null}
                 itemRenderer={itemRenderer}
                 >
-                <Button variant="groupSelect">{data.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
+                <Button variant="groupSelect">{data?.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
               </Select>
-              <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data.group.invitationCode}</span></Text>
+              { data?.group.students.length > 0 &&
+                <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data?.group.invitationCode}</span></Text>
+              }
               <div sx={{ mx: 'auto' }} />
               <Link passHref href="/">
                 <Lstyle
@@ -98,14 +142,15 @@ const GroupHeader = ({ description = 'Kurz informační gramotnosti pro studenty
                     ml: 4,
                     py: 2,
                   }}>
-                  Učitelský přehled
+                  Přehled tříd
                 </Lstyle>
               </Link>
               <ProfileDropdown
+                loading={false}
                 sx={{ml: 4}}
-                photoURL={data.user.photoURL}
-                name={data.user.name}
-                email={data.user.email} />
+                photoURL={data!.user.photoURL}
+                name={data!.user.name}
+                email={data!.user.email} />
             </Fragment>
           )
         }
