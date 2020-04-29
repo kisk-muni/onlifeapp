@@ -71,6 +71,7 @@ const InviteStudentsBlock = ({invitationCode, groupName}: {invitationCode: strin
               <Flex sx={{alignItems: 'baseline', mb: 3}}>
                 <Input
                   sx={{mr: 2, border: 'none', background: 'rgba(0, 0, 0, .08)', minWidth: 300}}
+                  onFocus={(event) => event.target.select()}
                   defaultValue={link}
                   readOnly
                 />
