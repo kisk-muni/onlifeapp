@@ -20,7 +20,10 @@ const context = async ({ req, res }) => {
   try {
     // verify token including revocation check
     // if it fails in anyway set context of user to null
-    
+
+    // token does not contain all attributes :(
+    // use data from decoded token only for getting uid
+    let userDefault = await admin.auth().getUser(firebaseUser.uid)
     let userRef = await admin.firestore().collection("users").doc(firebaseUser.uid).get()
     let isTeacher = false
     let isInGroup = false
@@ -32,9 +35,9 @@ const context = async ({ req, res }) => {
       id: firebaseUser.uid,
       isTeacher: isTeacher || false,
       isInGroup: isInGroup || false,
-      email: firebaseUser.email || '',
-      name: firebaseUser.name || '',
-      photoURL: firebaseUser.picture || '',
+      email: userDefault.email || '',
+      name: userDefault.displayName || '',
+      photoURL: userDefault.photoURL || '',
     }
     return { user: user }
     //return { user: { id: claims.user_id, email: claims.email, name: claims.displayName } };
