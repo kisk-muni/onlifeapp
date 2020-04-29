@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Link as Lstyle, AspectImage, AspectRatio } from 'theme-ui'
-import FullPageLoading from '../../components/FullPageLoading'
 
 export const GET_TOPIC = gql`
 query Topic($id: ID!) {
@@ -19,8 +18,7 @@ query Topic($id: ID!) {
     subtopics {
       id
       name
-      display
-      gFormURL
+      quiz
     }
   }
 }
@@ -78,7 +76,9 @@ const TopicPage = () => {
                             <Text sx={{fontSize: 3, fontWeight: 500}}>{subtopic.name}</Text>
                           </Box>
                           <Box>
-                            <Text sx={{fontSize: 3}}><Link passHref href={"/kviz/"+subtopic.id}><Lstyle>Kvíz</Lstyle></Link></Text>
+                            { subtopic.quiz &&
+                              <Text sx={{fontSize: 3}}><Link passHref href={"/kviz/"+subtopic.quiz}><Lstyle>Kvíz</Lstyle></Link></Text>
+                            }
                           </Box>
                         </Flex>
                       ))

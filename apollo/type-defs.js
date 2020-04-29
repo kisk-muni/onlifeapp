@@ -29,10 +29,9 @@ export const typeDefs = gql`
   }
 
   type SubTopic {
-    gFormURL: String!
-    display: Boolean!
     id: ID!
     name: String!
+    quiz: String
   }
 
   type Topic {
@@ -92,12 +91,34 @@ export const typeDefs = gql`
     name: String
   }
 
+  type QuizDetailItems {
+    question: String
+    answer: String
+  }
+
+  type QuizAttempt {
+    result: Int
+    time: String
+    detail: [QuizDetailItems]
+  } 
+
+  type StudentSubtopicsResult {
+    name: String
+    quizAttempts: [QuizAttempt]
+  }
+
+  type StudentTopicsResult {
+    name: String
+    subtopics: [StudentSubtopicsResult]
+  }
+
   type Query {
 		user: User
     viewer: User
     groups: [Group]
     groupsSelect: [GroupsSelectItem]
     group(id: ID!): Group
+    studentTopicsResults(id: ID!): [StudentTopicsResult]
     quiz(id: ID!): Quiz
     topics: [Topic]
     topic(id: ID!): Topic

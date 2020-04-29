@@ -55,7 +55,7 @@ export const resolvers = {
       return topics.find(topic => topic.id === id)
     },
     async group(obj, {id}, {user}, info) {
-      console.log('resolve group')
+      //console.log('resolve group')
       let group = await db.collection("groups").doc(id).get()
       if (!group.exists) {
         throw new Error ('No such document!')
@@ -121,7 +121,7 @@ export const resolvers = {
         name: 'Přehled tříd',
         link: '/ucitel'
       })
-      console.log(groupsRes)
+      // console.log(groupsRes)
       return groupsRes.reverse()
     },
     async user(obj, args, {user}) {
@@ -148,13 +148,65 @@ export const resolvers = {
         gFormURL: quiz.gFormURL+quizAttempts.id
       }  
     },
+    async studentTopicsResults(obj, {id}, context, info) {
+      // podivat se na studentovy pokusy
+      // priradit pokusy podtematum
+      /* let col = await db.collection('users').doc(id).collection('quizAttempts').get()
+      
+      let tudentAttempts = col.docs.map( async doc => {
+        //console.log(doc.id)
+        let tems = await db.collection('users').doc(id).collection('quizAttempts').doc(doc.id).collection('attempts').get()
+        let attemptsfromDB = await Promise.alltems.docs.map(async docAttempt => {
+          // pro kazdy attempt se podivam do realtime db
+          let attemptRDBref = await rdb.ref('results/'+docAttempt.id).once('value')
+          return {...attemptRDBref.val()}
+        })
+        return { [doc.id]: attemptsfromDB }
+      });
+
+      let completed = await Promise.all(
+        tudentAttempts
+      )
+      console.log(completed) */
+
+      //console.log(tudentAttempts)
+
+      const quizAttempts = [
+        {
+          result: 4,
+          detail: [
+            {
+              question: 'V České republice je nejpoužívanějším prohlížečem:',
+              answer: 'Google',
+            }
+          ],
+          time: '2020-04-29T08:00:51.821Z'
+        }
+      ]
+      const studentAttempts = {
+        'quiz-vyhledavani-na-internetu-i': {
+          attempts: quizAttempts
+        }
+      }
+      const topicsRes = topics.map(topic => {
+        return {
+          name: topic.name,
+          subtopics: topic.subtopics.map(subtopic => {
+              let quizAttemptsForStudent = null
+              if (subtopic.quiz && typeof studentAttempts[subtopic.quiz] !== 'undefined') {
+                quizAttemptsForStudent = studentAttempts[subtopic.quiz].attempts
+              }
+              return {
+                name: subtopic.name,
+                quizAttempts: quizAttemptsForStudent
+              }
+            }) 
+        }
+      })
+      return topicsRes
+    },
     async topics(obj, args, context, info) {
-      try {
-        console.log(topics)
-        return topics
-      } catch (error) {
-        return []
-      } 
+      return topics
     }
   },
   Mutation: {

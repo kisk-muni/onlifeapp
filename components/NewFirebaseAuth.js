@@ -58,15 +58,18 @@ const NewFirebaseAuth = () => {
       ) : null}
     </Box>
       <style jsx global>{`
-      .firebaseui-idp-password .firebaseui-idp-text-long {
-          font-size: 0;
-      }
+        .firebaseui-idp-password .firebaseui-idp-text-long {
+            font-size: 0;
+        }
         .firebaseui-idp-password .firebaseui-idp-text-long:after {
             visibility: visible;
             content: 'Pokračovat pomocí e-mailu';
             font-size: 16px;
             font-weight: 500;
             text-align: center;
+        }
+        .firebaseui-idp-password:hover {
+            background: #c73f33!important;
         }
         .firebaseui-button {
           box-sizing: border-box;
@@ -150,6 +153,9 @@ const NewFirebaseAuth = () => {
             color: #333!important;
             border: 1px solid #92929285!important;
             padding-top: 11px!important;
+        }
+        .firebaseui-idp-google:hover {
+            background-color: #f5f5f5!important;
         }
         .firebaseui-idp-button {
           box-sizing: border-box;

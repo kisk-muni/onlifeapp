@@ -1,15 +1,16 @@
 /** @jsx jsx */
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import DashboardLayout from '../../components/dashboard/DashboardLayout'
 import GroupHeader from '../../components/dashboard/GroupHeader'
 import { withApollo } from '../../apollo/client'
-// import Link from 'next/link'
+import { Query } from 'react-apollo'
 import { useRouter } from 'next/router'
-import { jsx, Text, Heading, Grid, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, AspectRatio, Link as SLink, Grid, Box, Flex, Close } from 'theme-ui'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import FullPageLoading from "../../components/FullPageLoading"
 import InviteStudentsBlock from '../../components/dashboard/InviteStudentsBlock'
+import { Collapse } from '@blueprintjs/core'
 
 export const GROUP = gql`
   query Group($id: ID!) {
@@ -26,6 +27,50 @@ export const GROUP = gql`
     }
   }
 `
+
+export const STUDENT_RESULTS = gql`
+  query Results($id: ID!) {
+    studentTopicsResults(id: $id) {
+      name
+      subtopics {
+        name
+        quizAttempts {
+          result
+          time
+          detail {
+            question
+            answer
+          }
+        }
+      }
+    }
+  }
+`
+
+interface QuizAttempt {
+  result: number
+  time: string
+  detail: {
+    question: string
+    answer: string
+  }[]
+}
+
+interface SubTopic {
+  name: string
+  quizAttempts: QuizAttempt[]
+}
+
+interface StudentResultsQueryData {
+  studentTopicsResults: {
+    name: string
+    subtopics: SubTopic[]
+  }[]
+}
+
+interface StudentResultsQueryVars {
+  id: string | string[]
+}
 
 const SuccessIcon = () => (
   <svg
@@ -50,95 +95,69 @@ const SuccessIcon = () => (
     </svg>
 )
 
-const topics: {
-  name: string,
-  subtopics: string[]
-}[] = [
-  {
-    name: 'Fáze práce s informacemi',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-  {
-    name: 'Fáze práce s informacemi',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-  {
-    name: 'Práce s informacemi a učení',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-  {
-    name: 'Média a občanství',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-  {
-    name: 'Práce s dokumenty',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-  {
-    name: 'Interakce, vzájemnost a zpětná vazba',
-    subtopics: [
-      'Vyhledávání na internetu I ',
-      'Vyhledávání na internetu II: Kde vyhledávat?',
-      'Vyhledávání na internetu III: Jak vyhledávat?',
-      'Filtrování výsledků',
-      'Hodnocení informací',
-      'Hodnocení informací: Dezinformace a manipulace s informacemi',
-      'Hodnocení informací: Wikipedie',
-      'Využití informací',
-      'S informacemi k řešení problému',
-    ]
-  },
-]
+const Subtopic = ({name, quizAttempts, index}: {name: string, quizAttempts: QuizAttempt[], index: number}) => {
+  const [showDetail, setShowDetail] = useState(false) 
+  return (
+    <Box sx={{
+      pb: '6px',
+      pt: '6px',
+      px: 2,
+      background: ((index % 2) == 1 ? '#fff' : '#f5f5f5'),
+      borderRadius: '6px',
+      borderBottom: showDetail ? '1px solid #ddd' : 'none',
+      mb: showDetail ? 2 : 0,
+    }}>
+      <Flex sx={{
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <Box><Text sx={{fontSize: showDetail ? 4 : 2, fontWeight: showDetail ? '700' : '400'}}>{name}</Text></Box>
+        <Flex>
+          { quizAttempts && quizAttempts.length > 0 &&
+            <Fragment>
+              <SLink sx={{mr: 2, color: 'text'}} onClick={() => setShowDetail(!showDetail)}>
+                {!showDetail ? 'Detail' : 'Zavřít'}
+              </SLink>
+              <SuccessIcon />
+            </Fragment>
+          }
+        </Flex>
+      </Flex>
+      <Collapse isOpen={showDetail}>
+        {quizAttempts && quizAttempts.map((attempt, index) => (
+          <Box sx={{py: 2}}>
+            <Heading as="h3" sx={{mb: 2}}>Pokus {index+1}</Heading>
+            <Box sx={{pl: 3}}>
+              <Text>Počet bodů: {attempt.result}</Text>
+              <Text>Čas: {attempt.time}</Text>
+              <Heading as="h4" sx={{mt: 3, mb: 2}}>Odpovědi</Heading>
+              <ul>
+                {attempt.detail && attempt.detail.length > 0 && attempt.detail.map((item) => (
+                  <li>
+                    <Box>{item.question}</Box>
+                    <Box>{item.answer}</Box>
+                  </li>
+                ))}
+              </ul>
+            </Box>
+          </Box>
+        ))}
+      </Collapse>
+    </Box>
+  )
+}
+
+const Topic = ({name, subtopics}: {name: string, subtopics: SubTopic[]}) => {
+  const [showDetail, setShowDetail] = useState(false) 
+  return (
+    <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
+      <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
+        {name}
+      </Heading>
+      {subtopics.map((subtopic, index) => <Subtopic name={subtopic.name} index={index} quizAttempts={subtopic.quizAttempts} />)}
+    </Box>
+  )
+}
 
 interface Student {
   id: string
@@ -162,6 +181,7 @@ interface GroupQueryVars {
 
 const Trida = () => {
   const router = useRouter();
+  const [ activeStudent, setActiveStudent ] = useState('')
   const { data, loading, error } = useQuery<GroupQueryData, GroupQueryVars>(GROUP, {variables: {id: router.query.id}})
 
   return (
@@ -185,42 +205,122 @@ const Trida = () => {
               ?
               <Fragment>
                 <Box sx={{ mb: '42px' }}>
-                  <Text sx={{fontSize: 4, mb: '42px', color: 'text'}}>Vyberte studenta pro filtrování výsledků</Text>
+                  <Heading sx={{fontSize: '40px', mb: '42px', lineHeight: '42px', color: 'text'}}>
+                    { activeStudent === ''
+                      ? 'Vyberte studenta pro zobrazení výsledků'
+                      : <Flex sx={{alignItems: 'baseline'}}>
+                          <span sx={{color: 'gray', mr: 2}}>Výsledky studenta:</span>
+                          { data.group.students.find(x => x.id === activeStudent)!.name }
+                          <Close
+                            sx={{
+                              ml: 3,
+                              transform: 'scale(1.5)',
+                              position: 'relative',
+                              bottom: '0px',
+                              color: 'gray',
+                              '&:hover': {
+                                cursor: 'pointer',
+                                color: 'text'
+                              },
+                              '&:focus': {
+                                outline: 'none'
+                              }
+                            }}
+                            onClick={() => setActiveStudent('')} />
+                        </Flex>
+                    }
+                  </Heading>
                   <Grid gap={4} columns={4} sx={{position: 'static', zIndex: 2}}>
                     {
                       data?.group?.students.map((student) =>
-                      <Box sx={{mb: '12px'}}>
-                          {student.picture && <img src={student.picture} sx={{boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)', position: 'static', zIndex: 2, opacity: '1', display: 'inline-block', height: '32px', borderRadius: '16px', mr: '14px', mb: -2,}} />}
-                          <Text sx={{fontSize: 3, fontWeight: 400, color: 'text', textDecoration: 'none',  display: 'inline-block' }}>
-                            {student.name}
-                          </Text>
-                        </Box>)
+                        <Flex>
+                          <Box
+                            onClick={() => setActiveStudent(student.id)}
+                            sx={{                            
+                              mb: '12px',
+                              '&:hover': {
+                                cursor: 'pointer'
+                              },
+                              '&:hover > img': {
+                                opacity: '1'
+                              },
+                              '&:hover > div': {
+                                color: 'text'
+                              }
+                            }}>
+                            { student.picture &&
+                              <img
+                                src={student.picture}
+                                sx={{
+                                  boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
+                                  boxSizing: 'content-box',
+                                  position: 'static',
+                                  zIndex: 2,
+                                  opacity: (student.id === activeStudent ? '1' : '.5'),
+                                  display: 'inline-block',
+                                  height: '32px',
+                                  borderRadius: '50%',
+                                  mr: '14px',
+                                  mb: -2,
+                                }}
+                              />}
+                            <Text sx={{
+                                fontWeight: (student.id === activeStudent ? 700 : 400),
+                                textDecoration: (student.id === activeStudent ? 'underline' : 'none'),
+                                color: (student.id === activeStudent ? 'text' : 'gray'),
+                                fontSize: 3,
+                                lineHeight: '32px',
+                                display: 'inline-block'
+                              }}>
+                                {student.name}
+                            </Text>
+                          </Box>
+                            {student.id === activeStudent &&
+                              <Close
+                                sx={{
+                                  position: 'relative',
+                                  bottom: '-2px',
+                                  color: 'gray',
+                                  '&:hover': {
+                                    cursor: 'pointer',
+                                    color: 'text'
+                                  },
+                                  '&:focus': {
+                                    outline: 'none'
+                                  }
+                                }}
+                                onClick={() => setActiveStudent('')}
+                              />
+                            }
+                        </Flex>)
                     }
                   </Grid>
                 </Box>  
                 <Box sx={{ mb: '50px' }}>
                   <Box>
-                      <Grid gap={4} columns={2}>
-                        {topics.map((topic) => 
-                          <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
-                            <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
-                              {topic.name}
-                            </Heading>
-                              {topic.subtopics.map((subtopic, index) => (
-                                <Flex sx={{
-                                  justifyContent: 'space-between',
-                                  pb: '2px',
-                                  pt: '6px',
-                                  px: 2,
-                                  background: (index % 2 == 1 ? '#fff' : '#f6f6f6'),
-                                  borderRadius: '6px'
-                                }}>
-                                  <Box><Text sx={{fontSize: 2}}>{subtopic}</Text></Box>
-                                  <Box><SuccessIcon /></Box>
-                                </Flex>
-                              ))}
-                          </Box>)}
-                      </Grid>
+                      { activeStudent &&
+                        <Query<StudentResultsQueryData, StudentResultsQueryVars> query={STUDENT_RESULTS} variables={{id: activeStudent}}>
+                          {({loading, data}) => {
+                            if (loading) {
+                              let placeholders = [1, 2, 3, 4, 5, 6]
+                              return (
+                                <Grid gap={4} columns={2}>
+                                  {placeholders.map(item => (
+                                    <Box sx={{mb: 2, borderRadius: '6px', background: '#eee'}}>
+                                      <AspectRatio ratio={1} />
+                                    </Box>
+                                  ))}
+                                </Grid>
+                              )
+                            }
+                            return (
+                              <Grid gap={4} columns={2}>
+                                {data?.studentTopicsResults.map((topic) => <Topic name={topic.name} subtopics={topic.subtopics} />)}
+                              </Grid>
+                            ) 
+                          }}
+                        </Query>
+                      }
                   </Box>
                 </Box>
                 <Box>

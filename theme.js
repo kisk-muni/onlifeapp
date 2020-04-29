@@ -15,7 +15,7 @@ export default {
     promobg: '#f5f5f5',
   },
   fonts: {
-    body: '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif',
+    body: '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Ubuntu","Droid Sans","Helvetica Neue",sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
