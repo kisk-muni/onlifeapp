@@ -22,8 +22,8 @@ export const typeDefs = gql`
     name: String!
   }
 
-  type Quizz {
-    link: String!
+  type Quiz {
+    gFormURL: String!
     display: Boolean!
     id: ID!
   }
@@ -98,7 +98,7 @@ export const typeDefs = gql`
     groups: [Group]
     groupsSelect: [GroupsSelectItem]
     group(id: ID!): Group
-    quizz: Quizz
+    quiz(id: ID!): Quiz
     topics: [Topic]
     topic(id: ID!): Topic
   }

@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
 import { customAlphabet } from 'nanoid'
 import * as firebase from 'firebase'
-import topics from '../data/topics'
+import topics, { quizes } from '../data/topics'
 // Required for side-effects
 import * as admin from 'firebase-admin'
 if (!admin.apps.length) {
@@ -128,14 +128,24 @@ export const resolvers = {
       console.log('User Resolver:', user)
       return user
     },
-    async quizz(obj, {quizz}, {cache}, info) {
-      try {
-        let quizz_ref = await firebase.database().ref('sheets/' + quizz).once('value')
-        return {
-          ...quizz_ref.val()
-        }
-      } catch (error) {
-        return { quizz: null }
+    async quiz(obj, {id}, {user}, info) {
+      const quiz = quizes[id]
+      if (!quiz.display) {
+        throw new Error('Quiz should not be displayed.')
+      }
+      let quizAttemptsRef = db.collection('users').doc(user.id).collection('quizAttempts')
+      await quizAttemptsRef.doc(id).set({
+        name: quiz.name
+      }, {merge: true})
+      let quizAttempts = await quizAttemptsRef.doc(id).collection('attempts').add({
+        quizName: quiz.name,
+        lastUpdateAt: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+      })
+      return {
+        id: id,
+        display: true,
+        gFormURL: quiz.gFormURL+quizAttempts.id
       }  
     },
     async topics(obj, args, context, info) {

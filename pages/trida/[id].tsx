@@ -5,7 +5,7 @@ import GroupHeader from '../../components/dashboard/GroupHeader'
 import { withApollo } from '../../apollo/client'
 // import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { jsx, Text, Heading, Grid, Close, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Grid, Box, Flex } from 'theme-ui'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import FullPageLoading from "../../components/FullPageLoading"
