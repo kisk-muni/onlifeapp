@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-unfetch'
+import { User } from 'firebase'
 
-export const setSession = user => {
+export const setSession = (user: User) => {
   // Log in.
   if (user) {
     return user.getIdToken().then(token => {
@@ -13,7 +14,6 @@ export const setSession = user => {
       })
     })
   }
-
   // Log out.
   return fetch('/api/logout', {
     method: 'POST',
