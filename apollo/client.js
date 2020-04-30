@@ -4,8 +4,6 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
 import fetch from "isomorphic-unfetch"
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { setContext } from 'apollo-link-context'
-import { HttpLink } from 'apollo-link-http'
 
 let globalApolloClient = null
 
@@ -140,20 +138,16 @@ function createApolloClient(ctx = {}, initialState = {}) {
 }
 
 function createIsomorphLink(ctx) {
-  return new HttpLink({
-    uri: '/api/graphql',
-    credentials: 'include'
-  })
   if (typeof window === 'undefined') {
     const { SchemaLink } = require('apollo-link-schema')
     const { schema } = require('./schema')
     return new SchemaLink({ schema, context: ctx })
   } else {
     const { HttpLink } = require('apollo-link-http')
-
     return new HttpLink({
       uri: '/api/graphql',
-      credentials: 'include'
+      credentials: 'include',
+      fetch // Switches between unfetch & node-fetch for client & server.
     })
   }
 }
