@@ -1,6 +1,9 @@
 {
   "name": "onlife-serverless-app",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.16.1"
+  },
   "scripts": {
     "dev": "NODE_ENV=development next dev",
     "build": "NODE_ENV=production next build",
