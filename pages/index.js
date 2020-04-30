@@ -117,16 +117,12 @@ const Index = () => {
         mx="auto"
         pb={80}
       >
-        { loading ? 
           <Grid gap="4" columns={2}>
-            { placeholderTopicsArray.map(() => <TopicPlaceholder />) }
+            { loading
+              ? placeholderTopicsArray.map(() => <TopicPlaceholder />) 
+              : data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
+            }
           </Grid>
-          :
-          <Reveal duration={800}>
-            <Grid gap="4" columns={2}>
-              {data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)}
-            </Grid>
-          </Reveal>
         }
       </Box>
     </Flex>
