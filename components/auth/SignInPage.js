@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { jsx, Text, Heading, Link as Lstyle } from 'theme-ui'
 import SignUpLayout from './SignUpLayout'
 import Feature from './Feature'
-import clearAuthDataCache from '../../lib/clearAuthDataCache'
+import clearAuthDataCache from '../../utils/clearAuthDataCache'
 import { ApolloConsumer } from "react-apollo"
 
 class SignInPage extends Component {

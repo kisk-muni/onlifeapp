@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { jsx, Text, Link as Lstyle, Heading } from 'theme-ui'
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
-import clearAuthDataCache from '../lib/clearAuthDataCache'
+import clearAuthDataCache from '../utils/clearAuthDataCache'
 import { ApolloConsumer } from 'react-apollo'
 
 

@@ -11,7 +11,7 @@ if (!admin.apps.length) {
 
 // https://www.apollographql.com/docs/apollo-server/features/authentication.html
 const context = async ({ req, res }: {req: any, res: any}) => {
-  const { addSession } = require('../../lib/middleware/cookieSession')
+  const { addSession } = require('../../utils/middleware/cookieSession')
       addSession(req, res)
   //await applySession(req)
   // Take the cookies sessions token that was populated via the firebase admin sdk

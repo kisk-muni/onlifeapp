@@ -1,4 +1,4 @@
-import commonMiddleware from '../../lib/middleware/commonMiddleware'
+import commonMiddleware from '../../utils/middleware/commonMiddleware'
 
 const handler = (req, res) => {
   // Destroy the session.
