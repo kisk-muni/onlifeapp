@@ -3,6 +3,7 @@ import App from 'next/app'
 import { ThemeProvider, Styled } from 'theme-ui'
 import theme from '../theme'
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
+import '../utils/sentry'
 
 export default class MyApp extends App {
   render() {
