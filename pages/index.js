@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Image } from 'theme-ui'
-import Reveal from '../components/Reveal'
 import { keyframes } from '@emotion/core'
 
 export const GET_TOPICS = gql`
