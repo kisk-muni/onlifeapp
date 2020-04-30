@@ -6,7 +6,7 @@
 - Firebase realtime and firestore database used for data storage
 - Firebase auth
 - Theme-ui styling options utilized to develop layouts and styles asap
-- Typescript used for data-heavy operations, processes, which are hard to debug otherwise
+- Typescript
 
 ## How to use
 
@@ -34,13 +34,6 @@ Patching tricks
 ```bash
 yarn patch-package --exclude ^$ --include package.json react-firebaseui
 ```
-
-## Quiz workflow
-
-1. Žák přistoupí na stránku kvízu. Z url se veme ID kvízu.
-2. V databázi se vytvoří pokus o vyplnění kvízu.
-3. Id pokusu se předvyplní v URL wireframu.
-4. Žák vyplní kvíz. Odeslaný kvíz se pošle do results databáze.
 
 ## Other
 
