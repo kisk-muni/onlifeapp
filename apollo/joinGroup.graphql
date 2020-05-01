@@ -1,0 +1,5 @@
+mutation JoinGroup {
+  joinGroup {
+    joined
+  }
+}
