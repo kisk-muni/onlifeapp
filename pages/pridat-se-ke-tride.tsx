@@ -58,7 +58,7 @@ const JOIN_GROUP = gql`
 const JoinGroupWithConsent = ({ name }: { name: string }) => {
   const router = useRouter()
   return (
-    <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={[{query: { UserDocument }}]} onCompleted={(data: JoinResult) => {
+    <Mutation<JoinResult> mutation={JOIN_GROUP} refetchQueries={[{query: UserDocument}]} onCompleted={(data: JoinResult) => {
       if (data.joinGroup.joined) {
         // prevent ssr
         if (AppNotifier !== null) {
