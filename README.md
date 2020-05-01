@@ -1,14 +1,15 @@
 # Onlife
 
+[![Build Status](https://travis-ci.com/dalibor-123/onlifeapp.svg?token=zUWUg69HVpzxKsrVxM7s&branch=master)](https://travis-ci.com/dalibor-123/onlifeapp)
+
 ## Design decisions
 
-- Apollo graphql server and client
-- Firebase realtime and firestore database used for data storage
-- Firebase auth
+- TypeScript for any new code
+- Apollo graphql server and client, with generated TS types
+- Firebase auth and database for its free plan
 - Theme-ui styling options utilized to develop layouts and styles asap
-- Typescript
 
-## How to use
+## eGet started
 
 Set up Firebase:
 
@@ -19,8 +20,8 @@ Set up Firebase:
 Install it and run:
 
 ```bash
-npm install
-npm run dev
+yarn
+yarn dev
 ```
 
 Firebase tricks
