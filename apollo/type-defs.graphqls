@@ -1,6 +1,3 @@
-import gql from 'graphql-tag'
-
-export const typeDefs = gql`	
 	type Student {
 		id: ID!
 		name: String
@@ -132,4 +129,3 @@ export const typeDefs = gql`
     signIn(input: SignInInput!): SignInPayload!
     signOut: Boolean!
   }
-`

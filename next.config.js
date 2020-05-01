@@ -1,6 +1,6 @@
 require('./env.js')
 const webpack = require('webpack')
-const nextSourceMaps = require('@zeit/next-source-maps')()
+// const nextSourceMaps = require('@zeit/next-source-maps')()
 
 module.exports = {
   // Public, build-time env vars.
@@ -15,7 +15,19 @@ module.exports = {
   /* serverRuntimeConfig: {
     JWT_SECRET: process.env.JWT_SECRET,
   }, */
-  webpack: (config, { isServer, buildId }) => {
+  webpack(config, { isServer, buildId, defaultLoaders }) {
+    config.module.rules.push({
+      test: /\.graphql$/,
+      exclude: /node_modules/,
+      use: [defaultLoaders.babel, { loader: 'graphql-let/loader' }],
+    })
+
+    config.module.rules.push({
+      test: /\.graphqls$/,
+      exclude: /node_modules/,
+      loader: 'graphql-tag/loader',
+    })
+
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.SENTRY_RELEASE': JSON.stringify(buildId),

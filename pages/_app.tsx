@@ -1,9 +1,11 @@
-import React from 'react'
-import App from 'next/app'
+import React, { Component } from 'react'
+import App, { AppContext } from 'next/app'
 import { ThemeProvider, Styled } from 'theme-ui'
 import theme from '../theme'
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
 import '../utils/sentry'
+
+const securedRoutes = ['/ucitel', '/', '/pridat-se-ke-tride']
 
 export default class MyApp extends App {
   render() {

@@ -14,6 +14,11 @@ local.notes.md
 /.next/
 /out/
 
+# graphql-let generated
+__generated__
+*.graphql.d.ts
+*.graphqls.d.ts
+
 # production
 /build
 

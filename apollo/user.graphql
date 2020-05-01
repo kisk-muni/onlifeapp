@@ -1,0 +1,10 @@
+query User {
+  user {
+    name
+    isTeacher
+    isInGroup
+    photoURL
+    email 
+    id
+  }
+}

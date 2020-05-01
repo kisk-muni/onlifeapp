@@ -1,23 +1,38 @@
+import { NextPage, NextPageContext } from 'next'
 import React from 'react'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
-import fetch from "isomorphic-unfetch"
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
 
-let globalApolloClient = null
+type TApolloClient = ApolloClient<NormalizedCacheObject>
+
+type InitialProps = {
+  apolloClient: TApolloClient
+  apolloState: any
+} & Record<string, any>
+
+type WithApolloPageContext = {
+  apolloClient: TApolloClient
+} & NextPageContext
+
+let globalApolloClient: TApolloClient
 
 /**
  * Creates and provides the apolloContext
  * to a next.js PageTree. Use it by wrapping
  * your PageComponent via HOC pattern.
- * @param {Function|Class} PageComponent
- * @param {Object} [config]
- * @param {Boolean} [config.ssr=true]
  */
-export function withApollo(PageComponent, { ssr = true } = {}) {
-  const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
-    const client = apolloClient || initApolloClient(undefined, apolloState)
+export function withApollo(
+  PageComponent: NextPage,
+  { ssr = true } = {}
+) {
+  const WithApollo = ({
+    apolloClient,
+    apolloState,
+    ...pageProps
+  }: InitialProps) => {
+    const client = apolloClient || initApolloClient(apolloState)
     return (
       <ApolloProvider client={client}>
         <PageComponent {...pageProps} />
@@ -38,15 +53,12 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
   }
 
   if (ssr || PageComponent.getInitialProps) {
-    WithApollo.getInitialProps = async ctx => {
+    WithApollo.getInitialProps = async (ctx: WithApolloPageContext) => {
       const { AppTree } = ctx
 
       // Initialize ApolloClient, add it to the ctx object so
       // we can use it in `PageComponent.getInitialProp`.
-      const apolloClient = (ctx.apolloClient = initApolloClient({
-        res: ctx.res,
-        req: ctx.req,
-      }))
+      const apolloClient = (ctx.apolloClient = initApolloClient())
 
       // Run wrapped getInitialProps methods
       let pageProps = {}
@@ -106,16 +118,16 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(ctx, initialState) {
+function initApolloClient(initialState?: any) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === 'undefined') {
-    return createApolloClient(ctx, initialState)
+    return createApolloClient(initialState)
   }
 
   // Reuse client on the client-side
   if (!globalApolloClient) {
-    globalApolloClient = createApolloClient(ctx, initialState)
+    globalApolloClient = createApolloClient(initialState)
   }
 
   return globalApolloClient
@@ -125,29 +137,28 @@ function initApolloClient(ctx, initialState) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(ctx = {}, initialState = {}) {
+function createApolloClient(initialState = {}) {
   const ssrMode = typeof window === 'undefined'
   const cache = new InMemoryCache().restore(initialState)
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({
     ssrMode,
-    link: createIsomorphLink(ctx),
+    link: createIsomorphLink(),
     cache,
   })
 }
 
-function createIsomorphLink(ctx) {
+function createIsomorphLink() {
   if (typeof window === 'undefined') {
     const { SchemaLink } = require('apollo-link-schema')
-    const { schema } = require('./schema')
-    return new SchemaLink({ schema, context: ctx })
+    const schema = require('./schema').default
+    return new SchemaLink({ schema })
   } else {
     const { HttpLink } = require('apollo-link-http')
     return new HttpLink({
       uri: '/api/graphql',
-      credentials: 'include',
-      fetch // Switches between unfetch & node-fetch for client & server.
+      credentials: 'same-origin',
     })
   }
 }
