@@ -10,7 +10,7 @@
     "build": "yarn codegen && NODE_ENV=production next build",
     "start": "NODE_ENV=production next start -p $PORT",
     "export": "next export",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "yarn build",
     "type-check": "tsc",
     "prepare": "patch-package"
   },
@@ -40,6 +40,7 @@
     "firebase-admin": "^8.10.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "graphql-tools": "^5.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "js-cookie": "^2.2.1",
     "lodash.get": "^4.4.2",
