@@ -61,6 +61,9 @@ export default {
       fontWeight: 'bold',
       '&:hover, &:focus': {
         outline: 'none',
+      },
+      '&:hover': {
+        transform: 'translate3d(0px,-1px,0px)',
       }
     },
     primary: {
@@ -70,7 +73,8 @@ export default {
       '&:hover': {
         background: '#1515f7',
         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
-        cursor: 'pointer' 
+        cursor: 'pointer',
+        transform: 'translate3d(0px,-1px,0px)',
       },
       '&:focus': {
         background: '#2626fb',
@@ -420,17 +424,17 @@ export default {
       fontWeight: 'bold',
       color: 'inherit',
       textDecoration: 'none',
-      ':hover,:focus': {
+      '&:hover, &:focus': {
         color: 'text',
         textDecoration: 'none'
-      },
+      }
     },
     navlogo: {
       display: 'inline-block',
       fontWeight: 'bold',
       color: 'inherit',
       textDecoration: 'none',
-      ':hover,:focus': {
+      '&:hover, &:focus': {
         color: 'text',
         textDecoration: 'none'
       },
@@ -440,7 +444,7 @@ export default {
       fontWeight: 'bold',
       color: 'background',
       textDecoration: 'none',
-      ':hover,:focus': {
+      '&:hover, &:focus': {
         color: 'background',
         textDecoration: 'none'
       },
@@ -450,7 +454,7 @@ export default {
       fontWeight: 'bold',
       color: 'rgba(255,255,255,0.7)',
       textDecoration: 'none',
-      ':hover,:focus': {
+      '&:hover, &:focus': {
         color: 'rgba(255,255,255,0.9)',
         textDecoration: 'none'
       },
@@ -462,7 +466,7 @@ export default {
       display: 'inline',
       fontWeight: 'body',
       color: 'gray',
-      ':hover,:focus': {
+      '&:hover, &:focus': {
         color: 'text',
         textDecoration: 'none'
       },
@@ -516,7 +520,7 @@ export default {
         fontWeight: 400,
         color: 'gray',
         textDecoration: 'none',
-        ':hover,:focus': {
+        '&:hover, &:focus': {
           color: 'text',
           textDecoration: 'none'
         },

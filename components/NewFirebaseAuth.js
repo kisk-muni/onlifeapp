@@ -58,6 +58,28 @@ const NewFirebaseAuth = () => {
       ) : null}
     </Box>
       <style jsx global>{`
+        .firebaseui-idp-button.mdl-button.mdl-js-button.mdl-button--raised.firebaseui-idp-password.firebaseui-id-idp-button .firebaseui-idp-icon {
+            display: none;
+        }
+        .firebaseui-idp-button.mdl-button.mdl-js-button.mdl-button--raised.firebaseui-idp-password.firebaseui-id-idp-button {
+            background-color: #0000dc!important;
+            color: #fff!important;
+            border: none!important;
+            padding-top: 11px!important;
+        }
+        .firebaseui-idp-button.mdl-button.mdl-js-button.mdl-button--raised.firebaseui-idp-password.firebaseui-id-idp-button:hover {
+            background-color: #1515f7!important;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        
+        .firebaseui-card-header {
+            display: none;
+        }
+
+        .firebaseui-idp-google:hover {
+            background-color: #f5f5f5!important;
+        }
         .firebaseui-idp-password .firebaseui-idp-text-long {
             font-size: 0;
         }
@@ -67,9 +89,6 @@ const NewFirebaseAuth = () => {
             font-size: 16px;
             font-weight: 500;
             text-align: center;
-        }
-        .firebaseui-idp-password:hover {
-            background: #c73f33!important;
         }
         .firebaseui-button {
           box-sizing: border-box;

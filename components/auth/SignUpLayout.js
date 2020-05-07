@@ -21,7 +21,6 @@ const SignUpLayout = props => (
     </Box>
     <Box sx={{
         background: '#fafafa',
-        borderTop: '1px solid #eaeaea'
       }}>
       <Footer />
     </Box>
