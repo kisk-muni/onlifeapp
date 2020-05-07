@@ -2,6 +2,7 @@
 import { jsx } from 'theme-ui'
 import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/core"
 import Router from 'next/router'
+import Link from 'next/link'
 import { Link as Lstyle, Flex } from 'theme-ui'
 import { useApolloClient } from "@apollo/react-hooks"
 import { AppNotifier } from '../utils/notifier'
@@ -55,7 +56,8 @@ const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps)
         </Flex>
       </Lstyle>
       <Menu sx={{zIndex: 80}}>
-          {name && <MenuDivider title={email} />}
+          <Link href="/nastaveni"><MenuItem text="Nastavení" /></Link>
+          <MenuDivider />
           <MenuItem
           onClick={async () => {
             await fetch("/api/logout", {
@@ -72,7 +74,6 @@ const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps)
             }
             Router.push('/')
           }}
-          icon="log-out"
           text="Odhlásit se"
           />
         </Menu>

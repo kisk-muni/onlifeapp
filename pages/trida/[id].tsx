@@ -10,6 +10,8 @@ import { jsx, Text, Heading, AspectRatio, Link as SLink, Grid, Box, Flex, Close 
 import FullPageLoading from "../../components/FullPageLoading"
 import InviteStudentsBlock from '../../components/dashboard/InviteStudentsBlock'
 import { Collapse } from '@blueprintjs/core'
+import { NextPage } from 'next'
+import withAuthRedirect from '../../utils/withAuthRedirect' 
 
 const SuccessIcon = () => (
   <svg
@@ -101,14 +103,7 @@ const Topic = ({name, subtopics}: StudentTopicsResult) => {
   )
 }
 
-interface Student {
-  id: string
-  name: string
-  email: string
-  picture: string
-}
-
-const Trida = () => {
+const Trida: NextPage = () => {
   const router = useRouter();
   const [ activeStudent, setActiveStudent ] = useState('')
   const { data, loading, error } = useGroupQuery({variables: {id: router.query.id as string}})
@@ -286,4 +281,4 @@ const Trida = () => {
   
 }
 
-export default withApollo(Trida)
+export default withApollo(withAuthRedirect(Trida, {roles: ['teacher'], next: 'ucitel'}))

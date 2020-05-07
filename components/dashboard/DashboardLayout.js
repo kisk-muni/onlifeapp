@@ -28,7 +28,7 @@ const DashboardLayout = ({header, showDescription = () => false, stickHeaderByDe
         backdrop-filter: saturate(180%) blur(5px);
       }
     `}</style>
-      <main sx={{ width: '100%', flex: '1 1 auto' }}>
+      <main sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column', flexWrap: 'wrap' }}>
         {props.children}
       </main>
       <Footer />

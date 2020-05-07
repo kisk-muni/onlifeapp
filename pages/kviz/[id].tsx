@@ -1,36 +1,16 @@
 /** @jsx jsx */
 import StarterLayout from '../../components/StarterLayout'
 import { withApollo } from '../../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuizQuery } from '../../apollo/quiz.graphql'
 import { useRouter } from 'next/router'
 import { jsx, Embed, Flex, Box } from 'theme-ui'
+import { NextPage } from 'next'
+import withAuthRedirect from '../../utils/withAuthRedirect' 
 
-export const CURRENT_QUIZ = gql`
-query($id: ID!) {
-  quiz(id: $id) {
-    gFormURL
-    display
-  }
-}
-`
-
-interface QuizQueryData {
-  quiz: {
-    id: string
-    display: string
-    gFormURL: string
-  }
-}
-
-interface QuizQueryVars {
-  id: string
-}
-
-const KvizPage = () => {
+const KvizPage: NextPage = () => {
   const router = useRouter()
   const id = router.query.id as string
-  const { data, loading } = useQuery<QuizQueryData, QuizQueryVars>(CURRENT_QUIZ, {
+  const { data, loading } = useQuizQuery({
     variables: { id: id },
   })
   return (
@@ -49,4 +29,4 @@ const KvizPage = () => {
 
 }
 
-export default withApollo(KvizPage)
+export default withApollo(withAuthRedirect(KvizPage, {roles: ['student']}))

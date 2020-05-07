@@ -9,6 +9,7 @@ import { useJoinGroupAttemptMutation } from '../apollo/joinGroupAttempt.graphql'
 import ReactCodeInput from 'react-code-input'
 import { NextPage } from 'next'
 import JoinGroup from '../components/JoinGroup'
+import withAuthRedirect from '../utils/withAuthRedirect' 
 
 const JoinGroupPage: NextPage = () => {
   const router = useRouter()
@@ -95,4 +96,4 @@ const JoinGroupPage: NextPage = () => {
   )
 }
 
-export default withApollo(JoinGroupPage)
+export default withApollo(withAuthRedirect(JoinGroupPage, {roles: ['student'], next: 'pridat-se-ke-tride'}))
