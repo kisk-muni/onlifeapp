@@ -3,74 +3,13 @@ import { Fragment, useState } from 'react'
 import DashboardLayout from '../../components/dashboard/DashboardLayout'
 import GroupHeader from '../../components/dashboard/GroupHeader'
 import { withApollo } from '../../apollo/client'
-import { Query } from 'react-apollo'
 import { useRouter } from 'next/router'
+import { useGroupQuery } from '../../apollo/group.graphql'
+import { ResultsComponent, StudentSubtopicsResult, StudentTopicsResult } from '../../apollo/studentResults.graphql'
 import { jsx, Text, Heading, AspectRatio, Link as SLink, Grid, Box, Flex, Close } from 'theme-ui'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
 import FullPageLoading from "../../components/FullPageLoading"
 import InviteStudentsBlock from '../../components/dashboard/InviteStudentsBlock'
 import { Collapse } from '@blueprintjs/core'
-
-export const GROUP = gql`
-  query Group($id: ID!) {
-    group(id: $id) {
-      id
-      name
-      invitationCode
-      students {
-        id
-        name
-        email
-        picture
-      }
-    }
-  }
-`
-
-export const STUDENT_RESULTS = gql`
-  query Results($id: ID!) {
-    studentTopicsResults(id: $id) {
-      name
-      subtopics {
-        name
-        quizAttempts {
-          result
-          time
-          detail {
-            question
-            answer
-          }
-        }
-      }
-    }
-  }
-`
-
-interface QuizAttempt {
-  result: number
-  time: string
-  detail: {
-    question: string
-    answer: string
-  }[]
-}
-
-interface SubTopic {
-  name: string
-  quizAttempts: QuizAttempt[]
-}
-
-interface StudentResultsQueryData {
-  studentTopicsResults: {
-    name: string
-    subtopics: SubTopic[]
-  }[]
-}
-
-interface StudentResultsQueryVars {
-  id: string | string[]
-}
 
 const SuccessIcon = () => (
   <svg
@@ -95,7 +34,11 @@ const SuccessIcon = () => (
     </svg>
 )
 
-const Subtopic = ({name, quizAttempts, index}: {name: string, quizAttempts: QuizAttempt[], index: number}) => {
+interface StudentSubtopicsResultWithIndex extends StudentSubtopicsResult {
+  index: number
+}
+
+const Subtopic = ({name, quizAttempts, index}: StudentSubtopicsResultWithIndex) => {
   const [showDetail, setShowDetail] = useState(false) 
   return (
     <Box sx={{
@@ -124,18 +67,18 @@ const Subtopic = ({name, quizAttempts, index}: {name: string, quizAttempts: Quiz
         </Flex>
       </Flex>
       <Collapse isOpen={showDetail}>
-        {quizAttempts && quizAttempts.map((attempt, index) => (
+        {quizAttempts && quizAttempts?.length > 0 && quizAttempts.map((attempt, index) => (
           <Box sx={{py: 2}}>
             <Heading as="h3" sx={{mb: 2}}>Pokus {index+1}</Heading>
             <Box sx={{pl: 3}}>
-              <Text>Počet bodů: {attempt.result}</Text>
-              <Text>Čas: {attempt.time}</Text>
+              <Text>Počet bodů: {attempt?.result}</Text>
+              <Text>Čas: {attempt?.time}</Text>
               <Heading as="h4" sx={{mt: 3, mb: 2}}>Odpovědi</Heading>
               <ul>
-                {attempt.detail && attempt.detail.length > 0 && attempt.detail.map((item) => (
+                {attempt?.detail && attempt?.detail.length > 0 && attempt?.detail.map((item) => (
                   <li>
-                    <Box>{item.question}</Box>
-                    <Box>{item.answer}</Box>
+                    <Box>{item?.question}</Box>
+                    <Box>{item?.answer}</Box>
                   </li>
                 ))}
               </ul>
@@ -147,14 +90,13 @@ const Subtopic = ({name, quizAttempts, index}: {name: string, quizAttempts: Quiz
   )
 }
 
-const Topic = ({name, subtopics}: {name: string, subtopics: SubTopic[]}) => {
-  const [showDetail, setShowDetail] = useState(false) 
+const Topic = ({name, subtopics}: StudentTopicsResult) => {
   return (
     <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
       <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
         {name}
       </Heading>
-      {subtopics.map((subtopic, index) => <Subtopic name={subtopic.name} index={index} quizAttempts={subtopic.quizAttempts} />)}
+      {subtopics?.map((subtopic, index) => <Subtopic name={subtopic?.name} index={index} quizAttempts={subtopic?.quizAttempts} />)}
     </Box>
   )
 }
@@ -166,42 +108,33 @@ interface Student {
   picture: string
 }
 
-interface GroupQueryData {
-  group: {
-    id: string
-    name: string,
-    invitationCode: string
-    students: Student[]
-  }
-}
-
-interface GroupQueryVars {
-  id: string | string[]
-}
-
 const Trida = () => {
   const router = useRouter();
   const [ activeStudent, setActiveStudent ] = useState('')
-  const { data, loading, error } = useQuery<GroupQueryData, GroupQueryVars>(GROUP, {variables: {id: router.query.id}})
+  const { data, loading, error } = useGroupQuery({variables: {id: router.query.id as string}})
 
   return (
     <DashboardLayout
       header={<GroupHeader />}
       stickHeaderByDefault>
-      { loading ? <FullPageLoading dashboard /> : 
-        <Flex sx={{flexWrap: 'wrap'}}>
+      { (loading || error || !data?.group) ? <FullPageLoading dashboard /> : 
+        <Flex sx={{
+          flexDirection: 'column',
+          flexGrow: 1,
+          height: '100%',
+          justifyContent: 'space-between'
+        }}>
           <Box
             sx={{
-              maxWidth: 1240,
+              maxWidth: 1280,
               px: 35,
               pt: 50,
-              alignSelf: 'center',
               width: '100%',
               mx: 'auto'
             }}
           >
             {
-              !loading && data?.group && data?.group?.students.length > 0
+              data?.group?.students && data?.group?.students.length > 0
               ?
               <Fragment>
                 <Box sx={{ mb: '42px' }}>
@@ -210,7 +143,7 @@ const Trida = () => {
                       ? 'Vyberte studenta pro zobrazení výsledků'
                       : <Flex sx={{alignItems: 'baseline'}}>
                           <span sx={{color: 'gray', mr: 2}}>Výsledky studenta:</span>
-                          { data.group.students.find(x => x.id === activeStudent)!.name }
+                          { data?.group.students.find(x => x!.id === activeStudent)!.name }
                           <Close
                             sx={{
                               ml: 3,
@@ -235,7 +168,7 @@ const Trida = () => {
                       data?.group?.students.map((student) =>
                         <Flex>
                           <Box
-                            onClick={() => setActiveStudent(student.id)}
+                            onClick={() => setActiveStudent(student!.id)}
                             sx={{                            
                               mb: '12px',
                               '&:hover': {
@@ -248,15 +181,15 @@ const Trida = () => {
                                 color: 'text'
                               }
                             }}>
-                            { student.picture &&
+                            { student?.picture &&
                               <img
-                                src={student.picture}
+                                src={student!.picture}
                                 sx={{
                                   boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
                                   boxSizing: 'content-box',
                                   position: 'static',
                                   zIndex: 2,
-                                  opacity: (student.id === activeStudent ? '1' : '.5'),
+                                  opacity: (student!.id === activeStudent ? '1' : '.5'),
                                   display: 'inline-block',
                                   height: '32px',
                                   borderRadius: '50%',
@@ -265,17 +198,17 @@ const Trida = () => {
                                 }}
                               />}
                             <Text sx={{
-                                fontWeight: (student.id === activeStudent ? 700 : 400),
-                                textDecoration: (student.id === activeStudent ? 'underline' : 'none'),
-                                color: (student.id === activeStudent ? 'text' : 'gray'),
+                                fontWeight: (student!.id === activeStudent ? 700 : 400),
+                                textDecoration: (student!.id === activeStudent ? 'underline' : 'none'),
+                                color: (student!.id === activeStudent ? 'text' : 'gray'),
                                 fontSize: 3,
                                 lineHeight: '32px',
                                 display: 'inline-block'
                               }}>
-                                {student.name}
+                                {student!.name}
                             </Text>
                           </Box>
-                            {student.id === activeStudent &&
+                            {student!.id === activeStudent &&
                               <Close
                                 sx={{
                                   position: 'relative',
@@ -299,9 +232,9 @@ const Trida = () => {
                 <Box sx={{ mb: '50px' }}>
                   <Box>
                       { activeStudent &&
-                        <Query<StudentResultsQueryData, StudentResultsQueryVars> query={STUDENT_RESULTS} variables={{id: activeStudent}}>
-                          {({loading, data}) => {
-                            if (loading) {
+                        <ResultsComponent variables={{id: activeStudent}}>
+                          {({loading, data, error}) => {
+                            if (loading || error || !data?.studentTopicsResults) {
                               let placeholders = [1, 2, 3, 4, 5, 6]
                               return (
                                 <Grid gap={4} columns={2}>
@@ -315,28 +248,37 @@ const Trida = () => {
                             }
                             return (
                               <Grid gap={4} columns={2}>
-                                {data?.studentTopicsResults.map((topic) => <Topic name={topic.name} subtopics={topic.subtopics} />)}
+                                {data?.studentTopicsResults.map((topic) => <Topic name={topic!.name!} subtopics={topic?.subtopics} />)}
                               </Grid>
                             ) 
                           }}
-                        </Query>
+                        </ResultsComponent>
                       }
                   </Box>
                 </Box>
-                <Box>
+              </Fragment>
+              :
+              <Box>
+                <InviteStudentsBlock groupName={data?.group.name} invitationCode={data!.group!.invitationCode!} />
+              </Box>  
+            }
+          </Box>
+          <Box
+            sx={{
+              maxWidth: 1280,
+              px: 35,
+              pt: 50,
+              alignSelf: 'flex-end',
+              width: '100%',
+              mx: 'auto'
+            }}
+          >
                   <Box
                     sx={{ variant: 'styles.groupHelpCard', height: '208px'}}
                     >
                     <Heading as="h3" sx={{fontSize: 3, color: '#333', mb: 3}}>Nápověda</Heading>
                   </Box>
                 </Box>
-              </Fragment>
-              :
-              <Box>
-                <InviteStudentsBlock groupName={data!.group.name} invitationCode={data!.group.invitationCode} />
-              </Box>  
-            }
-          </Box>
         </Flex>
       }
     </DashboardLayout>

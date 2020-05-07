@@ -1,0 +1,16 @@
+query Results($id: ID!) {
+  studentTopicsResults(id: $id) {
+    name
+    subtopics {
+      name
+      quizAttempts {
+        result
+        time
+        detail {
+          question
+          answer
+        }
+      }
+    }
+  }
+}

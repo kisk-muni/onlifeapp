@@ -1,0 +1,13 @@
+query Group($id: ID!) {
+  group(id: $id) {
+    id
+    name
+    invitationCode
+    students {
+      id
+      name
+      email
+      picture
+    }
+  }
+}
