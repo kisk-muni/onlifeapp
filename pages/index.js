@@ -1,23 +1,12 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useTopicsQuery } from '../apollo/topics.graphql'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Image } from 'theme-ui'
 import { keyframes } from '@emotion/core'
-
-export const GET_TOPICS = gql`
-{
-  topics {
-    thumbnail
-    name
-    id
-  }
-}
-`
 
 const placeholderTopicsArray = [0, 1, 2, 3, 4, 5]
 
@@ -92,7 +81,7 @@ const Topic = ({name, id, picture}) =>
 
 const Index = () => {
   const router = useRouter()
-  const { data, loading, error } = useQuery(GET_TOPICS)
+  const { data, loading, error } = useTopicsQuery()
 
   return (
   <StarterLayout
