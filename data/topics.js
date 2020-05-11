@@ -45,8 +45,8 @@ export default [
   {
     id: 'faze-prace-s-informacemi',
     name: 'Fáze práce s informacemi',
-    thumbnail: '/course/ilustrace-1-thumbnail.jpg',
-    picture: '/course/ilustrace-1.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:good,w_570/v1589196349/ilustrace-1-thumbnail_ivxlxg.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-1_us1zkq.jpg',
     subtopics: [
       {
         id: 'vyhledavani-na-internetu-i',
@@ -98,36 +98,36 @@ export default [
   {
     id: 'prace-s-informacemi-a-uceni',
     name: 'Práce s informacemi a učení',
-    thumbnail: '/course/ilustrace-2-thumbnail.jpg',
-    picture: '/course/ilustrace-2.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_570/v1589196349/ilustrace-2-thumbnail_rsehxf.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-2_kpdssm.jpg',
     subtopics: []
   },
   {
     id: 'media-a-obcanstvi',
     name: 'Média a občanství',
-    thumbnail: '/course/ilustrace-3-thumbnail.jpg',
-    picture: '/course/ilustrace-3.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_570/v1589196349/ilustrace-3-thumbnail_opvups.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-3_ox0ziw.jpg',
     subtopics: []
   },
   {
     id: 'prace-s-dokumenty',
     name: 'Práce s dokumenty',
-    thumbnail: '/course/ilustrace-4-thumbnail.jpg',
-    picture: '/course/ilustrace-4.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_570/v1589196349/ilustrace-4-thumbnail_or37am.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-4_wiluqb.jpg',
     subtopics: []
   },
   {
     id: 'interakce-vzajemnost-a-zpetna-vazba',
     name: 'Interakce, vzájemnost a zpětná vazba',
-    thumbnail: '/course/ilustrace-5-thumbnail.jpg',
-    picture: '/course/ilustrace-5.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_570/v1589196349/ilustrace-5-thumbnail_rasg3r.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-5_t4e5rv.jpg',
     subtopics: []
   },
   {
     id: 'bezpeci-a-ferovost',
     name: 'Bezpečí a férovost',
-    thumbnail: '/course/ilustrace-6-thumbnail.jpg',
-    picture: '/course/ilustrace-6.jpg',
+    thumbnail: 'https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_570/v1589196349/ilustrace-6-thumbnail_rpxr8w.jpg',
+    picture: 'https://res.cloudinary.com/diwkzuny7/image/upload/q_auto:best/v1589196349/ilustrace-6_kyqt0b.jpg',
     subtopics: []
   },
 ]

@@ -127,15 +127,15 @@ const Index = () => {
           <Flex width={[1]} mt="5" mb="5" flexDirection="row" justifyContent="center" alignItems="center">
             <Flex flexDirection="row" mr="4" >
               <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, px: 48, width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
-                <Image src="/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_70/v1589197379/index/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
               </Flex>
               <Flex sx={{borderRadius: 9999, ml: -4, overflow: 'hidden', width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#0000dc'}}>
-                <Image src="/muni-lg-white.png" width='100%' sx={{alignSelf: 'center'}} />
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_166/v1589197379/index/muni-lg-white.png" width='100%' sx={{alignSelf: 'center'}} />
               </Flex>
             </Flex>
             <Flex mx="4" justifyContent="center" flexDirection="column" alignItems="center">
               <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
-                <Image src="/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
               </Flex>
               <Heading as='h3' sx={{
                 mt: 3,
@@ -146,7 +146,7 @@ const Index = () => {
             </Flex>
             <Flex ml="4" mr="5" justifyContent="center" flexDirection="column" alignItems="center">
               <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
-                <Image src="/michal-cerny.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/michal-cerny.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
               </Flex>
               <Heading as='h3' sx={{
                 mt: 3,

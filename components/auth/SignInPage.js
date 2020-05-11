@@ -110,6 +110,7 @@ class SignInPage extends Component {
               <Box mt="3">
                 <Heading sx={{textTransform: 'uppercase', mb: 3, color: 'gray', fontSize: 2}}>Kurz pro vás připravila</Heading>
                 <img src="/muni-lg-cze-black.png" width="212px" />
+                <img src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_212/v1589197379/index/muni-lg-cze-black.png" width="212px" />
               </Box>
             </Flex>
           </Box>
