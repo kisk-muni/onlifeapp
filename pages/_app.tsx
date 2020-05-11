@@ -1,6 +1,6 @@
 import React from 'react'
 import App from 'next/app'
-import { ThemeProvider, Styled } from 'theme-ui'
+import { ThemeProvider } from 'theme-ui'
 import theme from '../theme'
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
 import '../utils/sentry'
@@ -11,7 +11,6 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
-        <Styled.root>
           <Component {...pageProps} />
           <style jsx global>{`
             .toaster-notification {
@@ -45,7 +44,6 @@ export default class MyApp extends App {
               background-color: rgba(16, 22, 26, 0.3);
             }
           `}</style>
-        </Styled.root>
       </ThemeProvider>
     )
   }
