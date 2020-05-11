@@ -50,7 +50,7 @@ const TopicPlaceholder = () =>
 
 const Topic = ({name, id, picture}) => 
   <Box sx={{variant: 'styles.topicCard', mb: 3}}>
-    <Link href={"/tema/"+id} passHref>
+    <Link href={"/tema/[id]"} as={"/tema/"+id} passHref>
       <a sx={{
         '&:hover, &:focus': {
           textDecoration: 'none'
