@@ -107,7 +107,7 @@ const Index = () => {
       >
         <Grid gap="4" columns={2}>
           { loading
-            ? placeholderTopicsArray.map(() => <TopicPlaceholder />) 
+            ? placeholderTopicsArray.map((number, index) => <TopicPlaceholder key={index} />) 
             : data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
           }
         </Grid>
