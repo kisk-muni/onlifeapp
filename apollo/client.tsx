@@ -3,6 +3,8 @@ import React from 'react'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import { setContext } from 'apollo-link-context'
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
 
 type TApolloClient = ApolloClient<NormalizedCacheObject>
@@ -14,6 +16,7 @@ type InitialProps = {
 
 type WithApolloPageContext = {
   apolloClient: TApolloClient
+
 } & NextPageContext
 
 let globalApolloClient: TApolloClient
@@ -52,18 +55,18 @@ export function withApollo(
     WithApollo.displayName = `withApollo(${displayName})`
   }
 
-  if (ssr || PageComponent.getInitialProps) {
-    WithApollo.getInitialProps = async (ctx: WithApolloPageContext) => {
+  if (ssr || PageComponent.GetStaticProps) {
+    WithApollo.GetStaticProps = async (ctx: WithApolloPageContext) => {
       const { AppTree } = ctx
 
       // Initialize ApolloClient, add it to the ctx object so
       // we can use it in `PageComponent.getInitialProp`.
       const apolloClient = (ctx.apolloClient = initApolloClient())
 
-      // Run wrapped getInitialProps methods
+      // Run wrapped GetStaticProps methods
       let pageProps = {}
-      if (PageComponent.getInitialProps) {
-        pageProps = await PageComponent.getInitialProps(ctx)
+      if (PageComponent.GetStaticProps) {
+        pageProps = await PageComponent.GetStaticProps(ctx)
       }
 
       // Only on the server:
@@ -140,6 +143,18 @@ function initApolloClient(initialState?: any) {
 function createApolloClient(initialState = {}) {
   const ssrMode = typeof window === 'undefined'
   const cache = new InMemoryCache().restore(initialState)
+
+  /* const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem('token');
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : "",
+      }
+    }
+  }); */
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({

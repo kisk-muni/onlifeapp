@@ -94,7 +94,7 @@ const Subtopic = ({name, quizAttempts, index}: StudentSubtopicsResultWithIndex) 
 
 const Topic = ({name, subtopics}: StudentTopicsResult) => {
   return (
-    <Box sx={{mb: 2, variant: 'styles.groupCard' }}>
+    <Box sx={{mb: 4, variant: 'styles.groupCard' }}>
       <Heading sx={{fontSize: 5, pb: 2, mb: 2}}>
         {name}
       </Heading>
@@ -106,7 +106,7 @@ const Topic = ({name, subtopics}: StudentTopicsResult) => {
 const Trida: NextPage = () => {
   const router = useRouter();
   const [ activeStudent, setActiveStudent ] = useState('')
-  const { data, loading, error } = useGroupQuery({variables: {id: router.query.id as string}})
+  const { data, loading, error } = useGroupQuery({variables: {id: router.query.id as string}, pollInterval: 5000})
 
   return (
     <DashboardLayout
@@ -134,97 +134,50 @@ const Trida: NextPage = () => {
               <Fragment>
                 <Box sx={{ mb: '42px' }}>
                   <Heading sx={{fontSize: '40px', mb: '42px', lineHeight: '42px', color: 'text'}}>
-                    { activeStudent === ''
-                      ? 'Vyberte studenta pro zobrazení výsledků'
-                      : <Flex sx={{alignItems: 'baseline'}}>
-                          <span sx={{color: 'gray', mr: 2}}>Výsledky studenta:</span>
-                          { data?.group.students.find(x => x!.id === activeStudent)!.name }
-                          <Close
-                            sx={{
-                              ml: 3,
-                              transform: 'scale(1.5)',
-                              position: 'relative',
-                              bottom: '0px',
-                              color: 'gray',
-                              '&:hover': {
-                                cursor: 'pointer',
-                                color: 'text'
-                              },
-                              '&:focus': {
-                                outline: 'none'
-                              }
-                            }}
-                            onClick={() => setActiveStudent('')} />
-                        </Flex>
-                    }
+                    Studenti ({data?.group?.students.length})
                   </Heading>
                   <Grid gap={4} columns={4} sx={{position: 'static', zIndex: 2}}>
                     {
                       data?.group?.students.map((student) =>
-                        <Flex>
-                          <Box
-                            onClick={() => setActiveStudent(student!.id)}
-                            sx={{                            
-                              mb: '12px',
-                              '&:hover': {
-                                cursor: 'pointer'
-                              },
-                              '&:hover > img': {
-                                opacity: '1'
-                              },
-                              '&:hover > div': {
-                                color: 'text'
-                              }
-                            }}>
-                            { student?.picture &&
-                              <img
-                                src={student!.picture}
-                                sx={{
-                                  boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
-                                  boxSizing: 'content-box',
-                                  position: 'static',
-                                  zIndex: 2,
-                                  opacity: (student!.id === activeStudent ? '1' : '.5'),
-                                  display: 'inline-block',
-                                  height: '32px',
-                                  borderRadius: '50%',
-                                  mr: '14px',
-                                  mb: -2,
-                                }}
-                              />}
+                        <Box
+                          sx={{                            
+                            mb: '12px',
+                            '&:hover': {
+                              cursor: 'pointer'
+                            }
+                          }}>
+                          { student?.picture &&
+                            <img
+                              src={student!.picture}
+                              sx={{
+                                boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
+                                boxSizing: 'content-box',
+                                position: 'static',
+                                zIndex: 2,
+                                display: 'inline-block',
+                                height: '32px',
+                                borderRadius: '50%',
+                                mr: '14px',
+                                mb: -2,
+                              }}
+                            />}
                             <Text sx={{
-                                fontWeight: (student!.id === activeStudent ? 700 : 400),
-                                textDecoration: (student!.id === activeStudent ? 'underline' : 'none'),
-                                color: (student!.id === activeStudent ? 'text' : 'gray'),
+                                fontWeight: 500,
+                                color: 'text',
                                 fontSize: 3,
                                 lineHeight: '32px',
                                 display: 'inline-block'
                               }}>
                                 {student!.name}
                             </Text>
-                          </Box>
-                            {student!.id === activeStudent &&
-                              <Close
-                                sx={{
-                                  position: 'relative',
-                                  bottom: '-2px',
-                                  color: 'gray',
-                                  '&:hover': {
-                                    cursor: 'pointer',
-                                    color: 'text'
-                                  },
-                                  '&:focus': {
-                                    outline: 'none'
-                                  }
-                                }}
-                                onClick={() => setActiveStudent('')}
-                              />
-                            }
-                        </Flex>)
+                      </Box>)
                     }
                   </Grid>
                 </Box>  
                 <Box sx={{ mb: '50px' }}>
+                  <Heading sx={{fontSize: '40px', mb: '42px', lineHeight: '42px', color: 'text'}}>
+                    Aktivita v kurzu
+                  </Heading>
                   <Box>
                       { activeStudent &&
                         <ResultsComponent variables={{id: activeStudent}}>
@@ -242,9 +195,9 @@ const Trida: NextPage = () => {
                               )
                             }
                             return (
-                              <Grid gap={4} columns={2}>
+                              <Box sx={{mb: 4}}>
                                 {data?.studentTopicsResults.map((topic) => <Topic name={topic!.name!} subtopics={topic?.subtopics} />)}
-                              </Grid>
+                              </Box>
                             ) 
                           }}
                         </ResultsComponent>

@@ -33,6 +33,7 @@ export default {
   sizes: {
     sidebar: 256,
     container: 1024,
+    articleContainer: 768,
   },
   text: {
     heading: {
@@ -74,7 +75,7 @@ export default {
         background: '#1515f7',
         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
         cursor: 'pointer',
-        transform: 'translate3d(0px,-1px,0px)',
+//        transform: 'translate3d(0px,-1px,0px)',
       },
       '&:focus': {
         background: '#2626fb',
@@ -280,6 +281,13 @@ export default {
       p: 3,
       // maxWidth: 1024,
     },
+    articleContentContainer: {
+      maxWidth: 720,
+      px: 2,
+    },
+    articleQuizBlockContainer: {
+      maxWidth: 720
+    }
   },
   styles: {
     root: {
@@ -488,8 +496,6 @@ export default {
       py: 20,
       px: 20,
       borderRadius: '8px',
-      mt: '16px',
-      mb: '-16px',
       boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
     },
     groupListItem: {

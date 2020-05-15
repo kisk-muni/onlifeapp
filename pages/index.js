@@ -1,9 +1,10 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
-import { useTopicsQuery } from '../apollo/topics.graphql'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Image as DatoImage } from 'react-datocms'
+import { getAllPostsForHome } from '../utils/api'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Image } from 'theme-ui'
 import { keyframes } from '@emotion/core'
@@ -48,9 +49,9 @@ const TopicPlaceholder = () =>
       }}></Box>
   </Box>
 
-const Topic = ({name, id, picture}) => 
+const Topic = ({name, slug, responsiveImage}) => 
   <Box sx={{variant: 'styles.topicCard', mb: 3}}>
-    <Link href={"/tema/[id]"} as={"/tema/"+id} passHref>
+    <Link href={"/tema/[slug]"} as={"/tema/"+slug} passHref>
       <a sx={{
         '&:hover, &:focus': {
           textDecoration: 'none'
@@ -64,9 +65,10 @@ const Topic = ({name, id, picture}) =>
             width: '100%',
             transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
           }}>
-          <AspectImage 
-            ratio={16/9}
-            src={picture}
+          <DatoImage
+            data={{
+              ...responsiveImage,
+            }}
           />
         </div>
         <Heading as='h3' sx={{
@@ -79,9 +81,8 @@ const Topic = ({name, id, picture}) =>
   </Box>
 
 
-const Index = () => {
-  const router = useRouter()
-  const { data, loading, error } = useTopicsQuery()
+const Index = ({ allPosts }) => {
+ // const router = useRouter()
 
   return (
   <StarterLayout
@@ -104,12 +105,15 @@ const Index = () => {
         px={35}
         mx="auto"
         pb={80}
-      >
+      > 
         <Grid gap="4" columns={2}>
-          { loading
+          {
+            allPosts && allPosts.map((post, index) => <Topic key={index} slug={post.slug} name={post.titulek} responsiveImage={post.thumbnailPicture.responsiveImage} />)
+          }
+          { /* loading
             ? placeholderTopicsArray.map((number, index) => <TopicPlaceholder key={index} />) 
             : data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
-          }
+          */ }
         </Grid>
       </Box>
     </Flex>
@@ -175,6 +179,14 @@ const Index = () => {
   </StarterLayout>
   )
 
+}
+
+export async function getStaticProps() {
+  const allPosts = (await getAllPostsForHome(false)) || []
+  console.log(allPosts)
+  return {
+    props: { allPosts },
+  }
 }
 
 export default withApollo(Index)

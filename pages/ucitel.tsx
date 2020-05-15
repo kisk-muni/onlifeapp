@@ -37,7 +37,7 @@ const GroupsOverview: NextPage = () =>
                 mt={60}
                 pb={120}
                 mx="auto">
-                <Heading as="h3" sx={{fontSize: 4, mb: 1, color: 'text'}}>Vaše třídy</Heading>
+                <Heading as="h3" sx={{fontSize: 4, mb: 3, color: 'text'}}>Vaše třídy</Heading>
                 <Grid gap="3" columns={3}>
                   <CreateGroupDialog hasUserGroup={true} />
                   <GroupsList groups={data.groups} />

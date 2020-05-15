@@ -43,7 +43,7 @@ const InviteStudentsBlock = ({invitationCode, groupName}: {invitationCode: strin
       mb: 5,
       height: '100%',
     }}>
-      <Heading sx={{fontSize: 6, mb: 4, mt: 0}}>{groupName}</Heading>
+      <Heading sx={{fontSize: 4, mb: 4, mt: 0}}>{groupName}</Heading>
       <Heading sx={{fontSize: 6, mt: 4, mb: 2}}>Začněte pozváním studentů</Heading>
       <Text sx={{fontSize: 3, mb: 3}}>Kdokoli se v kurzu může připojit k vaší třídě<br />pomocí odkazu nebo zadáním kódu.</Text>
       { /* <Text sx={{fontSize: 2}}><Link passHref href="/"><Slink sx={{textDecoration: 'underline'}}>Jak se studenti připojí?</Slink></Link></Text> */}
