@@ -20,9 +20,7 @@
   }
 
   type Quiz {
-    gFormURL: String!
-    display: Boolean!
-    id: ID!
+    prefill: String!
   }
 
   type SubTopic {

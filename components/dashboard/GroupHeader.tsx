@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { jsx, Link as Lstyle, Button, Text, Flex } from 'theme-ui'
+import { jsx, Link as Lstyle, Box, Container, Button, Text, Flex } from 'theme-ui'
 import ProfileDropdown from "../ProfileDropdown"
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
@@ -86,15 +86,12 @@ const GroupHeader = () => {
 
   return (
   <header sx={{
-      variant: 'styles.dashboard.header',
+      variant: 'styles.dashboard.groupHeader',
       width: '100%',
       zIndex: 18
   }}>
-    <Flex sx={{
-      mx: 'auto',
-      px: 35,
-      alignItems: 'center',
-    }}>
+    <Container variant="groupContainer">
+      <Flex sx={{alignItems: 'center'}}>
       <Link passHref href="/">
         <Lstyle 
           sx={{
@@ -105,7 +102,7 @@ const GroupHeader = () => {
           OnLife
         </Lstyle>
       </Link>
-      <Query<HeaderQueryData, HeaderQueryVars> query={GROUP_HEADER} variables={{id: router.query.id}} >
+      <Query<HeaderQueryData, HeaderQueryVars> query={GROUP_HEADER} variables={{id: router.query.trida}} >
       {({loading, data, error}) => {
         if (loading === false && data && data?.user && data?.group && data?.groupsSelect) {
           return (
@@ -121,9 +118,7 @@ const GroupHeader = () => {
                 >
                 <Button variant="groupSelect">{data?.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
               </Select>
-              { data?.group.students.length > 0 &&
-                <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data?.group.invitationCode}</span></Text>
-              }
+              <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data?.group.invitationCode}</span></Text>
               <div sx={{ mx: 'auto' }} />
               <Link passHref href="/">
                 <Lstyle
@@ -207,7 +202,36 @@ const GroupHeader = () => {
         </Fragment>
       }}
       </Query>
-    </Flex>
+      </Flex>
+      <Box>
+        <Link asPath={"/trida?trida="+router.query.trida} href={{ pathname: '/trida', query: { trida: router.query.trida } }} passHref>
+          <Lstyle
+            sx={{
+              variant: 'styles.navlink',
+              color: (router.pathname  == '/trida' ? 'text' : 'gray'),
+              borderBottom: (router.pathname  == '/trida' ? '2px solid #000' : '2px solid transparent'),
+              pb: 3,
+              mr: 4,
+              pt: 3
+            }}>
+            Přehled
+          </Lstyle>
+        </Link>
+        <Link asPath={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }} passHref>
+          <Lstyle
+            sx={{
+              variant: 'styles.navlink',
+              color: (router.pathname  == '/studenti' ? 'text' : 'gray'),
+              borderBottom: (router.pathname  == '/studenti' ? '2px solid #000' : '2px solid transparent'),
+              pb: 3,
+              mr: 4,
+              pt: 3
+            }}>
+            Studenti
+          </Lstyle>
+        </Link>
+      </Box>
+    </Container>
   </header>
   )
 }

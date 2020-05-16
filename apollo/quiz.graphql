@@ -1,6 +1,5 @@
 query Quiz($id: ID!) {
   quiz(id: $id) {
-    gFormURL
-    display
+    prefill
   }
 }

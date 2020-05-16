@@ -32,6 +32,7 @@ export default {
   },
   sizes: {
     sidebar: 256,
+    resultsFilterSidebar: 340,
     container: 1024,
     articleContainer: 768,
   },
@@ -63,9 +64,6 @@ export default {
       '&:hover, &:focus': {
         outline: 'none',
       },
-      '&:hover': {
-        transform: 'translate3d(0px,-1px,0px)',
-      }
     },
     primary: {
       variant: 'buttons.default',
@@ -100,6 +98,24 @@ export default {
         background: 'rgba(0,0,0,0.2)',
         cursor: 'pointer' 
       }
+    },
+    detailAction: {
+      background: 'transparent',
+      color: 'gray',
+      borderRadius: 6,
+      fontWeight: 'regular',
+      border: '1px solid #ddd',
+      ml: 2,
+      py: '6px',
+      px: '12px',
+      '&:hover': {
+        background: '#fafafa',
+        color: 'text',
+        cursor: 'pointer'
+      },
+      '&:focus': {
+        outline: 'none',
+      },
     },
     groupSelect: {
       variant: 'buttons.default',
@@ -183,6 +199,11 @@ export default {
   badges: {
     primary: {
       color: 'background',
+      bg: 'primary',
+      py: '2px',
+      fontSize: 1,
+      px: '10px',
+      borderRadius: '14px', 
     },
     highlight: {
       color: 'text',
@@ -286,8 +307,14 @@ export default {
       px: 2,
     },
     articleQuizBlockContainer: {
-      maxWidth: 720
-    }
+      maxWidth: 720,
+    },
+    googleFormEmbed: {
+      maxWidth: 640,
+    },
+    groupContainer: {
+      maxWidth: 1280,
+    },
   },
   styles: {
     root: {
@@ -519,6 +546,10 @@ export default {
     dashboard: {
       header: {
         py: 2,
+        background: 'rgba(255, 255, 255, .8)',
+      },
+      groupHeader: {
+        pt: 2,
         background: 'rgba(255, 255, 255, .8)',
       },
       navlink: {

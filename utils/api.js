@@ -123,6 +123,8 @@ export async function getGFQuizWithSlug(slug, preview) {
     `
   query QuizBySlug($slug: String) {
     gfquiz(filter: {slug: {eq: $slug}}) {
+      id
+      height
       slug
       title
       prefilledGoogleFormsQuizUrl
@@ -156,6 +158,50 @@ export async function getAllPostsForHome(preview) {
       }
     }
     ${responsiveImageFragment}
+  `,
+    { preview }
+  )
+  return data?.allPosts
+}
+
+export async function getAllPostsForGroup(slug, preview) {
+  const data = await fetchAPI(
+    `
+    {
+      allPosts(filter: {parent: {exists: "false"}}) {
+        id
+        position
+        slug
+        titulek
+        url
+        content {
+          ... on QuizblockRecord {
+            id
+            quizLink {
+              id
+              slug
+              title
+            }
+          }
+        }
+        children {
+          id
+          slug
+          titulek
+          url
+          content {
+            ... on QuizblockRecord {
+              id
+              quizLink {
+                id
+                slug
+                title
+              }
+            }
+          }
+        }
+      }
+    }
   `,
     { preview }
   )

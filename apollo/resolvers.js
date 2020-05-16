@@ -113,7 +113,7 @@ export const resolvers = {
         groupsRes.push({
           id: doc.id,
           name: data.name,
-          link: "/trida/" + doc.id,
+          link: "/trida?trida=" + doc.id,
         })
       });
       groupsRes.push({
@@ -129,10 +129,15 @@ export const resolvers = {
       return user
     },
     async quiz(obj, {id}, {user}, info) {
-      const quiz = quizes[id]
-      if (!quiz.display) {
-        throw new Error('Quiz should not be displayed.')
+      // there should be some check that quiz exists
+      if (!user) {
+        throw new Error('User not present.')
       }
+      return {
+        prefill: 'necodsaf'
+      }
+
+      /* 
       let quizAttemptsRef = db.collection('users').doc(user.id).collection('quizAttempts')
       await quizAttemptsRef.doc(id).set({
         name: quiz.name
@@ -146,7 +151,7 @@ export const resolvers = {
         id: id,
         display: true,
         gFormURL: quiz.gFormURL+quizAttempts.id
-      }  
+      }   */
     },
     async studentTopicsResults(obj, {id}, context, info) {
       // podivat se na studentovy pokusy
