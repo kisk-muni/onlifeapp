@@ -72,28 +72,29 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
           }}>
           <Box
             sx={{
+              position: 'relative',
               flexGrow: 1,
               flexBasis: 'resultsFilterSidebar',
             }}>
-            <Box sx={{position: 'fixed'}}>
-            <Heading sx={{mb: 4}}>Témata</Heading>
-            {
-              allPosts.map((post, i) => (
-                <Box key={i} sx={{mb: '16px'}}>
-                  <Link passHref as={"/trida?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/trida', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
-                    <SLink sx={{
-                      fontWeight: (activeCategory === post.slug ? 600 : 400),
-                      color: (activeCategory === post.slug ? 'text' : 'gray'),
-                      fontSize: 2,
-                      '&:hover': {
-                        color: 'text',
-                        textDecoration: 'none',
-                      }
-                    }}>{post.titulek}</SLink>
-                  </Link>
-                </Box>
-              ))
-            }
+            <Box sx={{position: 'sticky', top: '143px'}}>
+              <Heading sx={{mb: 4}}>Témata</Heading>
+              {
+                allPosts.map((post, i) => (
+                  <Box key={i} sx={{mb: '16px'}}>
+                    <Link passHref as={"/trida?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/trida', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
+                      <SLink sx={{
+                        fontWeight: (activeCategory === post.slug ? 600 : 400),
+                        color: (activeCategory === post.slug ? 'text' : 'gray'),
+                        fontSize: 2,
+                        '&:hover': {
+                          color: 'text',
+                          textDecoration: 'none',
+                        }
+                      }}>{post.titulek}</SLink>
+                    </Link>
+                  </Box>
+                ))
+              }
             </Box>
           </Box>
           <Box
