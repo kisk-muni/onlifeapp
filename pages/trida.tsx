@@ -65,10 +65,6 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
           </Box>
         </Link>
         }
-        <Box sx={{mb: 5}}>
-          <Heading sx={{mb: 3, fontSize: 7}}>Kurz</Heading>
-          <Text sx={{fontSize: 3}}>Filtrujte obsah kurzu podle témat.</Text>
-        </Box>
         <Flex
           sx={{
             display: 'flex',
@@ -79,6 +75,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
               flexGrow: 1,
               flexBasis: 'resultsFilterSidebar',
             }}>
+            <Box sx={{position: 'fixed'}}>
             <Heading sx={{mb: 4}}>Témata</Heading>
             {
               allPosts.map((post, i) => (
@@ -97,6 +94,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                 </Box>
               ))
             }
+            </Box>
           </Box>
           <Box
             sx={{
@@ -106,9 +104,16 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
           }}>
             {
               filteredPosts.map((post) => (
-                post.children.length > 0 && <Box sx={{mb: 3}}>
+                <Box sx={{mb: 3}}>
+                  <Box>
+                    <Flex sx={{mb: 4, pb: 3, alignItems: 'center', borderBottom: '1px dashed #ddd'}}>
+                      <Heading sx={{fontSize: 6}}>{post.titulek}</Heading>
+                      {post.url && <a href={post.url}><Button sx={{ml: 3, alignSelf: 'flex-start'}} variant="detailAction">Stránka tématu</Button></a>}
+                    </Flex>
+                  </Box>
+                  { !(post.children.length > 0) && <Text sx={{color: 'gray', fontSize: 2}}>Téma nemá žádný interaktivní obsah</Text> }
                   { post.children.map((child, i) => (
-                    <Box key={i} sx={{mb: 5}}>
+                    <Box key={i} sx={{mb: 3}}>
                       <Box sx={{
                           mb: 2,
                           pb: 2,
@@ -126,6 +131,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                             pt: 3,
                             pb: 4,
                             px: 4,
+                            mb: 3,
                             backgroundColor: 'background',
                             borderRadius: '5px',
                             transition: 'box-shadow .1s ease 0s',  
