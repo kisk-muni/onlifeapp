@@ -312,8 +312,11 @@ export default {
     googleFormEmbed: {
       maxWidth: 640,
     },
+    statsContainer: {
+      maxWidth: 770,
+    },
     groupContainer: {
-      maxWidth: 1280,
+      maxWidth: 1024,
     },
   },
   styles: {
