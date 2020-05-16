@@ -5,7 +5,7 @@ import GroupHeader from '../../components/dashboard/GroupHeader'
 import { withApollo } from '../../apollo/client'
 import { useGroupQuery } from '../../apollo/group.graphql'
 import { useRouter } from 'next/router'
-import { jsx, Embed, Container, Heading, Text, Flex, Box } from 'theme-ui'
+import { jsx, Embed, Badge, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
@@ -19,7 +19,8 @@ const StatsPage: NextPage = ({quiz}: {quiz: any}) => {
       header={<GroupHeader />}
       stickHeaderByDefault>
     <Container sx={{mt: 4}} variant="groupContainer">
-      <Heading sx={{mb: 3, fontSize: 7}}>Kvíz</Heading>
+      <Badge variant="primary" sx={{mr: 2, borderRadius: '30px', mb: 2}}>Odpovědi a statistiky kvízu</Badge>
+      <Heading sx={{mb: 3, mt: 2, fontSize: 5}}>{ quiz?.title }</Heading>
     </Container>
   </DashboardLayout>
   )
