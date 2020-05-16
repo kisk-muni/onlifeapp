@@ -27,7 +27,7 @@ let globalApolloClient: TApolloClient
  * your PageComponent via HOC pattern.
  */
 export function withApollo(
-  PageComponent: Any,
+  PageComponent: any,
   { ssr = true } = {}
 ) {
   const WithApollo = ({
