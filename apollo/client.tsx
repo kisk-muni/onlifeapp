@@ -3,7 +3,7 @@ import React from 'react'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import { GetStaticPaths, GetStaticProps, GetServerSideProps } from 'next'
 import { setContext } from 'apollo-link-context'
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
 
@@ -27,7 +27,7 @@ let globalApolloClient: TApolloClient
  * your PageComponent via HOC pattern.
  */
 export function withApollo(
-  PageComponent: NextPage,
+  PageComponent: Any,
   { ssr = true } = {}
 ) {
   const WithApollo = ({
@@ -55,18 +55,18 @@ export function withApollo(
     WithApollo.displayName = `withApollo(${displayName})`
   }
 
-  if (ssr || PageComponent.GetStaticProps) {
-    WithApollo.GetStaticProps = async (ctx: WithApolloPageContext) => {
+  if (ssr || PageComponent.PageComponent.GetServerSideProps) {
+    WithApollo.GetServerSideProps = async (ctx: WithApolloPageContext) => {
       const { AppTree } = ctx
 
       // Initialize ApolloClient, add it to the ctx object so
       // we can use it in `PageComponent.getInitialProp`.
       const apolloClient = (ctx.apolloClient = initApolloClient())
 
-      // Run wrapped GetStaticProps methods
+      // Run wrapped GetServerSideProps methods
       let pageProps = {}
-      if (PageComponent.GetStaticProps) {
-        pageProps = await PageComponent.GetStaticProps(ctx)
+      if (PageComponent.GetServerSideProps) {
+        pageProps = await PageComponent.GetServerSideProps(ctx)
       }
 
       // Only on the server:
