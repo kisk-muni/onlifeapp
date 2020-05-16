@@ -13,9 +13,13 @@ import { Collapse } from '@blueprintjs/core'
 import { NextPage, GetServerSideProps } from 'next'
 import Link from 'next/link'
 import withAuthRedirect from '../utils/withAuthRedirect'
-import { getAllPostsForGroup, getAllCategoriesForGroupWithSlug } from '../utils/api'
+import { getAllPostsForGroup } from '../utils/api'
 
-const Trida: NextPage = ({ allPosts }) => {
+interface Props {
+  allPosts: any
+}
+
+const Trida: NextPage<Props> = ({ allPosts }) => {
   const router = useRouter()
   //const [ activeStudent, setActiveStudent ] = useState('')
   const [ activeCategory, setActiveCategory ] = useState('')
@@ -44,7 +48,7 @@ const Trida: NextPage = ({ allPosts }) => {
                 
       <Container sx={{mt: 4}} variant="groupContainer">
         { !loading && !(data?.group?.students?.length > 0) &&
-        <Link asPath={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }}>
+        <Link as={"/studenti?trida="+(router.query.trida as string)} href={{ pathname: '/studenti', query: { trida: router.query.trida } }}>
           <Box sx={{
             boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 6px',
             '&:hover': {
@@ -79,7 +83,7 @@ const Trida: NextPage = ({ allPosts }) => {
             {
               allPosts.map((post, i) => (
                 <Box key={i} sx={{mb: '16px'}}>
-                  <Link passHref asPath={"/trida?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/trida', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
+                  <Link passHref as={"/trida?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/trida', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
                     <SLink sx={{
                       fontWeight: (activeCategory === post.slug ? 600 : 400),
                       color: (activeCategory === post.slug ? 'text' : 'gray'),
@@ -132,7 +136,6 @@ const Trida: NextPage = ({ allPosts }) => {
                             '&:hover .text': {
                               color: '#000',
                             },
-                            backgroundColor: 'background'
                           }}>
                             <Grid gap={2} columns={[2]}>
                               <Box>
