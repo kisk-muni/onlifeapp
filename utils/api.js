@@ -124,12 +124,35 @@ export async function getGFQuizWithSlug(slug, preview) {
   query QuizBySlug($slug: String) {
     gfquiz(filter: {slug: {eq: $slug}}) {
       id
-      height
       slug
       title
-      prefilledGoogleFormsQuizUrl
+      items {
+        ... on SingleselectRecord {
+          id
+          question
+          picture {
+            responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 640 }) {
+              ...responsiveImageFragment
+            }
+          }
+          possibleResponds
+          _modelApiKey
+        }
+        ... on CheckboxRecord {
+          id
+          possibleResponds
+          question
+          picture {
+            responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 640 }) {
+              ...responsiveImageFragment
+            }
+          }
+          _modelApiKey
+        }
+      }
     }
   }
+  ${responsiveImageFragment}
   `,
     {
       preview,

@@ -34,9 +34,7 @@ interface TVariables {
   }
 }
 
-type FormData = {
-  name: string
-};
+type FormData = any;
 
 export function CreateGroupDialog(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);

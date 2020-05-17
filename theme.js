@@ -309,7 +309,7 @@ export default {
     articleQuizBlockContainer: {
       maxWidth: 720,
     },
-    googleFormEmbed: {
+    quiz: {
       maxWidth: 640,
     },
     statsContainer: {

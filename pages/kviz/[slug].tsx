@@ -1,63 +1,175 @@
 /** @jsx jsx */
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import StarterLayout from '../../components/StarterLayout'
 import { withApollo } from '../../apollo/client'
 import { useQuizQuery } from '../../apollo/quiz.graphql'
 import { useRouter } from 'next/router'
-import { jsx, Embed, Container, Text, Flex, Box } from 'theme-ui'
+import { Image as DatoImage } from 'react-datocms'
+import { useForm } from "react-hook-form"
+import { jsx, Radio, Checkbox, Label, Button, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 
-const KvizPage: NextPage = ({quiz}: {quiz: any}) => {
-  const router = useRouter()
-  const { data, loading } = useQuizQuery({
-    variables: { id: quiz?.id },
-  })
+type possibleResponds = {
+  choiceText: string
+}[]
+
+type item = {
+  id: string
+  question: string
+  picture: {
+    responsiveImage: any
+  }
+  possibleResponds: possibleResponds
+  _modelApiKey: string
+}
+
+type items = item | any
+
+interface Props {
+  quiz: {
+    id: string
+    slug: string
+    title: string
+    items: items[]
+  }
+}
+
+type FormData = any
+
+interface PossibelItemRespondsProps {
+  possibleResponds: possibleResponds
+  name: string
+  register: any
+}
+
+const QuizRadio = ({possibleResponds, name, register}: PossibelItemRespondsProps) => (
+  <Fragment>
+    {possibleResponds.map((choice, index) => (
+      <Label key={index} sx={{mb: 2, fontWeight: 'body'}}>
+        <Radio
+          ref={register}
+          name={name}
+          value={choice.choiceText}
+          />
+        { choice.choiceText }
+      </Label>
+    ))}
+  </Fragment>
+)
+
+const QuizCheckbox = ({possibleResponds, name, register}: PossibelItemRespondsProps) => (
+  <Fragment>
+    {possibleResponds.map((choice, index) => (
+      <Label key={index} sx={{mb: 2, fontWeight: 'body'}}>
+        <Checkbox
+          ref={register}
+          name={name}
+          value="false"
+          />
+        { choice.choiceText }
+      </Label>
+    ))}
+  </Fragment>
+)
+
+const KvizPage: NextPage<Props> = ({quiz}) => {
+  const [canSubmit, setCanSubmit] = useState(false)
+  const { register, control, handleSubmit } = useForm<FormData>()
   return (
   <StarterLayout>
-    <Container variant="googleFormEmbed">
-      {
-        loading
-        ? <Fragment>
+    <Container>
+      <Heading sx={{fontSize: 7, mt: 4, mb: 5, textAlign: 'center'}}>
+        { quiz?.title }
+      </Heading>
+      <Container variant="quiz">
+        <form>
+          {
+            quiz?.items.map((item, index) => {
+              let inputContent
+              switch (item._modelApiKey) {
+                case 'singleselect':
+                  inputContent = <QuizRadio register={register} name={item.id} possibleResponds={item.possibleResponds} />
+                  break;
+                case 'checkbox':
+                  inputContent = <QuizCheckbox register={register} name={item.id} possibleResponds={item.possibleResponds} />
+                  break;
+                default:
+                  break;
+              }
+              
+              return (
+                <Box key={index} sx={{mb: 5}}>
+                  <Flex>
+                    <Box sx={{flexBasis: '48px'}}>
+                      <Text sx={{fontSize: 3}}>{ index + 1 }.</Text>
+                    </Box>
+                    <Box>
+                      <Heading sx={{fontWeight: 'regular', mb: 3}}>{item.question}</Heading>
+                      { item.picture &&
+                        <Box sx={{mb: 3}}>
+                          <DatoImage
+                            data={{
+                              ...item.picture.responsiveImage,
+                            }}
+                          />
+                        </Box>
+                      }
+                      { inputContent }
+                      </Box>
+                  </Flex>
+                </Box>
+              )
+
+            })
+          }
           <Box sx={{
-            backgroundColor: 'rgb(218, 36, 228)',
-            borderTopLeftRadius: '8px',
-            borderTopRightRadius: '8px',
-            height: '10px',
-            width: '576px',
-            mx: 'auto',
-            mt: '10px',
-          }} />
-          <Box sx={{
-            borderLeft: '1px solid #ddd',
-            borderRight: '1px solid #ddd',
-            borderBottom: '1px solid #ddd',
-            borderBottomLeftRadius: '8px',
-            borderBottomRightRadius: '8px',
-            width: '576px',
-            mx: 'auto',
-            height: quiz?.height ? quiz?.height+'px' : '1740px' }}>
-            <div sx={{
-              position: 'fixed',
-              display: 'flex',
-              top: '50vh',
-              width: '100px',
-              height: '100px',
-              left: '50%',
-              marginLeft: '-50px',
-              flexDirection: 'column',
+              borderTop: '1px solid #ddd',
+              px: 20,
+              pt: 3,
+              pb: 3,
+              alignItems: 'center'
             }}>
-              <FadeSpinner />
-              <Text sx={{fontSize: 3, alignSelf: 'center', color: 'gray', mt: 3, textAlign: 'center'}}>Načítání</Text>
-            </div>
-          </Box></Fragment>
-        : <Embed
-            sx={{height: quiz?.height + 'px'}}
-            src={quiz?.prefilledGoogleFormsQuizUrl + (data?.quiz.prefill as string) + '&embedded=true'}
-          />
-      }
+            <Box>
+              <Heading sx={{mb: 3}}>
+                Odevzdání
+              </Heading>
+              <Label sx={{mb: 3, fontWeight: 'body'}}>
+                <Checkbox
+                  sx={{mr: 4}}
+                  ref={register}
+                  name="consent"
+                  onChange={(event) => {
+                    const target = event.target
+                    setCanSubmit(target.checked)
+                  }}
+                  value="true"
+                  />
+                  <Text>
+                    Souhlasím s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet
+                  </Text>
+              </Label>
+            </Box>
+            <Box>
+              <Button
+                type="submit"
+                disabled={
+                  !canSubmit
+                }
+                sx={{
+                  bg: !canSubmit ? 'gray!important' : 'primary',
+                  transition: 'background .2s',
+                }}
+                onClick={handleSubmit((data: FormData) => {
+                  console.log(data)
+                })}
+                title="Odevzdat">Odevzdat</Button>
+            </Box>
+          </Box>
+        </form>
+      </Container>
     </Container>
   </StarterLayout>
   )
