@@ -74,7 +74,6 @@ export async function getPostAndMorePosts(slug, preview) {
           quizLink {
             title
             slug
-            prefilledGoogleFormsQuizUrl
           }
           description
           _modelApiKey
