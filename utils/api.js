@@ -129,8 +129,9 @@ export async function getGFQuizWithSlug(slug, preview) {
         ... on SingleselectRecord {
           id
           question
+          required
           picture {
-            responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 640 }) {
+            responsiveImage(imgixParams: {fm: jpg, maxW: 960 }) {
               ...responsiveImageFragment
             }
           }
@@ -140,9 +141,10 @@ export async function getGFQuizWithSlug(slug, preview) {
         ... on CheckboxRecord {
           id
           possibleResponds
+          required
           question
           picture {
-            responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 640 }) {
+            responsiveImage(imgixParams: {fm: jpg, maxW: 960 }) {
               ...responsiveImageFragment
             }
           }
@@ -152,6 +154,43 @@ export async function getGFQuizWithSlug(slug, preview) {
     }
   }
   ${responsiveImageFragment}
+  `,
+    {
+      preview,
+      variables: {
+        slug,
+      },
+    }
+  )
+  return data
+}
+
+export async function getGFQuizWithSlugforValidation(slug, preview) {
+  const data = await fetchAPI(
+    `
+    query QuizBySlug($slug: String) {
+      gfquiz(filter: {slug: {eq: $slug}}) {
+      id
+      slug
+      title
+      items {
+        ... on SingleselectRecord {
+          id
+          question
+          required
+          possibleResponds
+          _modelApiKey
+        }
+        ... on CheckboxRecord {
+          id
+          possibleResponds
+          required
+          question
+          _modelApiKey
+        }
+      }
+    }
+  }
   `,
     {
       preview,

@@ -310,7 +310,7 @@ export default {
       maxWidth: 720,
     },
     quiz: {
-      maxWidth: 640,
+      maxWidth: 960,
     },
     statsContainer: {
       maxWidth: 770,

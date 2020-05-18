@@ -5,6 +5,7 @@ import getConfig from 'next/config'
 import * as moment from 'moment'
 import bcrypt from 'bcrypt'
 import v4 from 'uuid/v4'
+import { getGFQuizWithSlugforValidation } from '../utils/api'
 import { customAlphabet } from 'nanoid'
 import * as firebase from 'firebase'
 import topics, { quizes } from '../data/topics'
@@ -328,6 +329,27 @@ export const resolvers = {
       batch.commit()
       return {
         joined: true
+      }
+    },
+    async submitQuiz(_paremt, {input}, {user}, _info) {
+      console.log(input)
+      if (!input.consent) {
+        throw new Error('Uživatel musí souhlasit s podmínkami služby.')
+      }
+      const data = await getGFQuizWithSlugforValidation(input.slug, false)
+      const originalQuiz = data?.gfquiz
+      if (!originalQuiz) {
+        throw new Error('Kvíz neexistuje.')
+      }
+      console.log(originalQuiz)
+      // fetch quiz items
+      // validate quiz submittion against fetched quiz
+      
+      return {
+        submitted: true,
+        response: 'nejake-idecko',
+        points: 3,
+        maxPoints: 5
       }
     },
     async addGroup(_parent, {input}, {user}, _info) {

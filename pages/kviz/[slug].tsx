@@ -1,12 +1,12 @@
 /** @jsx jsx */
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useCallback } from 'react'
 import StarterLayout from '../../components/StarterLayout'
 import { withApollo } from '../../apollo/client'
-import { useQuizQuery } from '../../apollo/quiz.graphql'
+import { useSubmitQuizMutation } from '../../apollo/submitQuiz.graphql'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import { useForm } from "react-hook-form"
-import { jsx, Radio, Checkbox, Label, Button, Container, Heading, Text, Flex, Box } from 'theme-ui'
+import { jsx, Radio, Checkbox, Label, Button, Spinner, Badge, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
@@ -42,134 +42,230 @@ type FormData = any
 interface PossibelItemRespondsProps {
   possibleResponds: possibleResponds
   name: string
+  required: boolean
   register: any
+  getValues?: any
+  onChange?: any
 }
 
-const QuizRadio = ({possibleResponds, name, register}: PossibelItemRespondsProps) => (
+const QuizRadio = ({possibleResponds, name, required, register}: PossibelItemRespondsProps) => {
+  return (
   <Fragment>
-    {possibleResponds.map((choice, index) => (
-      <Label key={index} sx={{mb: 2, fontWeight: 'body'}}>
-        <Radio
-          ref={register}
-          name={name}
-          value={choice.choiceText}
-          />
-        { choice.choiceText }
-      </Label>
-    ))}
+    {possibleResponds.map((choice, index) => {
+      let conditionalRef
+      if (possibleResponds.length == index+1 && required) {
+        conditionalRef = register({ required: {value: true, message: "Tato otázka je povinná."} })
+      } else {
+        conditionalRef = register
+      }
+      return (
+        <Label key={index} sx={{mb: 3, fontWeight: 'body', fontSize: 1}}>
+          <Radio
+            ref={conditionalRef}
+            name={name}
+            value={choice.choiceText}
+            />
+          { choice.choiceText }
+        </Label>
+      )  
+    })}
   </Fragment>
-)
+)}
 
-const QuizCheckbox = ({possibleResponds, name, register}: PossibelItemRespondsProps) => (
-  <Fragment>
-    {possibleResponds.map((choice, index) => (
-      <Label key={index} sx={{mb: 2, fontWeight: 'body'}}>
-        <Checkbox
-          ref={register}
-          name={name}
-          value="false"
-          />
-        { choice.choiceText }
-      </Label>
-    ))}
+const QuizCheckbox = ({possibleResponds, name, required, getValues, register}: PossibelItemRespondsProps) => {
+  const respondsLength = possibleResponds.length
+  
+  return (<Fragment>
+    {possibleResponds.map((choice, index) => {
+      let conditionalRef
+      if (respondsLength == index+1 && required) {
+        conditionalRef = register({
+          validate: (value: any) => {
+            const values = getValues({ nest: true })
+            return (values[name].filter(v => Boolean(v)).length >= 1 || "Vyberte alespoň jednu odpověď.")
+          }
+        })
+      } else {
+        conditionalRef = register
+      }
+      return (
+        <Label key={index} sx={{mb: 3, fontWeight: 'body', fontSize: 1}}>
+          <Checkbox
+            ref={conditionalRef}
+            name={name + '.' +index}
+            value={choice.choiceText}
+            />
+          { choice.choiceText }
+        </Label>
+      )
+    })}
   </Fragment>
 )
+}
 
 const KvizPage: NextPage<Props> = ({quiz}) => {
+  const router = useRouter()
   const [canSubmit, setCanSubmit] = useState(false)
-  const { register, control, handleSubmit } = useForm<FormData>()
+  const [submitQuizMutation, { data, loading, error }] = useSubmitQuizMutation({
+    onCompleted: (data) => {
+      if (data.submitQuiz.submitted) {
+        // prevent ssr
+        router.push('/')
+      }
+    }
+  })
+  const { register, errors, handleSubmit, getValues } = useForm<FormData>()
+
   return (
   <StarterLayout>
-    <Container>
-      <Heading sx={{fontSize: 7, mt: 4, mb: 5, textAlign: 'center'}}>
-        { quiz?.title }
-      </Heading>
-      <Container variant="quiz">
-        <form>
-          {
-            quiz?.items.map((item, index) => {
-              let inputContent
-              switch (item._modelApiKey) {
-                case 'singleselect':
-                  inputContent = <QuizRadio register={register} name={item.id} possibleResponds={item.possibleResponds} />
-                  break;
-                case 'checkbox':
-                  inputContent = <QuizCheckbox register={register} name={item.id} possibleResponds={item.possibleResponds} />
-                  break;
-                default:
-                  break;
-              }
-              
-              return (
-                <Box key={index} sx={{mb: 5}}>
-                  <Flex>
-                    <Box sx={{flexBasis: '48px'}}>
-                      <Text sx={{fontSize: 3}}>{ index + 1 }.</Text>
-                    </Box>
-                    <Box>
-                      <Heading sx={{fontWeight: 'regular', mb: 3}}>{item.question}</Heading>
-                      { item.picture &&
-                        <Box sx={{mb: 3}}>
-                          <DatoImage
-                            data={{
-                              ...item.picture.responsiveImage,
-                            }}
-                          />
-                        </Box>
-                      }
-                      { inputContent }
-                      </Box>
-                  </Flex>
-                </Box>
-              )
-
-            })
-          }
-          <Box sx={{
-              borderTop: '1px solid #ddd',
-              px: 20,
-              pt: 3,
-              pb: 3,
-              alignItems: 'center'
-            }}>
-            <Box>
-              <Heading sx={{mb: 3}}>
-                Odevzdání
-              </Heading>
-              <Label sx={{mb: 3, fontWeight: 'body'}}>
-                <Checkbox
-                  sx={{mr: 4}}
-                  ref={register}
-                  name="consent"
-                  onChange={(event) => {
-                    const target = event.target
-                    setCanSubmit(target.checked)
-                  }}
-                  value="true"
-                  />
-                  <Text>
-                    Souhlasím s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet
-                  </Text>
-              </Label>
-            </Box>
-            <Box>
-              <Button
-                type="submit"
-                disabled={
-                  !canSubmit
-                }
+    <Container variant="quiz">
+      <Box sx={{mt: 4, px: 4}}>
+        <Heading sx={{fontSize: 6, mt: 4, mb: 2}}>
+          Kvíz: { quiz?.title }
+        </Heading>
+        <Text sx={{pb: 3, fontWeight: 'bold', borderBottom: '1px solid #ddd'}}>
+          Celkem { quiz?.items.length } otázek
+        </Text>
+      </Box>
+      <form>
+        {
+          quiz?.items.map((item, index) => {
+            const itemMaxIndex = item.possibleResponds.length - 1
+            let inputContent
+            switch (item._modelApiKey) {
+              case 'singleselect':
+                inputContent = <QuizRadio
+                  required={item.required}
+                  register={register}
+                  name={item.id}
+                  possibleResponds={item.possibleResponds}
+                />
+                break;
+              case 'checkbox':
+                inputContent = <QuizCheckbox
+                  required={item.required}
+                  register={register}
+                  name={item.id}
+                  getValues={getValues}
+                  possibleResponds={item.possibleResponds} />
+                break;
+              default:
+                break;
+            }
+            
+            return (
+              <Box
+                key={index}
                 sx={{
-                  bg: !canSubmit ? 'gray!important' : 'primary',
-                  transition: 'background .2s',
+                  pt: 3,
+                  pb: 3,
+                  px: 4,
+                  mb: 2,
+                  backgroundColor: (errors[item.id] || (errors[item.id]?.length && errors[item.id][itemMaxIndex]) ) ? '#fff8f9' : 'background',
                 }}
-                onClick={handleSubmit((data: FormData) => {
-                  console.log(data)
-                })}
-                title="Odevzdat">Odevzdat</Button>
-            </Box>
+              >
+                <Flex sx={{alignItems: 'baseline'}}>
+                  <Box sx={{flexBasis: '32px', flexGrow: 1}}>
+                    <Text sx={{fontSize: 1}}>{ index + 1 }.</Text>
+                  </Box>
+                  <Box sx={{flexGrow: 99999, flexBasis: 0}}>
+                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
+                      {item.question}
+                      {!item.required && <span sx={{m: 2, fontStyle: 'italic', fontSize: 1, fontWeight: 'body', color: 'gray'}}>
+                        nepovinná otázka
+                      </span>}
+                    </Text>
+                    { item.picture &&
+                      <Box sx={{mb: 3}}>
+                        <DatoImage
+                          data={{
+                            ...item.picture.responsiveImage,
+                          }}
+                        />
+                      </Box>
+                    }
+                    { inputContent }
+                    { errors[item.id] &&
+                      <Text sx={{variant: 'styles.simpleErrorMessageText'}}>
+                        {((item._modelApiKey === 'checkbox' && errors[item.id]?.length) ? 'Musíte vybrat alespoň jednu odpověď.' : errors[item.id].message)}
+                      </Text>
+                    }
+                    </Box>
+                </Flex>
+              </Box>
+            )
+
+          })
+        }
+        <Box sx={{
+            mx: 4,
+            mt: 3,
+            pt: 4,
+            pb: 3,
+            mb: 5,
+            borderTop: '1px solid #ddd',
+            alignItems: 'center'
+          }}>
+          <Box>
+            <Label sx={{mb: 3, fontWeight: 'body'}}>
+              <Checkbox
+                sx={{mr: 4}}
+                ref={register({ required: true})}
+                name="consent"
+                onChange={(event) => {
+                  const target = event.target
+                  setCanSubmit(target.checked)
+                }}
+                value="true"
+                />
+                <Text sx={{maxWidth: 600}}>
+                  Souhlasím s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet
+                </Text>
+            </Label>
           </Box>
-        </form>
-      </Container>
+          <Flex sx={{justifyContent: 'flex-end'}}>
+            <Button
+              type="submit"
+              disabled={
+                (!canSubmit || error)
+              }
+              sx={{
+                fontSize: 3,
+                bg: !canSubmit ? 'gray!important' : 'primary',
+                transition: 'background .2s',
+              }}
+              onClick={handleSubmit((data: any) => {
+                console.log('data:', data)
+                let items = []
+                // for each input response
+                for (const [key, value] of Object.entries(data)) {
+                  if (key !== 'consent') {
+                    let responseIsArray = Array.isArray(value)
+                    let responses = []
+                    if (responseIsArray) {
+                      responses = (value as (string|boolean)[]).filter((v => typeof v === 'string' && v)) 
+                    }
+                    items.push({
+                      fieldName: key,
+                      response: (responseIsArray ? '' : value),
+                      responses: (responseIsArray ? responses : [])
+                    })
+                  }
+                }
+                console.log(items)
+                submitQuizMutation({variables: {input: {
+                  slug: quiz.slug,
+                  consent: canSubmit,
+                  items: items
+                }}})
+              })}
+              title="Odevzdat">{loading ? <Flex><Spinner size="24" strokeWidth="3" sx={{color: 'background', mr: 3}} /> Načítání…</Flex> : 'Odeslat'}</Button>
+          </Flex>  
+          <div sx={{mt: 3, color: 'error', textAlign: 'right'}}>
+            { error && "Něco se pokazilo, zkuste to prosím později." } 
+          </div>
+        </Box>
+      </form>
     </Container>
   </StarterLayout>
   )

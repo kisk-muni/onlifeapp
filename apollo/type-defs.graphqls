@@ -107,6 +107,25 @@
     subtopics: [StudentSubtopicsResult]
   }
 
+  input QuizInputItem {
+    fieldName: String!
+    response: String
+    responses: [String]
+  }
+
+  input SubmitQuizInput {
+    slug: String! 
+    consent: Boolean!
+    items: [QuizInputItem]
+  }
+
+  type SubmitQuizPayload {
+    submitted: Boolean!
+    response: ID
+    points: Int
+    maxPoints: Int
+  }
+
   type Query {
 		user: User
     viewer: User
@@ -123,6 +142,7 @@
     joinGroupAttempt(input: JoinGroupAttemptInput!): JoinGroupAttemptPayload!
 		joinGroup: JoinGroupPayload!
 		addGroup(input: AddGroupInput!): AddGroupPayload!
+		submitQuiz(input: SubmitQuizInput!): SubmitQuizPayload!
     signUp(input: SignUpInput!): SignUpPayload!
     signIn(input: SignInInput!): SignInPayload!
     signOut: Boolean!
