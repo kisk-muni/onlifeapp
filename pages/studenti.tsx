@@ -49,17 +49,14 @@ const Studenti: NextPage = () => {
                     <Flex
                       sx={{                            
                         mb: '12px',
-                        '&:hover': {
-                          cursor: 'pointer'
-                        },
                         alignItems: 'center'
                       }}>
-                        <Avatar sx={{height: 48, width: 48, lineHeight: 48, borderRadius: 24, fontSize: 3}} name={student.name} photoURL={student?.picture} />
+                        <Avatar sx={{height: 48, color: '#fff', width: 48, lineHeight: '48px', borderRadius: 24, fontSize: 3}} name={student.name} photoURL={student?.picture} />
                         <Text sx={{
-                            ml: 2,
+                            ml: 3,
                             fontWeight: 500,
                             color: 'text',
-                            fontSize: 3,
+                            fontSize: 4,
                             lineHeight: '32px',
                             display: 'inline-block'
                           }}>

@@ -13,12 +13,13 @@ function stringToHslColor(str: string, s: number, l: number): string {
 const Avatar = ({name, photoURL, ...props}: {name: string, photoURL?: string}) => {
   const inicials = name.split(" ").map((n)=>n[0]).join("")
   return (
-    <Flex
+    <Box
       {...props}
       sx={{
         backgroundColor: stringToHslColor(name, 60, 35),
         boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
         color: '#fff',
+        textAlign: 'center',
         borderRadius: '50%'
       }}
     >
@@ -26,7 +27,7 @@ const Avatar = ({name, photoURL, ...props}: {name: string, photoURL?: string}) =
       ? <Image src={photoURL} alt={name} />
       : inicials
       }
-    </Flex>
+    </Box>
   )
 }
 
