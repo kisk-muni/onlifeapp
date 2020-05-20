@@ -121,7 +121,41 @@
 
   type SubmitQuizPayload {
     submitted: Boolean!
-    response: ID
+    submittedQuiz: String!
+    responseAttempt: String!
+    points: Int
+    maxPoints: Int
+  }
+
+  type FeedbackResponse {
+    choiceText: String
+    feedback: String
+    chosen: Boolean
+    sentiment: String
+  }
+
+  type Feedback {
+    id: String!
+    required: Boolean!
+    response: String
+    responses: [String]
+    _modelApiKey: String!
+    correct: Boolean!
+    question: String!
+    feedbackResponses: [FeedbackResponse]
+  }
+
+  type UserQuizFeedback {
+    createdAt: String
+    feedback: [Feedback]
+    points: Int
+    maxPoints: Int
+  }
+
+  type UserQuizFeedbackWithIds {
+    id: ID!
+    createdAt: String
+    feedback: [Feedback]
     points: Int
     maxPoints: Int
   }
@@ -134,6 +168,8 @@
     group(id: ID!): Group
     studentTopicsResults(id: ID!): [StudentTopicsResult]
     quiz(id: ID!): Quiz
+    userQuizFeedback(quiz: String!, attempt: String!): UserQuizFeedback
+    userQuizFeedbackList(quiz: ID!): [UserQuizFeedbackWithIds]
     topics: [Topic]
     topic(id: ID!): Topic
   }
@@ -143,7 +179,4 @@
 		joinGroup: JoinGroupPayload!
 		addGroup(input: AddGroupInput!): AddGroupPayload!
 		submitQuiz(input: SubmitQuizInput!): SubmitQuizPayload!
-    signUp(input: SignUpInput!): SignUpPayload!
-    signIn(input: SignInInput!): SignInPayload!
-    signOut: Boolean!
   }

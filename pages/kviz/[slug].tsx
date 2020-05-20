@@ -6,41 +6,43 @@ import { useSubmitQuizMutation } from '../../apollo/submitQuiz.graphql'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import { useForm } from "react-hook-form"
-import { jsx, Radio, Checkbox, Label, Button, Spinner, Badge, Container, Heading, Text, Flex, Box } from 'theme-ui'
+import { jsx, Radio, Checkbox, Label, Button, Spinner, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 
-type possibleResponds = {
+export type PossibleResponds = {
   choiceText: string
 }[]
 
-type item = {
+export type Item = {
   id: string
   question: string
   picture: {
     responsiveImage: any
   }
-  possibleResponds: possibleResponds
+  possibleResponds: PossibleResponds
   _modelApiKey: string
+  required: boolean
+  discarded: boolean
 }
 
-type items = item | any
+export type Items = Item | any
 
-interface Props {
+export interface Props {
   quiz: {
     id: string
     slug: string
     title: string
-    items: items[]
+    items: Items[]
   }
 }
 
-type FormData = any
+export type FormData = any
 
-interface PossibelItemRespondsProps {
-  possibleResponds: possibleResponds
+export interface PossibelItemRespondsProps {
+  possibleResponds: PossibleResponds
   name: string
   required: boolean
   register: any
@@ -109,12 +111,13 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
   const [submitQuizMutation, { data, loading, error }] = useSubmitQuizMutation({
     onCompleted: (data) => {
       if (data.submitQuiz.submitted) {
-        // prevent ssr
-        router.push('/')
+        // todo: where to push 
+        router.push('/feedback/'+quiz.slug+'?attempt='+data.submitQuiz.responseAttempt)
       }
     }
   })
   const { register, errors, handleSubmit, getValues } = useForm<FormData>()
+  let quizItemIndex = 0
 
   return (
   <StarterLayout>
@@ -130,6 +133,11 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
       <form>
         {
           quiz?.items.map((item, index) => {
+            if (item.discarded) {
+              return
+            }
+
+            quizItemIndex += 1
             const itemMaxIndex = item.possibleResponds.length - 1
             let inputContent
             switch (item._modelApiKey) {
@@ -166,7 +174,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
               >
                 <Flex sx={{alignItems: 'baseline'}}>
                   <Box sx={{flexBasis: '32px', flexGrow: 1}}>
-                    <Text sx={{fontSize: 1}}>{ index + 1 }.</Text>
+                    <Text sx={{fontSize: 1}}>{ quizItemIndex }.</Text>
                   </Box>
                   <Box sx={{flexGrow: 99999, flexBasis: 0}}>
                     <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
@@ -227,7 +235,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             <Button
               type="submit"
               disabled={
-                (!canSubmit || error)
+                (!canSubmit || error as unknown as boolean)
               }
               sx={{
                 fontSize: 3,

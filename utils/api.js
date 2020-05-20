@@ -130,6 +130,7 @@ export async function getGFQuizWithSlug(slug, preview) {
           id
           question
           required
+          discarded
           picture {
             responsiveImage(imgixParams: {fm: jpg, maxW: 960 }) {
               ...responsiveImageFragment
@@ -142,6 +143,7 @@ export async function getGFQuizWithSlug(slug, preview) {
           id
           possibleResponds
           required
+          discarded
           question
           picture {
             responsiveImage(imgixParams: {fm: jpg, maxW: 960 }) {
@@ -178,6 +180,7 @@ export async function getGFQuizWithSlugforValidation(slug, preview) {
           id
           question
           required
+          discarded
           possibleResponds
           _modelApiKey
         }
@@ -185,6 +188,7 @@ export async function getGFQuizWithSlugforValidation(slug, preview) {
           id
           possibleResponds
           required
+          discarded
           question
           _modelApiKey
         }

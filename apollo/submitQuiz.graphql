@@ -1,7 +1,8 @@
 mutation SubmitQuiz($input: SubmitQuizInput!) {
   submitQuiz(input: $input) {
     submitted
-    response
+    submittedQuiz
+    responseAttempt
     points
     maxPoints
   }

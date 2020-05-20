@@ -9,6 +9,7 @@ import { getGFQuizWithSlugforValidation } from '../utils/api'
 import { customAlphabet } from 'nanoid'
 import * as firebase from 'firebase'
 import topics, { quizes } from '../data/topics'
+import getFeedbackItem from './quiz/itemFeedback'
 // Required for side-effects
 import * as admin from 'firebase-admin'
 if (!admin.apps.length) {
@@ -19,10 +20,6 @@ if (!admin.apps.length) {
 }
 const rdb = admin.database();
 const db = admin.firestore()
-
-const JWT_SECRET = getConfig().serverRuntimeConfig.JWT_SECRET
-
-const users = []
 
 async function createGroupInvitationCode(groupRef) {
   const nanoid = customAlphabet('123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 6)
@@ -128,6 +125,40 @@ export const resolvers = {
     async user(obj, args, {user}) {
       console.log('User Resolver:', user)
       return user
+    },
+    async userQuizFeedback(obj, {quiz, attempt}, {user}, info) {
+      if (!user) {
+        throw new Error('User not present.')
+      }
+      let quizResponsesUsersRef = db.collection('quizResponses').doc(user.id).collection('quizzes').doc(quiz).collection('attempts').doc(attempt)
+      let feedback = await quizResponsesUsersRef.get()
+      if (!feedback.exists) {
+        throw new Error('Attempt not present')
+      }
+      return {
+        id: feedback.id,
+        createdAt: feedback.data().createdAt.toDate(),
+        feedback: feedback.data().feedback,
+        points: feedback.data().points,
+        maxPoints: feedback.data().maxPoints
+      }
+    },
+    async userQuizFeedbackList(obj, {quiz, attempt}, {user}, info) {
+      if (!user) {
+        throw new Error('User not present.')
+      }
+      let quizResponsesUsersRef = db.collection('quizResponses').doc(user.id).collection('quizzes').doc(quiz).collection('attempts')
+      let attempts = await quizResponsesUsersRef.get()
+      const attemptsWithIds = attempts.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+      if (!feedback.exists) {
+        throw new Error('Attempt not present')
+      }
+      return attemptsWithIds
     },
     async quiz(obj, {id}, {user}, info) {
       // there should be some check that quiz exists
@@ -332,24 +363,58 @@ export const resolvers = {
       }
     },
     async submitQuiz(_paremt, {input}, {user}, _info) {
-      console.log(input)
+      if (!user) {
+        throw new Error('User not present.')
+      }
       if (!input.consent) {
         throw new Error('Uživatel musí souhlasit s podmínkami služby.')
       }
+      // fetch quiz items
       const data = await getGFQuizWithSlugforValidation(input.slug, false)
       const originalQuiz = data?.gfquiz
       if (!originalQuiz) {
         throw new Error('Kvíz neexistuje.')
       }
-      console.log(originalQuiz)
-      // fetch quiz items
-      // validate quiz submittion against fetched quiz
-      
+      // loop over originalQuizItems and validate&check quiz submittion against it
+      let feedbackItems = []
+      let maxPoints = 0
+      let points = 0
+      originalQuiz?.items.forEach((item, index) => {
+        // ignore discarded items (discarded items are not even in input variables)
+        if (item.discarded) {
+          return
+        }
+        maxPoints += 1
+        const submittedItem = input.items.find(x => x.fieldName === item.id)
+        if (!submittedItem) {
+          throw new Error('Missing submitted item')
+        }
+        let feedbackItem = getFeedbackItem(item, submittedItem)
+        if (feedbackItem.correct) {
+          points += 1
+        }
+        feedbackItems.push(feedbackItem)
+      })
+      let batch = db.batch()
+      let quizResponsesUsersRef = db.collection('quizResponses').doc(user.id).collection('quizzes').doc(originalQuiz.id)
+      batch.set(quizResponsesUsersRef, {
+        lastUpdateAt: admin.firestore.FieldValue.serverTimestamp()
+      })
+      let quizResponsesUsersAttemptsRef = quizResponsesUsersRef.collection('attempts')
+      let newAttemptRef = quizResponsesUsersAttemptsRef.doc()
+      batch.set(newAttemptRef, {
+        feedback: feedbackItems,
+        points: points,
+        maxPoints: maxPoints,
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+      })
+      batch.commit()
       return {
         submitted: true,
-        response: 'nejake-idecko',
-        points: 3,
-        maxPoints: 5
+        submittedQuiz: originalQuiz.id,
+        responseAttempt: newAttemptRef.id,
+        points: points,
+        maxPoints: maxPoints
       }
     },
     async addGroup(_parent, {input}, {user}, _info) {
@@ -369,55 +434,5 @@ export const resolvers = {
         return null
       }
     },
-    async signUp(_parent, args, _context, _info) {
-      const user = createUser(args.input)
-
-      users.push(user)
-
-      return { user }
-    },
-
-    async signIn(_parent, args, context, _info) {
-      const user = users.find(user => user.email === args.input.email)
-
-      if (user && validPassword(user, args.input.password)) {
-        const token = jwt.sign(
-          { email: user.email, id: user.id, time: new Date() },
-          JWT_SECRET,
-          {
-            expiresIn: '6h',
-          }
-        )
-
-        context.res.setHeader(
-          'Set-Cookie',
-          cookie.serialize('token', token, {
-            httpOnly: true,
-            maxAge: 6 * 60 * 60,
-            path: '/',
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV === 'production',
-          })
-        )
-
-        return { user }
-      }
-
-      throw new UserInputError('Invalid email and password combination')
-    },
-    async signOut(_parent, _args, context, _info) {
-      context.res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('token', '', {
-          httpOnly: true,
-          maxAge: -1,
-          path: '/',
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-        })
-      )
-
-      return true
-    },
-  },
+  }
 }
