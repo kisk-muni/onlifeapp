@@ -5,10 +5,9 @@ import { withApollo } from '../../apollo/client'
 import { useUserQuizFeedbackQuery } from '../../apollo/userQuizFeedback.graphql'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
-import { jsx, Badge, Container, Heading, Label, Radio, Checkbox, Text, Flex, Box } from 'theme-ui'
+import { jsx, Container, Heading, Label, Radio, Checkbox, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
-import GoodIcon from '../../components/GoodIcon'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 import { Props, Items } from '../kviz/[slug]'
@@ -64,13 +63,19 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
           </Fragment> }
         </Box>
       </Flex>
-      { loading && <div>Načítání…</div>}
       
       <Box sx={{mb: 4, pb: 3, borderBottom: '1px solid #ddd'}}>
-        { data?.userQuizFeedback && <Text sx={{fontSize: 2, fontWeight: 'bold'}}>
-          Celkem {data?.userQuizFeedback.points} / {data?.userQuizFeedback.maxPoints} bodů
-        </Text> }
+        <Text sx={{fontSize: 2, fontWeight: 'bold'}}>
+          { data?.userQuizFeedback &&
+            'Celkem'+data?.userQuizFeedback.points+' / '+data?.userQuizFeedback.maxPoints+' bodů'
+          }
+        </Text>
       </Box>
+      { loading &&
+        <Box sx={{py: 5}}>
+          <FadeSpinner />
+        </Box>
+      }
       {data?.userQuizFeedback.feedback.map((item, index) => {
         let inputContent
         let original = quiz.items.find((original) => {
@@ -113,6 +118,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
                     key={index}
                     sx={{
                       fontWeight: 'body',
+                      color: color
                     }}>
                     <Checkbox
                       disabled

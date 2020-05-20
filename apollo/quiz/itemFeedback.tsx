@@ -115,6 +115,9 @@ function setCheckboxFeedbackItem(item: Item, submittedItem: SubmittedItem, feedb
       if (!respond.isCorrect) {
         sentiment = 'positive'
         feedback = respond.correctFeedback
+      } else {
+        sentiment = 'negative'
+        feedback = respond.incorrectFeedback
       }
     }
     return {

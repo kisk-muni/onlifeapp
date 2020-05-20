@@ -267,7 +267,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                   items: items
                 }}})
               })}
-              title="Odevzdat">{loading ? <Flex><Spinner size="24" strokeWidth="3" sx={{color: 'background', mr: 3}} /> Načítání…</Flex> : 'Odeslat'}</Button>
+              title="Odevzdat">{(loading || data?.submitQuiz?.submitted ) ? <Flex><Spinner size="24" strokeWidth="3" sx={{color: 'background', mr: 3}} /> Načítání…</Flex> : 'Odeslat'}</Button>
           </Flex>  
           <div sx={{mt: 3, color: 'error', textAlign: 'right'}}>
             { error && "Něco se pokazilo, zkuste to prosím později." } 
