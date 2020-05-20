@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { Fragment, useState, useEffect } from 'react'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
+import Avatar from '../components/Avatar'
 import GroupHeader from '../components/dashboard/GroupHeader'
 import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
@@ -45,29 +46,17 @@ const Studenti: NextPage = () => {
               <Grid gap={4} columns={4} sx={{mt: 4, position: 'static', zIndex: 2}}>
                 {
                   data?.group?.students.map((student) =>
-                    <Box
+                    <Flex
                       sx={{                            
                         mb: '12px',
                         '&:hover': {
                           cursor: 'pointer'
-                        }
+                        },
+                        alignItems: 'center'
                       }}>
-                      { student?.picture &&
-                        <img
-                          src={student!.picture}
-                          sx={{
-                            boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
-                            boxSizing: 'content-box',
-                            position: 'static',
-                            zIndex: 2,
-                            display: 'inline-block',
-                            height: '32px',
-                            borderRadius: '50%',
-                            mr: '14px',
-                            mb: -2,
-                          }}
-                        />}
+                        <Avatar sx={{height: 48, width: 48, lineHeight: 48, borderRadius: 24, fontSize: 3}} name={student.name} photoURL={student?.picture} />
                         <Text sx={{
+                            ml: 2,
                             fontWeight: 500,
                             color: 'text',
                             fontSize: 3,
@@ -76,7 +65,7 @@ const Studenti: NextPage = () => {
                           }}>
                             {student!.name}
                         </Text>
-                  </Box>)
+                  </Flex>)
                 }
               </Grid>
             </Box>
