@@ -67,7 +67,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
       <Box sx={{mb: 4, pb: 3, borderBottom: '1px solid #ddd'}}>
         <Text sx={{fontSize: 2, fontWeight: 'bold'}}>
           { data?.userQuizFeedback &&
-            'Celkem'+data?.userQuizFeedback.points+' / '+data?.userQuizFeedback.maxPoints+' bodů'
+            'Celkem '+data?.userQuizFeedback.points+' / '+data?.userQuizFeedback.maxPoints+' bodů'
           }
         </Text>
       </Box>

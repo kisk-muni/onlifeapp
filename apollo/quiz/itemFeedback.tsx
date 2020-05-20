@@ -66,10 +66,12 @@ function setSingleselectFeedbackItem(item: Item, submittedItem: SubmittedItem, f
       return respond.choiceText === submittedItem.response
     })
   feedbackItem.response = submittedItem.response
-  if (!correspondingOriginal) {
+  if (!correspondingOriginal && submittedItem.response !== '' && item.required) {
     throw new Error('Item response doesnt have corresponding original answer.')
   }
-  feedbackItem.correct = correspondingOriginal.isCorrect         
+  if (correspondingOriginal) {
+    feedbackItem.correct = correspondingOriginal.isCorrect         
+  }
   feedbackItem.feedbackResponses = item.possibleResponds.map(respond => {
     let sentiment: 'positive' | 'negative' | 'neutral' = 'neutral'
     let feedback = ''

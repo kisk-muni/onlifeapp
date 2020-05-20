@@ -143,22 +143,28 @@ export const resolvers = {
         maxPoints: feedback.data().maxPoints
       }
     },
-    async userQuizFeedbackList(obj, {quiz, attempt}, {user}, info) {
+    async userQuizFeedbackList(obj, {quiz}, {user}, info) {
       if (!user) {
         throw new Error('User not present.')
       }
       let quizResponsesUsersRef = db.collection('quizResponses').doc(user.id).collection('quizzes').doc(quiz).collection('attempts')
-      let attempts = await quizResponsesUsersRef.get()
-      const attemptsWithIds = attempts.map(doc => {
+      let attempts = await quizResponsesUsersRef.orderBy('points', 'desc').get()
+      const attemptsWithIds = attempts.docs.map(doc => {
         return {
           id: doc.id,
-          ...doc.data()
+          createdAt: doc.data().createdAt.toDate(),
+          feedback: doc.data().feedback,
+          points: doc.data().points,
+          maxPoints: doc.data().maxPoints
         }
       })
-      if (!feedback.exists) {
-        throw new Error('Attempt not present')
+      const sorted = attemptsWithIds.sort((attemptA, attemptB) => {
+        return new Date(parseInt(attemptB.createdAt)) - new Date(parseInt(attemptA.createdAt))
+      })
+      if (sorted.length >= 1) {
+        return [sorted[0]]
       }
-      return attemptsWithIds
+      return []
     },
     async quiz(obj, {id}, {user}, info) {
       // there should be some check that quiz exists
