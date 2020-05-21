@@ -299,8 +299,8 @@ export default {
   },
   layout: {
     container: {
-      p: 3,
-      // maxWidth: 1024,
+      px: 2,
+      maxWidth: 1024,
     },
     articleContentContainer: {
       maxWidth: 720,
@@ -317,6 +317,7 @@ export default {
     },
     groupContainer: {
       maxWidth: 1024,
+      px: 2,
     },
   },
   styles: {

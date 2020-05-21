@@ -1,0 +1,5 @@
+query GroupQuizEngagement($quizId: ID!, $groupId: ID!) {
+  groupQuizEngagement(quiz: $quizId, group: $groupId) {
+    engagedCount
+  }
+}

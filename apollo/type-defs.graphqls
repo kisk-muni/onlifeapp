@@ -160,6 +160,35 @@
     maxPoints: Int
   }
 
+  type GroupQuizEngagement {
+    engagedCount: Int
+  }
+
+  type QuestionStudents {
+    correct: [Student]
+    incorrect: [Student]
+  }
+
+  type GroupQuizStatsQuestionChoice {
+    choiceText: String!
+    chosenCount: Int!
+  }
+
+  type GroupQuizStatsQuestion {
+    id: String!
+    required: Boolean!
+    question: String!
+    _modelApiKey: String!
+    choices: [GroupQuizStatsQuestionChoice]
+    students: QuestionStudents
+  }
+
+  type GroupQuizStats {
+    engagedCount: Int
+    engagedStudents: [Student]
+    questions: [GroupQuizStatsQuestion]
+  }
+
   type Query {
 		user: User
     viewer: User
@@ -170,6 +199,8 @@
     quiz(id: ID!): Quiz
     userQuizFeedback(quiz: String!, attempt: String!): UserQuizFeedback
     userQuizFeedbackList(quiz: ID!): [UserQuizFeedbackWithIds]
+    groupQuizEngagement(quiz: ID!, group: ID!): GroupQuizEngagement
+    groupQuizStats(quiz: ID!, group: ID!, filter: String!): GroupQuizStats
     topics: [Topic]
     topic(id: ID!): Topic
   }

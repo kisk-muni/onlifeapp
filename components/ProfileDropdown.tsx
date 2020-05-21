@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Link as Lstyle, Flex } from 'theme-ui'
 import { useApolloClient } from "@apollo/react-hooks"
 import { AppNotifier } from '../utils/notifier'
+import Avatar from './Avatar'
 
 export const ProfileDropdownPlaceholder = () => 
 <Flex sx={{alignItems: 'center', py: '8px'}}>
@@ -52,7 +53,20 @@ const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps)
           py: 2,
         }}>
         <Flex sx={{alignItems: 'center'}}>
-          {name ? name : email } {photoURL && <img src={photoURL} sx={{height: '32px', width: '32px', marginLeft: '.6em', display: 'inline-block', borderRadius: '50%'}} /> }
+          {name ? name : email } 
+            <Avatar
+              name={name ? name : email}
+              photoURL={photoURL}
+              sx={{
+                height: '32px',
+                width: '32px',
+                lineHeight: '32px',
+                marginLeft: '.6em',
+                display: 'inline-block',
+                borderRadius: '16px',
+                overflow: 'hidden'
+              }}
+            />
         </Flex>
       </Lstyle>
       <Menu sx={{zIndex: 80}}>

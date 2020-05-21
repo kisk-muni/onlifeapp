@@ -86,7 +86,7 @@ export const resolvers = {
       try {
         let groupsRef = await db.collection("groups").where("userId", "==", user.id).get()
         let groups = []
-        let colors = ['orange', 'green', 'blue', 'red', 'black']
+        let colors = ['orange', 'blue', 'purple', 'pink', 'black']
         let i = 0
         groupsRef.forEach(doc => {
           let data = doc.data()
@@ -165,6 +165,124 @@ export const resolvers = {
         return [sorted[0]]
       }
       return []
+    },
+    async groupQuizEngagement(obj, {quiz, group}, {user}, info) {
+      if (!user) {
+        throw new Error('User not present.')
+      }
+      let groupSnapshot = await db.collection("groups").doc(group).get()
+      if (!groupSnapshot.exists) {
+        throw new Error('Group does not exist.')
+      }
+      if (groupSnapshot.data().userId !== user.id) {
+        throw new Error('Group does not belong to current user.')
+      }
+      let responses = 0
+      for (let [id, student] of Object.entries(groupSnapshot.data().students)) {
+        // check quizResponses for quizId
+        console.log('student:', id)
+        let studentResponses = await db.collection('quizResponses').doc(id).collection('quizzes').doc(quiz).collection('attempts').limit(1).get()
+        if (studentResponses.size == 1) {
+          responses += 1
+        }
+      }
+      return {
+        engagedCount: responses
+      }
+    },
+    async groupQuizStats(obj, {quiz, group, filter}, {user}, info) {
+      if (!user) {
+        throw new Error('User not present.')
+      }
+      let groupSnapshot = await db.collection("groups").doc(group).get()
+      if (!groupSnapshot.exists) {
+        throw new Error('Group does not exist.')
+      }
+      if (groupSnapshot.data().userId !== user.id) {
+        throw new Error('Group does not belong to current user.')
+      }
+      let engagedCount = 0
+      let engagedStudents = []
+      let questions = []
+      for (let [id, student] of Object.entries(groupSnapshot.data().students)) {
+        // check quizResponses for quizId
+        let studentAttemptsRef = db.collection('quizResponses').doc(id).collection('quizzes').doc(quiz).collection('attempts')
+        let studentAttempts
+        switch (filter) {
+          case 'best':
+            
+            studentAttempts = await studentAttemptsRef.orderBy('points').limit(1).get()
+            break
+          case 'first':
+            studentAttempts = await studentAttemptsRef.orderBy('createdAt').limit(1).get()
+            break
+          case 'last':
+            studentAttempts = await studentAttemptsRef.orderBy('createdAt').limit(1).get()
+            break
+          default:
+            throw new Error('Unknown stats filter.')
+        }
+        if (studentAttempts.size == 1) {          
+          let currentStudent = {
+            id: id,
+            name: student.name,
+            email: student.email,
+            picture: student.photoURL,
+          }
+          engagedCount += 1
+          engagedStudents.push(currentStudent)
+          studentAttempts.docs.forEach(attemptDoc => {
+            attemptDoc.data().feedback.forEach(feedbackItem => {
+              if (!questions[feedbackItem.id]) {
+                // initialize
+                questions[feedbackItem.id] = {
+                  id: feedbackItem.id,
+                  required: feedbackItem.required,
+                  question: feedbackItem.question,
+                  _modelApiKey: feedbackItem._modelApiKey,
+                  choices: [],
+                  students: {
+                    correct: [],
+                    incorrect: []
+                  }
+                }
+              }
+              feedbackItem.feedbackResponses.forEach(feedbackResponse => {
+                //console.log('feedbackResponse', feedbackResponse)
+                // ulozit do choices pokud tam nejsou
+                let indexOfChoice = questions[feedbackItem.id].choices.findIndex(question => {
+                  return question.choiceText === feedbackResponse.choiceText
+                })
+                if (indexOfChoice === -1) {
+                  // initialize
+                  let chosen = false
+                  if (feedbackResponse.chosen) {
+                    chosen = true
+                  }
+                  questions[feedbackItem.id].choices.push({
+                    choiceText: feedbackResponse.choiceText,
+                    chosenCount: chosen ? 1 : 0,
+                  })
+                } else {
+                  if (feedbackResponse.chosen) {
+                    questions[feedbackItem.id].choices[indexOfChoice].chosenCount += 1
+                  }
+                }
+              }) // feedbackItem.data().feedbackResponses.forEach(feedbackResponse => {
+              if (feedbackItem.correct) {
+                questions[feedbackItem.id].students.correct.push(currentStudent)
+              } else if (feedbackItem?.response !== '' || feedbackItem?.responses.length !== 0) {
+                questions[feedbackItem.id].students.incorrect.push(currentStudent)
+              }
+            }) // attemptDoc.feedback.forEach(feedbackItem => {
+          }) // attemptDoc.feedback.forEach(feedbackItem => {
+        }
+      }
+      return {
+        engagedCount: engagedCount,
+        engagedStudents: engagedStudents,
+        questions: questions
+      }
     },
     async quiz(obj, {id}, {user}, info) {
       // there should be some check that quiz exists

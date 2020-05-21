@@ -102,6 +102,7 @@ function setCheckboxFeedbackItem(item: Item, submittedItem: SubmittedItem, feedb
     let sentiment: 'positive' | 'negative' | 'neutral' = 'neutral'
     let feedback = ''
     let chosen = false
+    feedbackItem.correct = true
     if (submittedItem.responses.includes(respond.choiceText)) {
       // user clicked respond
       chosen = true
@@ -120,6 +121,7 @@ function setCheckboxFeedbackItem(item: Item, submittedItem: SubmittedItem, feedb
       } else {
         sentiment = 'negative'
         feedback = respond.incorrectFeedback
+        feedbackItem.correct = false
       }
     }
     return {

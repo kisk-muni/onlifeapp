@@ -274,10 +274,15 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                     <Text sx={{fontSize: 1}}>{ quizItemIndex }.</Text>
                   </Box>
                   <Box sx={{flexGrow: 99999, flexBasis: 0}}>
-                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
+                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 2}}>
                       {item.question}
                       {!item.required && <span sx={{m: 2, fontStyle: 'italic', fontSize: 1, fontWeight: 'body', color: 'gray'}}>
                         nepovinná otázka
+                      </span>}
+                    </Text>
+                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
+                      {item._modelApiKey === 'checkbox' && <span sx={{mb: 2, fontSize: 1, fontWeight: 'body', color: 'gray'}}>
+                        Vyberte vše, co platí.
                       </span>}
                     </Text>
                     { item.picture &&
@@ -295,7 +300,10 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                         {((item._modelApiKey === 'checkbox' && errors[item.id]?.length) ? 'Musíte vybrat alespoň jednu odpověď.' : errors[item.id].message)}
                       </Text>
                     }
-                    </Box>
+                  </Box>
+                  <Box sx={{flexBasis: '70px', flexGrow: 1}}>
+                    <Text sx={{fontSize: 1, height: '32px', lineHeight: '32px', textAlign: 'center', px: 3, borderRadius: '16px', border: '1px solid #ddd'}}>1 bod</Text>
+                  </Box>
                 </Flex>
               </Box>
             )

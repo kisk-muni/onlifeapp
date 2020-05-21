@@ -5,7 +5,7 @@ import GroupHeader from '../components/dashboard/GroupHeader'
 import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
 import { useGroupQuery } from '../apollo/group.graphql'
-import { ResultsComponent, StudentSubtopicsResult, StudentTopicsResult } from '../apollo/studentResults.graphql'
+import { useGroupQuizEngagementQuery } from '../apollo/groupQuizEngagement.graphql'
 import { jsx, Text, Heading, Container, Alert, AspectRatio, Link as SLink, Badge, Grid, Button, Box, Flex, Close } from 'theme-ui'
 import FullPageLoading from "../components/FullPageLoading"
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
@@ -14,6 +14,49 @@ import { NextPage, GetServerSideProps } from 'next'
 import Link from 'next/link'
 import withAuthRedirect from '../utils/withAuthRedirect'
 import { getAllPostsForGroup } from '../utils/api'
+
+const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {groupId: string, studentsCount: number, quizId: string, title: string, slug: string}) => {
+  const router = useRouter()
+  const quizEngagement = useGroupQuizEngagementQuery({
+    variables: {
+      quizId: quizId,
+      groupId: groupId
+    }
+  })
+  return (
+    <Box {...props} sx={{
+      pt: 3,
+      pb: 4,
+      px: 4,
+      mb: 3,
+      backgroundColor: 'background',
+      borderRadius: '5px',
+      transition: 'box-shadow .1s ease 0s',  
+      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 6px',
+      '&:hover': {
+        boxShadow: 'rgba(0, 0, 0, 0.1) 0px 6px 12px',
+      },
+      '&:hover .text': {
+        color: '#000',
+      },
+    }}>
+      <Grid gap={2} columns={[2]}>
+        <Box>
+          <div><Badge variant="primary" sx={{mr: 2, mt: 2, mb: 3}}>Kvíz</Badge></div>
+          <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ title }</Heading>
+          <Flex>
+          <Text className="text" sx={{color: 'gray', fontSize: 2}}>Zapojených studentů:</Text>
+          <Text sx={{color: 'text', ml: 3, fontSize: 2}}>{ quizEngagement.loading ? ' ' : quizEngagement.data?.groupQuizEngagement?.engagedCount} / {studentsCount}</Text>
+          </Flex>
+        </Box>
+        <Flex sx={{justifyContent: 'flex-end'}}>
+          <Button onClick={() => router.push("/stats/"+slug+"?trida="+router.query.trida)} sx={{my: 1, alignSelf: 'flex-start'}} variant="detailAction">Odpovědi a Statistiky</Button>  
+          <Button onClick={() => router.push("/kviz/"+slug)} sx={{my: 1, alignSelf: 'flex-start'}} variant="detailAction">Stránka kvízu</Button>
+        </Flex>
+      </Grid>
+    </Box>
+  )
+}
 
 interface Props {
   allPosts: any
@@ -126,39 +169,15 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                               {child.url && <a href={child.url}><Button sx={{ml: 3, alignSelf: 'flex-start'}} variant="detailAction">Stránka podtématu</Button></a>}
                             </Flex>
                           </Box>
-                        { child?.content?.map((quizBlock) => (
-                          quizBlock.id && 
-                          <Box sx={{
-                            pt: 3,
-                            pb: 4,
-                            px: 4,
-                            mb: 3,
-                            backgroundColor: 'background',
-                            borderRadius: '5px',
-                            transition: 'box-shadow .1s ease 0s',  
-                            boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 6px',
-                            '&:hover': {
-                              boxShadow: 'rgba(0, 0, 0, 0.1) 0px 6px 12px',
-                            },
-                            '&:hover .text': {
-                              color: '#000',
-                            },
-                          }}>
-                            <Grid gap={2} columns={[2]}>
-                              <Box>
-                                <div><Badge variant="primary" sx={{mr: 2, mt: 2, mb: 3}}>Kvíz</Badge></div>
-                                <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ quizBlock.quizLink.title }</Heading>
-                                <Flex>
-                                <Text className="text" sx={{color: 'gray', fontSize: 2}}>Zapojených studentů:</Text>
-                                <Text sx={{color: 'text', ml: 3, fontSize: 2}}>0 / {data?.group?.students?.length}</Text>
-                                </Flex>
-                              </Box>
-                              <Flex sx={{justifyContent: 'flex-end'}}>
-                                <Button onClick={() => router.push("/stats/"+quizBlock.quizLink.slug+"?trida="+router.query.trida)} sx={{my: 1, alignSelf: 'flex-start'}} variant="detailAction">Odpovědi a Statistiky</Button>  
-                                <Button onClick={() => router.push("/kviz/"+quizBlock.quizLink.slug)} sx={{my: 1, alignSelf: 'flex-start'}} variant="detailAction">Stránka kvízu</Button>
-                              </Flex>
-                            </Grid>
-                          </Box>
+                        { child?.content?.map((quizBlock, index) => (quizBlock?.id &&
+                          <QuizBlock
+                            key={index}
+                            groupId={router.query.trida as string}
+                            studentsCount={data?.group?.students?.length}
+                            quizId={quizBlock?.quizLink?.id}
+                            title={quizBlock?.quizLink?.title}
+                            slug={quizBlock?.quizLink?.slug}
+                          />
                         )) }
                       </Box>
                     </Box>

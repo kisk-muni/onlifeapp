@@ -10,7 +10,7 @@ import { NextPage } from 'next'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
-import { Props, Items } from '../kviz/[slug]'
+import { Props } from '../kviz/[slug]'
 import queryString from 'query-string'
 import moment from 'moment'
 import 'moment/locale/cs'
@@ -154,13 +154,21 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
               </Box>
             }
             <Box sx={{flexGrow: 99999, flexBasis: 0}}>
-              <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
+              <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 2}}>
                 {item.question}
                 {!item.required && <span sx={{m: 2, fontStyle: 'italic', fontSize: 1, fontWeight: 'body', color: 'gray'}}>
                   nepovinná otázka
                 </span>}
               </Text>
-            { inputContent }
+              <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
+                {item._modelApiKey === 'checkbox' && <span sx={{mb: 2, fontSize: 1, fontWeight: 'body', color: 'gray'}}>
+                  Vyberte vše, co platí.
+                </span>}
+              </Text>
+              { inputContent }
+            </Box>
+            <Box sx={{flexBasis: '70px', flexGrow: 1}}>
+              <Text sx={{fontSize: 1, height: '32px', lineHeight: '32px', textAlign: 'center', px: 3, borderRadius: '16px', border: '1px solid #ddd'}}>1 bod</Text>
             </Box>
           </Flex>
         )

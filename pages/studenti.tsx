@@ -51,7 +51,7 @@ const Studenti: NextPage = () => {
                         mb: '12px',
                         alignItems: 'center'
                       }}>
-                        <Avatar sx={{height: 48, color: '#fff', width: 48, lineHeight: '48px', borderRadius: 24, fontSize: 3}} name={student.name} photoURL={student?.picture} />
+                        <Avatar sx={{height: 48, color: '#fff', width: 48, lineHeight: '48px', overflow: 'hidden', borderRadius: 24, fontSize: 3}} name={student.name} photoURL={student?.picture} />
                         <Text sx={{
                             ml: 3,
                             fontWeight: 500,
