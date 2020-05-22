@@ -6,15 +6,11 @@ import GroupHeader from '../components/dashboard/GroupHeader'
 import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
 import { useGroupQuery } from '../apollo/group.graphql'
-import { ResultsComponent, StudentSubtopicsResult, StudentTopicsResult } from '../apollo/studentResults.graphql'
-import { jsx, Text, Heading, Container, Alert, AspectRatio, Link as SLink, Badge, Grid, Button, Box, Flex, Close } from 'theme-ui'
+import { jsx, Text, Heading, Container, Grid, Box, Flex } from 'theme-ui'
 import FullPageLoading from "../components/FullPageLoading"
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
-import { Collapse } from '@blueprintjs/core'
-import { NextPage, GetServerSideProps } from 'next'
-import Link from 'next/link'
+import { NextPage } from 'next'
 import withAuthRedirect from '../utils/withAuthRedirect'
-import { getAllPostsForGroup, getAllCategoriesForGroupWithSlug } from '../utils/api'
 
 const Studenti: NextPage = () => {
   const router = useRouter()
