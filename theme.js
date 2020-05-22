@@ -114,6 +114,24 @@ export default {
       borderColor: '#eaeaea',
       color: '#666'
     },
+    studentsFilterAction: {
+      bg: 'background',
+      border: '1px solid',
+      fontWeight: 500,
+      py: 2,
+      px: 3,
+      '&:hover': {
+        borderColor: '#000',
+        color: '#000',
+        cursor: 'pointer',
+        backgroundColor: 'background'
+      },
+      '&:focus': {
+        outline: 'none',
+      },
+      borderColor: '#ddd',
+      color: '#666'
+    },
     detailAction: {
       background: 'transparent',
       color: 'gray',

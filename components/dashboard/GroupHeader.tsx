@@ -29,16 +29,6 @@ interface GroupSelectItem {
   link: string
 }
 
-function itemRenderer(group: GroupSelectItem, {modifiers}: {modifiers: {active: boolean} }) {
-  return (
-    <Link href={group.link}><MenuItem
-        active={modifiers.active}
-        key={group.id}
-        text={group.name}
-    /></Link>
-  );
-}
-
 export const GROUP_HEADER = gql`
 query Group($id: ID!) {
   user {
@@ -81,13 +71,14 @@ interface HeaderQueryVars {
   id: string | string[]
 }
 
-const GroupHeader = () => {
+const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, hideSubnav?: boolean}) => {
   const router = useRouter();
 
   return (
   <header sx={{
       variant: 'styles.dashboard.groupHeader',
       width: '100%',
+      pb: (hideSubnav ? 2 : 0),
       zIndex: 18
   }}>
     <Container variant="groupContainer">
@@ -107,18 +98,16 @@ const GroupHeader = () => {
         if (loading === false && data && data?.user && data?.group && data?.groupsSelect) {
           return (
             <Fragment>
-              <Select
-                onItemSelect={(item) => {
-                  console.log('selected', item)
-                }}
-                items={data!.groupsSelect}
-                filterable={false}
-                activeItem={null}
-                itemRenderer={itemRenderer}
-                >
-                <Button variant="groupSelect">{data?.group.name} <Icon icon="caret-down" iconSize={14} sx={{mb: '2px'}} /></Button>
-              </Select>
-              <Text sx={{fontSize: 2, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data?.group.invitationCode}</span></Text>
+              <Link href={'/trida?trida='+router.query.trida}>
+                <Button variant="groupSelect" sx={{mr: 1}}>{data?.group.name}</Button>
+              </Link>
+              { currentPage
+                ? <Fragment>
+                    <Icon icon="caret-right" iconSize={14} sx={{mb: '2px', color: 'gray'}} />
+                    <Text sx={{fontSize: 2, ml: 2, display: 'inline'}}>{currentPage}</Text>
+                  </Fragment>
+                : <Text sx={{fontSize: 2, ml: 3, display: 'inline'}}>Kód pro pozvání: <span sx={{letterSpacing: '2px', fontSize: 3}}>{data?.group.invitationCode}</span></Text>
+              }
               <div sx={{ mx: 'auto' }} />
               <Link passHref href="/">
                 <Lstyle
@@ -203,34 +192,36 @@ const GroupHeader = () => {
       }}
       </Query>
       </Flex>
-      <Box>
-        <Link asPath={"/trida?trida="+router.query.trida} href={{ pathname: '/trida', query: { trida: router.query.trida } }} passHref>
-          <Lstyle
-            sx={{
-              variant: 'styles.navlink',
-              color: (router.pathname  == '/trida' ? 'text' : 'gray'),
-              borderBottom: (router.pathname  == '/trida' ? '2px solid #000' : '2px solid transparent'),
-              pb: 3,
-              mr: 4,
-              pt: 3
-            }}>
-            Přehled
-          </Lstyle>
-        </Link>
-        <Link asPath={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }} passHref>
-          <Lstyle
-            sx={{
-              variant: 'styles.navlink',
-              color: (router.pathname  == '/studenti' ? 'text' : 'gray'),
-              borderBottom: (router.pathname  == '/studenti' ? '2px solid #000' : '2px solid transparent'),
-              pb: 3,
-              mr: 4,
-              pt: 3
-            }}>
-            Studenti
-          </Lstyle>
-        </Link>
-      </Box>
+      { !hideSubnav &&
+        <Box>
+          <Link as={"/trida?trida="+router.query.trida} href={{ pathname: '/trida', query: { trida: router.query.trida } }} passHref>
+            <Lstyle
+              sx={{
+                variant: 'styles.navlink',
+                color: (router.pathname  == '/trida' ? 'text' : 'gray'),
+                borderBottom: (router.pathname  == '/trida' ? '2px solid #000' : '2px solid transparent'),
+                pb: 3,
+                mr: 4,
+                pt: 3
+              }}>
+              Přehled
+            </Lstyle>
+          </Link>
+          <Link as={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }} passHref>
+            <Lstyle
+              sx={{
+                variant: 'styles.navlink',
+                color: (router.pathname  == '/studenti' ? 'text' : 'gray'),
+                borderBottom: (router.pathname  == '/studenti' ? '2px solid #000' : '2px solid transparent'),
+                pb: 3,
+                mr: 4,
+                pt: 3
+              }}>
+              Studenti
+            </Lstyle>
+          </Link>
+        </Box>
+      }
     </Container>
   </header>
   )

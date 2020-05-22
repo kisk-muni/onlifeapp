@@ -14,6 +14,7 @@ import { Props } from '../kviz/[slug]'
 import Item from '../../components/stats/Item'
 import Navigation from '../../components/stats/Navigation'
 import FilterSelect from '../../components/stats/FilterSelect'
+import Individual from '../../components/stats/Individual'
 
 const StatsPage: NextPage<Props> = ({quiz}) => {
   const router = useRouter()
@@ -34,37 +35,42 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
   }
   return (
     <DashboardLayout
-      header={<GroupHeader />}
+      header={<GroupHeader currentPage={'Kvíz: ' + quiz?.title} hideSubnav />}
       stickHeaderByDefault>
-      <Box sx={{backgroundColor: 'background', boxShadow: '0 1px 0 0 rgba(0,0,0,0.1)'}}>
-        <Container sx={{mt: 4}}>
-          <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 0}}>
-            <Heading sx={{mb: 3, mt: 1, fontSize: 6}}>Kvíz: { quiz?.title }</Heading>
-            <Button sx={{px: 4, fontWeight: 500, fontSize: 2}}>Stránka kvízu</Button>
-          </Flex>
-          <Navigation />
-        </Container>
-      </Box>
-      <Container sx={{pt: 2, mt: 2}}>
-        {stats.loading
-        ? <FadeSpinner />
-        : <Fragment>
-            <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
-              <Text sx={{fontSize: 2}}>{engagedCount} {engagedText}</Text>
-              <FilterSelect
-                value={filterValue}
-                defaultValue="best"
-                onChange={(e) => setFilterValue(e.target.value)}
-              />
-            </Flex>
-            <Box>
-              {stats?.data?.groupQuizStats?.questions.map((question, index) =>
-                <Item question={question} key={index} index={index} />
-              )}
-            </Box>
-          </Fragment>
-        }
+      <Container sx={{mt: 4}}>
+        <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 0}}>
+          <Heading sx={{mb: 2, mt: 1, fontSize: 6}}>Kvíz: { quiz?.title }</Heading>
+          <Button sx={{px: 4, fontWeight: 500, fontSize: 2}}>Stránka kvízu</Button>
+        </Flex>
       </Container>
+      {router.query.tab === 'individual' ? 
+        <Container sx={{pt: 2, mt: 2}}>
+          {stats.loading
+          ? <FadeSpinner />
+          : <Individual students={stats?.data?.groupQuizStats?.engagedStudents} />
+          }
+        </Container>
+      : <Container sx={{pt: 2, mt: 2}}>
+          {stats.loading
+          ? <FadeSpinner />
+          : <Fragment>
+              <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
+                <Text sx={{fontSize: 2}}>{engagedCount} {engagedText}</Text>
+                <FilterSelect
+                  value={filterValue}
+                  defaultValue="best"
+                  onChange={(e) => setFilterValue(e.target.value)}
+                />
+              </Flex>
+              <Box>
+                {stats?.data?.groupQuizStats?.questions.map((question, index) =>
+                  <Item question={question} key={index} index={index} />
+                )}
+              </Box>
+            </Fragment>
+          }
+        </Container> 
+      }
     </DashboardLayout>
   )
 
