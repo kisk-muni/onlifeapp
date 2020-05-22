@@ -483,6 +483,19 @@ export default {
         textDecoration: 'none'
       }
     },
+    subnavlink: {
+      display: 'inline-block',
+      fontWeight: 'bold',
+      color: 'inherit',
+      textDecoration: 'none',
+      pb: 3,
+      mr: 4,
+      pt: 3,
+      '&:hover, &:focus': {
+        color: 'text',
+        textDecoration: 'none'
+      }
+    },
     navlogo: {
       display: 'inline-block',
       fontWeight: 'bold',

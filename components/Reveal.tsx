@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { ReactNode } from 'react'
-import { jsx, Box } from 'theme-ui'
+import { jsx } from 'theme-ui'
 import { keyframes } from '@emotion/core'
 
 const fade = keyframes({
@@ -20,7 +20,8 @@ interface RevealProps {
   children: ReactNode
 }
 
-const Reveal = ({duration, delay, children, ...props}: RevealProps) => <div sx={{
+const Reveal = ({duration, delay, children, ...props}: RevealProps) => (
+  <div sx={{
     visibility: 'hidden',
     opacity: 0,
     animationName: fade.toString(),
@@ -29,7 +30,8 @@ const Reveal = ({duration, delay, children, ...props}: RevealProps) => <div sx={
     animationDelay: (delay || 0) + 'ms',
     animationFillMode: 'forwards'
   }}>
-  {children}
-</div>
+    {children}
+  </div>
+)
 
 export default Reveal

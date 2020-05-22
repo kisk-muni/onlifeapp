@@ -1,13 +1,47 @@
 /** @jsx jsx */
 import { useState, Fragment } from 'react'
 import { jsx, Button, Grid, Heading, Text, Flex, Box } from 'theme-ui'
-import { GroupQuizStatsQuestion } from '../../apollo/groupQuizStats.graphql'
-import { BarChart, PieChart, Pie, Bar, ResponsiveContainer, Tooltip, Legend, XAxis, YAxis } from 'recharts'
+import { GroupQuizStatsQuestion, Student } from '../../apollo/groupQuizStats.graphql'
+import { BarChart, PieChart, Pie, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Avatar from '../Avatar'
 
-const COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109619', '#990199'];
+const StudentsBox = ({students, sentiment}: {students: Student[], sentiment: 'positive' | 'negative'}) => {
+  return (
+    <Box
+      sx={{
+        mb: 3,
+        backgroundColor: 'background',
+        border: '1px solid #ddd',
+        borderLeft: '3px solid',
+        borderLeftColor: (sentiment === 'positive' ? 'green' : 'red'),
+        borderRadius: '4px',
+        px: 3,
+        py: 2
+      }}>
+      <Heading sx={{mt: 2, mb: 3, textTransform: 'uppercase', fontSize: 1}}>
+        Odpověděli {(sentiment === 'positive' ? 'správně' : 'špatně')}
+      </Heading>
+      {students.map(student => 
+        <Flex sx={{mb: 2, alignItems: 'center'}}>
+          <Avatar
+            name={student.name}
+            photoURL={student.picture}
+            sx={{
+              height: '32px',
+              width: '32px',
+              lineHeight: '32px',
+              mr: 2
+            }} />
+          <Text sx={{fontSize: 2}}>{student.name}</Text>
+        </Flex>
+      )}
+    </Box>
+  )
+}
 
-const StatsItem = ({question, index}: {question: GroupQuizStatsQuestion, index: number}) => {
+const COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109619', '#990199']
+
+const Item = ({question, index}: {question: GroupQuizStatsQuestion, index: number}) => {
   const [showStudents, setShowStudents] = useState(false)
   let data = []
   let chosenCount = 0
@@ -83,27 +117,10 @@ const StatsItem = ({question, index}: {question: GroupQuizStatsQuestion, index: 
             { showStudents &&
               <Box sx={{mt: 3}}>
                 {question?.students?.correct.length > 0 && 
-                  <Box sx={{mb: 3, backgroundColor: 'background', border: '1px solid #ddd', borderLeft: '3px solid green', borderRadius: '4px', px: 3,  py: 2}}>
-                    <Heading sx={{mt: 2, mb: 3, textTransform: 'uppercase', fontSize: 1}}>Odpověděli správně</Heading>
-                    {question?.students?.correct.map(student => 
-                      <Flex sx={{mb: 2, alignItems: 'center'}}>
-                        <Avatar name={student.name} photoURL={student.picture} sx={{height: '32px', width: '32px', lineHeight: '32px', mr: 2}} />
-                        <Text sx={{fontSize: 2}}>{student.name}</Text>
-                      </Flex>
-                    )}
-                  </Box>
+                  <StudentsBox students={question?.students?.correct} sentiment="positive" />
                 }
-                
                 {question?.students?.incorrect.length > 0 && 
-                  <Box sx={{mb: 3, backgroundColor: 'background', border: '1px solid #ddd', borderLeft: '3px solid red', borderRadius: '4px', px: 3,  py: 2}}>
-                    <Heading sx={{mt: 2, mb: 3, textTransform: 'uppercase', fontSize: 1}}>Odpověděli špatně</Heading>
-                    {question?.students?.incorrect.map(student =>
-                      <Flex sx={{mb: 2, alignItems: 'center'}}>
-                        <Avatar name={student.name} photoURL={student.picture} sx={{height: '32px', width: '32px', lineHeight: '32px', mr: 2}} />
-                        <Text sx={{fontSize: 2}}>{student.name}</Text>
-                      </Flex>
-                    )}
-                  </Box>
+                  <StudentsBox students={question?.students?.incorrect} sentiment="negative" />
                 }
               </Box>
             }
@@ -114,4 +131,4 @@ const StatsItem = ({question, index}: {question: GroupQuizStatsQuestion, index: 
   )
 }
 
-export default StatsItem
+export default Item
