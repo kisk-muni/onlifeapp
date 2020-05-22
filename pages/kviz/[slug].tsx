@@ -10,7 +10,7 @@ import { jsx, Radio, Checkbox, Label, Button, Grid, Message, Link as Slink, Spin
 import { NextPage } from 'next'
 import Link from 'next/link'
 import FadeSpinner from '../../components/FadeSpinner'
-import { useUserQuizFeedbackListQuery } from '../../apollo/userQuizFeedbackList.graphql'
+import { useUserQuizFeedbackListQuery } from '../../apollo/UserQuizFeedbackList.graphql'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect'
 import moment from 'moment'
