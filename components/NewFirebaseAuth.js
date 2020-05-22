@@ -72,11 +72,12 @@ const NewFirebaseAuth = () => {
             box-shadow: 0 1px 4px rgba(0,0,0,0.2);
             cursor: pointer;
         }
-        
+        button.firebaseui-id-secondary-link.firebaseui-button.mdl-button.mdl-js-button.mdl-button--primary {
+            margin-right: 16px!important;
+        }
         .firebaseui-card-header {
             display: none;
         }
-
         .firebaseui-idp-google:hover {
             background-color: #f5f5f5!important;
         }
