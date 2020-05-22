@@ -99,6 +99,21 @@ export default {
         cursor: 'pointer' 
       }
     },
+    statsAction: {
+      bg: 'background',
+      border: '1px solid',
+      fontWeight: 500,
+      py: '6px',
+      px: '12px',
+      '&:hover': {
+        borderColor: '#000',
+        color: '#000',
+        cursor: 'pointer',
+        backgroundColor: 'background'
+      },
+      borderColor: '#eaeaea',
+      color: '#666'
+    },
     detailAction: {
       background: 'transparent',
       color: 'gray',
