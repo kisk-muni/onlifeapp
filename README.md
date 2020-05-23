@@ -1,7 +1,5 @@
 # Onlife
 
-[![Build Status](https://travis-ci.com/dalibor-123/onlifeapp.svg?token=zUWUg69HVpzxKsrVxM7s&branch=master)](https://travis-ci.com/dalibor-123/onlifeapp)
-
 ## Design decisions
 
 - TypeScript for any new code
