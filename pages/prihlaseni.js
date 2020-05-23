@@ -11,6 +11,7 @@ import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
 import clearAuthDataCache from '../utils/clearAuthDataCache'
 import { ApolloConsumer } from 'react-apollo'
+import { NextSeo } from 'next-seo'
 
 
 class Login extends Component {
@@ -51,6 +52,7 @@ class Login extends Component {
   
     render() {
       return (<StarterLayout showDescription={() => true}>
+        <NextSeo title="Přihlášení" />
         <Flex flexDirection="column" justifyContent="center" alignItems="stretch">
             <Box
               mt={5}

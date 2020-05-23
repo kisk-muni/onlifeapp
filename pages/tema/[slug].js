@@ -12,6 +12,7 @@ import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Button, Container, Link as Lstyle, AspectImage, AspectRatio } from 'theme-ui'
 import ReactMarkdown from 'react-markdown/with-html'
 import htmlParser from 'react-markdown/plugins/html-parser'
+import { NextSeo } from 'next-seo'
 
 const parseHtml = htmlParser({
   isValidNode: node => node.type !== 'script'
@@ -36,6 +37,20 @@ const TopicPage = ({ post, preview }) => {
   return (
     <StarterLayout
       showDescription={() => false}>
+        <NextSeo
+          title={post?.titulek}
+          description={post?.seoMeta?.description}
+          openGraph={{
+            title: post?.seoMeta?.title,
+            description: post?.seoMeta?.description,
+            images: [
+              { url: post?.seoMeta?.image?.url }
+            ],
+          }}
+          twitter={{
+            cardType: post?.seoMeta.twitterCard,
+          }}
+        />
         {
         <Flex flexWrap="wrap" mb="5">
           {post?.picture && <Box width={[1]}>

@@ -14,6 +14,7 @@ import { Props } from '../kviz/[slug]'
 import queryString from 'query-string'
 import moment from 'moment'
 import 'moment/locale/cs'
+import { NextSeo } from 'next-seo'
 
 const Feedback = ({text, sentiment}: {text: string, sentiment: string}) => (
   <Text
@@ -52,6 +53,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
   const createdAt = new Date(parseInt(data?.userQuizFeedback.createdAt))
   return (
     <StarterLayout>
+    <NextSeo title={'Zpětná vazba:' + quiz?.title } />
     <Container sx={{mt: 4}} variant="quiz">
       <Flex sx={{justifyContent: 'space-between', alignItems: 'center'}}>
         <Heading sx={{mb: 3, mt: 2, fontSize: 5}}>{ quiz?.title }</Heading>

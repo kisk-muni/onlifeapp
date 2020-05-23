@@ -119,7 +119,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
                   Kurz
                 </Lstyle>
               </Link>
-              <Link passHref href="/ucitel">
+              <Link passHref href="/tridy">
                 <Lstyle
                   sx={{
                     variant: 'styles.navlink',

@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { Fragment, useState, useEffect } from 'react'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import Avatar from '../components/Avatar'
 import GroupHeader from '../components/dashboard/GroupHeader'
@@ -11,17 +10,17 @@ import FullPageLoading from "../components/FullPageLoading"
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
 import { NextPage } from 'next'
 import withAuthRedirect from '../utils/withAuthRedirect'
+import { NextSeo } from 'next-seo'
 
 const Studenti: NextPage = () => {
   const router = useRouter()
-  //const [ activeStudent, setActiveStudent ] = useState('')
-  const [ activeCategory, setActiveCategory ] = useState('')
   const { data, loading, error } = useGroupQuery({variables: {id: router.query.trida as string}})
 
   return (
     <DashboardLayout
       header={<GroupHeader />}
       stickHeaderByDefault> 
+      <NextSeo noindex title={data?.group?.name ? data?.group?.name : 'Třída' } />
       <Flex sx={{
         flexDirection: 'column',
         flexGrow: 1,
@@ -30,9 +29,7 @@ const Studenti: NextPage = () => {
       }}>
       <Container sx={{mt: 4}} variant="groupContainer">
       {
-        loading ? <div>
-          Načítání…
-        </div>
+        loading ? <FullPageLoading />
         :
         <div>
           {

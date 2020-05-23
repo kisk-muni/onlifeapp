@@ -1,5 +1,7 @@
+import { Fragment } from 'react'
 import SignInPage from '../components/auth/SignInPage'
 import { withApollo } from '../apollo/client'
+import { NextSeo } from 'next-seo'
 
 const features = [
   {
@@ -16,12 +18,17 @@ const features = [
   }
 ]
 
-const SignIn = () => <SignInPage
-    features={features}
-    logo="OnLife pro učitele"
-    isForStudents={false}
-    registerTeacher
-    heading="Učte s námi informační gramotnost"
-  />
+const SignIn = () => (
+  <Fragment>
+    <NextSeo title="Registrace učitele" />
+    <SignInPage
+      features={features}
+      logo="OnLife pro učitele"
+      isForStudents={false}
+      registerTeacher
+      heading="Učte s námi informační gramotnost"
+    />
+  </Fragment>
+  )
 
 export default withApollo(SignIn)

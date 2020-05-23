@@ -1,53 +1,12 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
 import { withApollo } from '../apollo/client'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Image as DatoImage } from 'react-datocms'
 import { getAllPostsForHome } from '../utils/api'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, AspectRatio, AspectImage, Grid, Image } from 'theme-ui'
-import { keyframes } from '@emotion/core'
-
-const placeholderTopicsArray = [0, 1, 2, 3, 4, 5]
-
-const changeBg = keyframes({
-  from: {
-    background: 'background',
-  },
-  to: {
-    background: '#fafafa',
-  }
-})
-
-const TopicPlaceholder = () => 
-  <Box sx={{variant: 'styles.topicCard', mb: 3}}>
-    <AspectRatio
-      ratio={16/9}
-      sx={{
-        background: 'white',
-        animationName: changeBg.toString(),
-        animationTimingFunction: 'linear',
-        animationDuration: '100 ms',
-        animationDelay: '1000 ms',
-        animationFillMode: 'forwards',
-        borderRadius: '6px'
-      }}
-    >
-    </AspectRatio>
-    <Box sx={{
-      background: 'white',
-      animationName: changeBg.toString(),
-      animationTimingFunction: 'linear',
-      animationDuration: '100 ms',
-      animationDelay: '1000 ms',
-      animationFillMode: 'forwards',
-      height: '28px',
-      width: '230px',
-      mt: '16px',
-      borderRadius: '6px'
-      }}></Box>
-  </Box>
+import { jsx, Text, Heading, Grid, Image } from 'theme-ui'
+import { NextSeo } from 'next-seo'
 
 const Topic = ({name, slug, responsiveImage}) => 
   <Box sx={{variant: 'styles.topicCard', mb: 3}}>
@@ -86,7 +45,11 @@ const Index = ({ allPosts }) => {
 
   return (
   <StarterLayout
-    showDescription={(fromTop, fromBottom) => -fromTop > 180}>  
+    showDescription={(fromTop, fromBottom) => -fromTop > 180}>
+    <NextSeo
+      title="Kurz informační gramotnosti"
+      description="Online kurz informační gramotnosti pro studenty středních škol vyvíjen na kabinetu informačních studií a knihovnictví Masarykovy univerzity."
+    />
     <Heading sx={{
       color: 'text',
       textAlign: 'center',
@@ -110,10 +73,6 @@ const Index = ({ allPosts }) => {
           {
             allPosts && allPosts.map((post, index) => <Topic key={index} slug={post.slug} name={post.titulek} responsiveImage={post.thumbnailPicture.responsiveImage} />)
           }
-          { /* loading
-            ? placeholderTopicsArray.map((number, index) => <TopicPlaceholder key={index} />) 
-            : data.topics.map((topic, index) => <Topic key={index} picture={topic.thumbnail} id={topic.id} name={topic.name} />)
-          */ }
         </Grid>
       </Box>
     </Flex>

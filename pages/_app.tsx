@@ -2,6 +2,8 @@ import React from 'react'
 import App from 'next/app'
 import { ThemeProvider } from 'theme-ui'
 import theme from '../theme'
+import { DefaultSeo } from 'next-seo'
+import SEO from '../next-seo.config'
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
 import '../utils/sentry'
 
@@ -11,6 +13,7 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
+          <DefaultSeo {...SEO} />
           <Component {...pageProps} />
           <style jsx global>{`
             .toaster-notification {

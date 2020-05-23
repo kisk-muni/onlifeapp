@@ -6,14 +6,12 @@ import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
 import { useGroupQuery } from '../apollo/group.graphql'
 import { useGroupQuizEngagementQuery } from '../apollo/groupQuizEngagement.graphql'
-import { jsx, Text, Heading, Container, Alert, AspectRatio, Link as SLink, Badge, Grid, Button, Box, Flex, Close } from 'theme-ui'
-import FullPageLoading from "../components/FullPageLoading"
-import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
-import { Collapse } from '@blueprintjs/core'
-import { NextPage, GetServerSideProps } from 'next'
+import { jsx, Text, Heading, Container, Link as SLink, Badge, Grid, Button, Box, Flex } from 'theme-ui'
+import { NextPage } from 'next'
 import Link from 'next/link'
 import withAuthRedirect from '../utils/withAuthRedirect'
 import { getAllPostsForGroup } from '../utils/api'
+import { NextSeo } from 'next-seo'
 
 const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {groupId: string, studentsCount: number, quizId: string, title: string, slug: string}) => {
   const router = useRouter()
@@ -81,7 +79,8 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
   return (
     <DashboardLayout
       header={<GroupHeader />}
-      stickHeaderByDefault> 
+      stickHeaderByDefault>
+      <NextSeo noindex title={data?.group?.name ? data?.group?.name : 'Třída' } />
       <Flex sx={{
         flexDirection: 'column',
         flexGrow: 1,

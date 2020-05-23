@@ -5,11 +5,14 @@ import Header from '../components/Header'
 import { withApollo } from '../apollo/client'
 import { NextPage } from 'next'
 import withAuthRedirect from '../utils/withAuthRedirect' 
+import { NextSeo } from 'next-seo'
 
 const SettingsPage: NextPage = () => (
   <DashboardLayout
     header={<Header />}
-    stickHeaderByDefault>
+    stickHeaderByDefault
+  >
+    <NextSeo title="Nastavení" />
     <Flex sx={{maxWidth: 960, px: 35, mx: 'auto', flexDirection: 'column', alignItems: 'center'}}>
       <Box sx={{mt: 4}}>
         <Heading sx={{fontSize: 7, mb: 4}}>Nastavení (ve vývoji)</Heading>

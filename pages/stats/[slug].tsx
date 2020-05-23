@@ -7,6 +7,7 @@ import { useGroupQuizStatsQuery } from '../../apollo/groupQuizStats.graphql'
 import { useRouter } from 'next/router'
 import { jsx, Container, Button, Heading, Select, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
@@ -15,6 +16,7 @@ import Item from '../../components/stats/Item'
 import Navigation from '../../components/stats/Navigation'
 import FilterSelect from '../../components/stats/FilterSelect'
 import Individual from '../../components/stats/Individual'
+import { NextSeo } from 'next-seo'
 
 const StatsPage: NextPage<Props> = ({quiz}) => {
   const router = useRouter()
@@ -37,10 +39,13 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
     <DashboardLayout
       header={<GroupHeader currentPage={'Kvíz: ' + quiz?.title} hideSubnav />}
       stickHeaderByDefault>
+      <NextSeo title="Odpovědi a statistiky" />
       <Container sx={{mt: 4}}>
         <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 0}}>
           <Heading sx={{mb: 2, mt: 1, fontSize: 6}}>Kvíz: { quiz?.title }</Heading>
-          <Button sx={{px: 4, fontWeight: 500, fontSize: 2}}>Stránka kvízu</Button>
+          <Link href={"/kviz/"+quiz?.slug}>
+            <Button sx={{px: 4, fontWeight: 500, fontSize: 2}}>Stránka kvízu</Button>
+          </Link>
         </Flex>
       </Container>
       {router.query.tab === 'individual' ? 

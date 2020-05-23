@@ -13,7 +13,7 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
     if (data.user !== null) {
       userNav = <Fragment>
         { data?.user.isTeacher && 
-          <Link passHref href="/ucitel">
+          <Link passHref href="/tridy">
             <Lstyle
               sx={{
                 variant: 'styles.navlink',

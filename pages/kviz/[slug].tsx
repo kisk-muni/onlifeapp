@@ -15,6 +15,7 @@ import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect'
 import moment from 'moment'
 import 'moment/locale/cs'
+import { NextSeo } from 'next-seo'
 
 export type PossibleResponds = {
   choiceText: string
@@ -136,6 +137,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
 
   return (
   <StarterLayout>
+    <NextSeo title={'Kvíz:' + quiz?.title } />
     <Container variant="quiz">
       <Box sx={{mt: 2, px: 4}}>
         { quiz?.items?.length !== 0 ?

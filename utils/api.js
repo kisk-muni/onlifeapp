@@ -84,7 +84,15 @@ export async function getPostAndMorePosts(slug, preview) {
           _modelApiKey
         }
       }
-      ogImage: picture{
+      seoMeta {
+        description
+        title
+        twitterCard
+        image {
+          url
+        }
+      }
+      ogImage: picture {
         url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
       }
       picture {

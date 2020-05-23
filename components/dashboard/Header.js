@@ -59,7 +59,7 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
                     Kurz
                   </Lstyle>
                 </Link>
-                <Link passHref href="/ucitel">
+                <Link passHref href="/tridy">
                   <Lstyle
                     sx={{
                       variant: 'styles.navlink',

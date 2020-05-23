@@ -115,9 +115,9 @@ export const resolvers = {
         })
       });
       groupsRes.push({
-        id: 'ucitel',
+        id: 'tridy',
         name: 'Přehled tříd',
-        link: '/ucitel'
+        link: '/tridy'
       })
       // console.log(groupsRes)
       return groupsRes.reverse()

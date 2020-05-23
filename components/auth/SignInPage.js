@@ -44,7 +44,7 @@ class SignInPage extends Component {
             .then(() => {
               if (this.props.registerTeacher) {
                 // teacher
-                Router.push("/ucitel")
+                Router.push("/tridy")
               } else {
                 // student
                 Router.push("/")

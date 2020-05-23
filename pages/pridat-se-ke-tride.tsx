@@ -9,7 +9,8 @@ import { useJoinGroupAttemptMutation } from '../apollo/joinGroupAttempt.graphql'
 import ReactCodeInput from 'react-code-input'
 import { NextPage } from 'next'
 import JoinGroup from '../components/JoinGroup'
-import withAuthRedirect from '../utils/withAuthRedirect' 
+import withAuthRedirect from '../utils/withAuthRedirect'
+import { NextSeo } from 'next-seo'
 
 const JoinGroupPage: NextPage = () => {
   const router = useRouter()
@@ -89,6 +90,7 @@ const JoinGroupPage: NextPage = () => {
 
   return (
     <StarterLayout>
+      <NextSeo title="Přidat se ke třídě" />
       <Flex sx={{alignSelf: 'center', height: '100%', flexDirection: 'column', alignItems: 'center'}}>
         {PageContent}
       </Flex>
