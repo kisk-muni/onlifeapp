@@ -98,4 +98,4 @@ const JoinGroupPage: NextPage = () => {
   )
 }
 
-export default withApollo(withAuthRedirect(JoinGroupPage, {roles: ['student'], next: 'pridat-se-ke-tride'}))
+export default withApollo(withAuthRedirect(JoinGroupPage, {roles: ['student']}))

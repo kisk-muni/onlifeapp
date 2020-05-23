@@ -5,7 +5,8 @@ import { NextPage } from 'next'
 function redirect(next?: string) {
   if (!next) {
     Router.push({
-      pathname: '/prihlaseni'
+      pathname: '/prihlaseni',
+      query: { next: Router.asPath },
     })
   } else {
     Router.push({

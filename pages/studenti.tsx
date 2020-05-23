@@ -71,4 +71,4 @@ const Studenti: NextPage = () => {
   
 }
 
-export default withApollo(withAuthRedirect(Studenti, {roles: ['teacher'], next: 'ucitel'}))
+export default withApollo(withAuthRedirect(Studenti, {roles: ['teacher']}))

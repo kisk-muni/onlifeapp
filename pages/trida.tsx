@@ -201,4 +201,4 @@ export async function getStaticProps({ preview = false }) {
   }
 }
 
-export default withApollo(withAuthRedirect(Trida, {roles: ['teacher'], next: 'ucitel'}))
+export default withApollo(withAuthRedirect(Trida, {roles: ['teacher']}))

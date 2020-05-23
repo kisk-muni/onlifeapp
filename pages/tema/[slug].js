@@ -48,7 +48,7 @@ const TopicPage = ({ post, preview }) => {
             ],
           }}
           twitter={{
-            cardType: post?.seoMeta.twitterCard,
+            cardType: post?.seoMeta?.twitterCard,
           }}
         />
         {

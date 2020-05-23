@@ -39,7 +39,11 @@ class Login extends Component {
             .then(() => firebase.auth().signOut())
             .then(() => clearAuthDataCache(apolloClient))
             .then(() => {
-              Router.push("/")
+              if (Router?.query?.next) {
+                Router.push(Router.query.next)
+              } else {
+                Router.push("/")
+              }
             })
         }
       });

@@ -90,4 +90,4 @@ const GroupsOverview: NextPage = () =>
   </GroupsComponent>
 </Fragment>
 
-export default withApollo(withAuthRedirect(GroupsOverview, {next: 'ucitel', roles: ['teacher']}))
+export default withApollo(withAuthRedirect(GroupsOverview, {roles: ['teacher']}))
