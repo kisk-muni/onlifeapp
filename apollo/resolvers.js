@@ -99,7 +99,7 @@ export const resolvers = {
         });
         return groups.reverse()
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         return null
       }
     },
@@ -123,7 +123,7 @@ export const resolvers = {
       return groupsRes.reverse()
     },
     async user(obj, args, {user}) {
-      console.log('User Resolver:', user)
+      // console.log('User Resolver:', user)
       return user
     },
     async userQuizFeedback(obj, {quiz, attempt}, {user}, info) {
@@ -180,7 +180,7 @@ export const resolvers = {
       let responses = 0
       for (let [id, student] of Object.entries(groupSnapshot.data().students)) {
         // check quizResponses for quizId
-        console.log('student:', id)
+        // console.log('student:', id)
         let studentResponses = await db.collection('quizResponses').doc(id).collection('quizzes').doc(quiz).collection('attempts').limit(1).get()
         if (studentResponses.size == 1) {
           responses += 1
