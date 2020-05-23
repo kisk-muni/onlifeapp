@@ -137,7 +137,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
 
   return (
   <StarterLayout>
-    <NextSeo title={'Kvíz:' + quiz?.title } />
+    <NextSeo title={'Kvíz: ' + (quiz?.title ? quiz?.title : '') } />
     <Container variant="quiz">
       <Box sx={{mt: 2, px: 4}}>
         { quiz?.items?.length !== 0 ?
