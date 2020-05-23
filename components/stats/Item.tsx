@@ -30,6 +30,8 @@ const StudentsBox = ({students, sentiment}: {students: Student[], sentiment: 'po
               height: '32px',
               width: '32px',
               lineHeight: '32px',
+              borderRadius: '16px',
+              overflow: 'hidden',
               mr: 2
             }} />
           <Text sx={{fontSize: 2}}>{student.name}</Text>
