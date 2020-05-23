@@ -402,7 +402,7 @@ export async function getStaticProps({ params, preview = false }) {
 export async function getStaticPaths() {
   const allGfquizzes = await getAllGFQuizzesWithSlug()
   return {
-    paths: allGfquizzes?.map(quiz => `/tema/${quiz.slug}`) || [],
+    paths: allGfquizzes?.map(quiz => `/kviz/${quiz.slug}`) || [],
     fallback: true,
   }
 }
