@@ -113,7 +113,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
                 <Lstyle
                   sx={{
                     variant: 'styles.navlink',
-                    ml: 4,
+                    ml: 5,
                     py: 2,
                   }}>
                   Kurz
@@ -123,7 +123,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
                 <Lstyle
                   sx={{
                     variant: 'styles.navlink',
-                    ml: 4,
+                    ml: 5,
                     py: 2,
                   }}>
                   Přehled tříd
@@ -141,7 +141,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
         return <Fragment>
           <span sx={{
             display: 'inline-block',
-            ml: 4,
+            ml: 5,
             background: '#eee',
             borderRadius: '6px',
             position: 'relative',
@@ -151,7 +151,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
           }}></span>
           <span sx={{
             display: 'inline-block',
-            ml: 4,
+            ml: 5,
             background: '#eee',
             borderRadius: '6px',
             position: 'relative',
@@ -162,7 +162,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
           <div sx={{ mx: 'auto' }} />
           <span sx={{
             display: 'inline-block',
-            ml: 4,
+            ml: 5,
             background: '#eee',
             borderRadius: '6px',
             position: 'relative',
@@ -172,7 +172,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
           }}></span>
           <span sx={{
             display: 'inline-block',
-            ml: 4,
+            ml: 5,
             background: '#eee',
             borderRadius: '6px',
             position: 'relative',

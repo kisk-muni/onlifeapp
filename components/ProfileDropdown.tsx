@@ -49,24 +49,24 @@ const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps)
       <Lstyle
         sx={{
           variant: 'styles.navlink',
-          ml: 4,
+          ml: 5,
           py: 2,
         }}>
         <Flex sx={{alignItems: 'center'}}>
           {name ? name : email } 
-            <Avatar
-              name={name ? name : email}
-              photoURL={photoURL}
-              sx={{
-                height: '32px',
-                width: '32px',
-                lineHeight: '32px',
-                marginLeft: '.6em',
-                display: 'inline-block',
-                borderRadius: '16px',
-                overflow: 'hidden'
-              }}
-            />
+          <Avatar
+            name={name ? name : email}
+            photoURL={photoURL}
+            sx={{
+              height: '32px',
+              width: '32px',
+              lineHeight: '32px',
+              marginLeft: 3,
+              display: 'inline-block',
+              borderRadius: '16px',
+              overflow: 'hidden'
+            }}
+          />
         </Flex>
       </Lstyle>
       <Menu sx={{zIndex: 80}}>

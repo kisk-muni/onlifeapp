@@ -17,7 +17,7 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
             <Lstyle
               sx={{
                 variant: 'styles.navlink',
-                ml: 4,
+                ml: 5,
                 py: 2,
               }}>
               Přehled tříd
@@ -30,12 +30,12 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
             <Lstyle
               sx={{
                 variant: 'styles.navlink',
-                ml: 4,
+                ml: 5,
               }}>
                 <Button
                   sx={{
                     py: 2,
-                    px: 3
+                    px: 4
                   }}>
                   Přidat se ke třídě
                 </Button>
@@ -54,7 +54,7 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
           <Lstyle
             sx={{
               variant: 'styles.navlink',
-              ml: 4,
+              ml: 5,
               py: 2,
             }}>
             Přihlásit se
@@ -63,9 +63,10 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
         <Link passHref href="/registrace">
           <Button
             sx={{
-              ml: 4,
+              ml: 5,
               py: 2,
-              px: 3
+              px: 3,
+              fontSize: 2
             }}>
             Zaregistrovat se
           </Button>

@@ -53,7 +53,7 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
                   <Lstyle
                     sx={{
                       variant: 'styles.navlink',
-                      ml: 4,
+                      ml: 5,
                       py: 2,
                     }}>
                     Kurz
@@ -63,14 +63,14 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
                   <Lstyle
                     sx={{
                       variant: 'styles.navlink',
-                      ml: 4,
+                      ml: 5,
                       py: 2,
                     }}>
                     Přehled tříd
                   </Lstyle>
                 </Link>
                 <ProfileDropdown
-                  sx={{ml: 4}}
+                  sx={{ml: 5}}
                   photoURL={data.user.photoURL}
                   name={data.user.name}
                   email={data.user.email} />
