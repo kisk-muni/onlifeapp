@@ -86,7 +86,7 @@ export function CreateGroupDialog(props: IProps) {
                   Třída  založena
               </Text>
               <div sx={{textAlign: 'center'}}>
-                <Link href={"/trida?trida" + mutation.data.addGroup.id}>
+                <Link href={"/trida?trida=" + mutation.data.addGroup.id}>
                   <Button sx={{mx: 'auto'}} type="submit" title="Pokračovat">Pokračovat</Button>
                 </Link>  
               </div>
