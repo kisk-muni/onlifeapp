@@ -60,7 +60,7 @@ export default {
     default: {
       padding: '10px 18px',
       borderRadius: 6,
-      fontWeight: 'bold',
+      fontWeight: 'body',
       '&:hover, &:focus': {
         outline: 'none',
       },
@@ -360,6 +360,11 @@ export default {
       fontFamily: 'body',
       lineHeight: 'body',
       fontWeight: 'body',
+      fontFeatureSettings: 'kern',
+      textRendering: 'optimizeLegibility',
+      webkitFontSmoothing: 'antialiased',
+      mozOsxFontSmoothing: 'grayscale',
+      scrollBehavior: 'smooth',
     },
     img: {
       maxWidth: '100%',
@@ -488,13 +493,14 @@ export default {
       boxShadow: 'none'
     },
     header: {
-      py: 2,
+      py: 3,
       background: 'rgba(255, 255, 255, .8)',
     },
     navlink: {
       display: 'inline-block',
-      fontWeight: 'bold',
-      color: 'inherit',
+      fontWeight: 'body',
+      fontSize: 2,
+      color: '#666',
       textDecoration: 'none',
       '&:hover, &:focus': {
         color: 'text',
@@ -595,11 +601,11 @@ export default {
     },
     dashboard: {
       header: {
-        py: 2,
+        py: 3,
         background: 'rgba(255, 255, 255, .8)',
       },
       groupHeader: {
-        pt: 2,
+        pt: 3,
         background: 'rgba(255, 255, 255, .8)',
       },
       navlink: {
