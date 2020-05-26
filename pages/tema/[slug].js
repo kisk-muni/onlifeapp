@@ -71,7 +71,9 @@ const TopicPage = ({ post, preview }) => {
               post?.content?.map((block) => {
                 switch (block._modelApiKey) {
                   case 'text':
-                    return (<DatoText text={block.text} />)
+                    return (<div className="plain-content">
+                        <DatoText text={block.text} />
+                      </div>)
                     break;
                   case 'quizblock':
                     return (
@@ -118,7 +120,7 @@ const TopicPage = ({ post, preview }) => {
                     )
                     break;
                   case 'leading_text':
-                    return (<div className="leading-text"><DatoText text={block.text} /></div>)
+                    return (<div className="plain-content leading-text"><DatoText text={block.text} /></div>)
                     break;
                   default:
                     break;
@@ -140,11 +142,61 @@ const TopicPage = ({ post, preview }) => {
               }
             </Container>
             <style jsx global>{`
-            p {
-              font-size: 18px;    
+            .plain-content p, .plain-content ul, .plain-content ol {
+              font-size: 21px;
+              line-height: 1.58;
             }
-            .leading-text {
+            .plain-content ul, .plain-content ol {
+              margin-bottom: 2em;
+            } 
+            .plain-content p {
+              margin-bottom: 2em;
+            }
+            .plain-content h1, .plain-content h2, .plain-content h3, .plain-content h4, .plain-content h5, .plain-content h6, {
+              font-weight: 600;
+            }
+            .plain-content h1 {
+              font-size: 48px;
+            }
+            .plain-content h2 {
+              font-size: 32px;
+            }
+            .plain-content h3 {
+              font-size: 28px;
+            }
+            .plain-content h4 {
+              font-size: 24px;
+            }
+            .plain-content h4 {
+              font-size: 21px;
+            }
+            .plain-content li {
+              margin-bottom: 1em;
+            }
+            .plain-content a {
+              color: #0000dc;
+            }
+            .plain-content a:hover {
+              color: #0000dc;
+            }
+            .plain-content .leading-text {
               margin-bottom: 48px;
+            }
+            .plain-content iframe {
+              max-width: 100%;
+              overflow: hidden;
+              border-radius: 5px;
+              box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px 5px;
+              margin-bottom: 1em;
+              margin-top: 1em;
+            }
+            .plain-content img {
+              max-width: 100%;
+              overflow: hidden;
+              border-radius: 5px;
+              box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px 5px;
+              margin-bottom: 2em;
+              margin-top: 1em;
             }
             .leading-text p {
               font-size: 24px;
