@@ -78,7 +78,7 @@ const GroupHeader = ({currentPage, hideSubnav = false}: {currentPage?: string, h
   <header sx={{
       variant: 'styles.dashboard.groupHeader',
       width: '100%',
-      pb: (hideSubnav ? 2 : 0),
+      pb: (hideSubnav ? 3 : 0),
       zIndex: 18
   }}>
     <Container variant="groupContainer">
