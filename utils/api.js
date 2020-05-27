@@ -122,7 +122,7 @@ export async function getPostAndMorePosts(slug, preview) {
         url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
       }
       picture {
-        responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 300 }) {
+        responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 2000 }) {
           ...responsiveImageFragment
         }
       }
