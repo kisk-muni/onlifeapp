@@ -62,8 +62,25 @@ export default {
       borderRadius: 6,
       fontWeight: 'body',
       '&:hover, &:focus': {
+        cursor: 'pointer',
         outline: 'none',
       },
+    },
+    articlePagination: {
+      variant: 'buttons.default',
+      color: '#333',
+      backgroundColor: 'background',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: '#ddd',
+      px: '16px',
+      py: '14px',
+      transition: 'box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1), color .2s cubic-bezier(0.4, 0, 0.2, 1)',
+      '&:hover': {
+        boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+        borderColor: '#fafafa',
+        color: 'text',
+      }
     },
     primary: {
       variant: 'buttons.default',
@@ -351,6 +368,16 @@ export default {
     groupContainer: {
       maxWidth: 1024,
       px: 2,
+    },
+    articleYoutubeVideo: {
+      maxWidth: 860,
+      px: 2,
+      mb: 4,
+    },
+    articleImage: {
+      maxWidth: 860,
+      px: 2,
+      mb: 4,
     },
   },
   styles: {

@@ -58,6 +58,16 @@ export async function getPostAndMorePosts(slug, preview) {
       id
       titulek
       slug
+      position
+      parent {
+        slug
+        titulek
+        children {
+          titulek
+          position
+          slug
+        }
+      }
       children {
         id
         slug
@@ -83,6 +93,22 @@ export async function getPostAndMorePosts(slug, preview) {
           text(markdown: true)
           _modelApiKey
         }
+        ... on YoutubeVideoRecord {
+          id
+          url
+          description
+          _modelApiKey
+        }
+        ... on ImageRecord {
+          id
+          _modelApiKey
+          description
+          image {
+            responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 860 }) {
+              ...responsiveImageFragment
+            }
+          }
+        }
       }
       seoMeta {
         description
@@ -96,7 +122,18 @@ export async function getPostAndMorePosts(slug, preview) {
         url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
       }
       picture {
-        responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 500 }) {
+        responsiveImage(imgixParams: {fm: jpg, fit: scale, w: 300 }) {
+          ...responsiveImageFragment
+        }
+      }
+    }
+    topics: allPosts(filter: {parent: {exists: "false"}}) {
+      id
+      titulek
+      position
+      slug
+      thumbnailPicture {
+        responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 300, h: 500 }) {
           ...responsiveImageFragment
         }
       }
@@ -224,7 +261,7 @@ export async function getAllPostsForHome(preview) {
         position
         slug
         thumbnailPicture {
-          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
+          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 800, h: 500 }) {
             ...responsiveImageFragment
           }
         }

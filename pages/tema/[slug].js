@@ -1,15 +1,13 @@
 /** @jsx jsx */
-import { Fragment } from 'react';
+import { Fragment } from 'react'
 import StarterLayout from '../../components/StarterLayout'
 import { withApollo } from '../../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import Link from 'next/link'
 import { getAllPostsWithSlug, getPostAndMorePosts } from '../../utils/api'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, Button, Container, Link as Lstyle, AspectImage, AspectRatio } from 'theme-ui'
+import { jsx, Text, Heading, Button, Container, Embed, Grid, Link as Lstyle, AspectImage, AspectRatio } from 'theme-ui'
 import ReactMarkdown from 'react-markdown/with-html'
 import htmlParser from 'react-markdown/plugins/html-parser'
 import { NextSeo } from 'next-seo'
@@ -28,10 +26,10 @@ const DatoText = ({text}) => (
   </Container>
 )
 
-const TopicPage = ({ post, preview }) => {
+const TopicPage = ({ post, siblings, topics, preview }) => {
   const router = useRouter()
   //const { data, loading, error } = useQuery(GET_TOPIC, {variables: {id: router.query.id}})
-  
+
   // return <div>{JSON.stringify({loading, data, error})}</div>
 
   return (
@@ -60,16 +58,93 @@ const TopicPage = ({ post, preview }) => {
               }}
             />
           </Box> }
-          <Box mt={5} width={[1]}>
-            <Heading sx={{color: 'text', textAlign: 'center', mb: 5, mt: 3, fontWeight: 700, fontSize: 7}}>
+          <Container variant="articleContentContainer">
+            <Flex sx={{justifyContent: 'center'}}>
+            <Flex sx={{
+              mt: 3,
+              mb: 2,
+              fontSize: 2,
+              color: '#333',
+              backgroundColor: 'background',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: '#ddd',
+              borderRadius: '5px',
+              px: '16px',
+              py: '14px',
+              transition: 'box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1), color .2s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                borderColor: '#fafafa',
+                color: 'text',
+              },
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              color: '#666'
+            }}>
+              <Link href="/"><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>Témata</Lstyle></Link>
+              <svg style={{color: 'inherit', marginLeft: '8px', marginRight: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              { post?.parent?.slug &&
+                <Fragment>
+                  <Link href={"/tema/" + post?.parent?.slug}><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>{ post?.parent?.titulek }</Lstyle></Link>
+                </Fragment>
+              }
+            </Flex>
+            </Flex>
+            <Heading sx={{color: 'text', textAlign: 'center', mb: 5, mt: 4, fontWeight: 700, fontSize: 7}}>
               { post?.titulek }
             </Heading>
-          </Box>
+          </Container>
           <Container>
             {
               post?.content?.length > 0 &&
               post?.content?.map((block) => {
                 switch (block._modelApiKey) {
+                  case 'youtube_video':
+                    return (<Container variant="articleYoutubeVideo">
+                      <Embed sx={{
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        borderRadius: '5px',
+                        boxShadow: 'rgba(0, 0, 0, 0.3) 0px 10px 30px 5px',
+                        marginTop: 2,
+                        mb: block.description ? 0 : 5
+                      }} src={block.url} />
+                      { block.description &&
+                        <Text sx={{
+                          fontSize: 2,
+                          mt: 4,
+                          textAlign: 'center',
+                          color: 'gray'
+                        }}>{ block.description }</Text>
+                      }
+                    </Container>)
+                    break;
+                  case 'image':
+                    return (<Container variant="articleImage">
+                      <DatoImage
+                        style={{
+                          maxWidth: '100%',
+                          overflow: 'hidden',
+                          borderRadius: '5px',
+                          boxShadow: 'rgba(0, 0, 0, 0.3) 0px 10px 30px 5px',
+                          marginTop: '1em',
+                          mb: block.description ? 0 : '2em'
+                        }}
+                        data={{
+                          ...block.image.responsiveImage,
+                        }}
+                      />
+                      { block.description &&
+                        <Text sx={{
+                          fontSize: 2,
+                          mt: 4,
+                          textAlign: 'center',
+                          color: 'gray'
+                        }}>{ block.description }</Text>
+                      }
+                    </Container>)
+                    break;
                   case 'text':
                     return (<div className="plain-content">
                         <DatoText text={block.text} />
@@ -129,17 +204,70 @@ const TopicPage = ({ post, preview }) => {
             }
             <Container sx={{my: 4}} variant="articleContentContainer">
               { post?.children.length > 0 && 
-                <Heading sx={{color: 'text', mb: 4, mt: 5, fontWeight: 700, fontSize: 6}}>
-                  Podtémata
-                </Heading>
+                <Fragment>
+                  <Heading sx={{color: 'text', mb: 4, mt: 5, fontWeight: 700, fontSize: 6}}>
+                    Podtémata
+                  </Heading>
+                
+                  <Box sx={{
+                    border: '1px solid #eaeaea',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                    borderRadius: '5px',
+                  }}>
+                  {
+                    post?.children.map((child, index) => (
+                      <Link key={index} href={"/tema/[slug]"} as={"/tema/"+child.slug} passHref>
+                        <Lstyle sx={{
+                          '&:hover': {
+                            textDecoration: 'none',
+                          }
+                        }}>
+                          <Flex sx={{
+                            fontSize: 3,
+                            fontWeight: 'body',
+                            py: '16px',
+                            px: 3,
+                            transition: 'background-color .2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            justifyContent: 'space-between',
+                            color: '#666',
+                            borderBottom: (index < (post?.children?.length - 1))  ? '1px solid #ddd' : 'none',
+                            '&:hover': {
+                              backgroundColor: '#fafafa',
+                              color: 'text'
+                            }
+                          }}>
+                            <Text>{child.titulek}</Text> 
+                            <svg style={{color: 'inherit', marginLeft: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                          </Flex>
+                        </Lstyle>
+                      </Link>
+                    ))
+                  }
+                  </Box>
+                </Fragment>
               }
-              {
-                post?.children.map((child, index) => (
-                  <Link key={index} href={"/tema/[slug]"} as={"/tema/"+child.slug} passHref>
-                    <Lstyle><Text sx={{fontSize: 3, mb: 2, fontWeight: 500}}>{child.titulek}</Text></Lstyle>
-                  </Link>
-                ))
-              }
+              <Flex sx={{mt: 5, justifyContent: 'space-between'}}>
+                {siblings?.map((sibling) => {
+                  const isNext = (sibling?.position > post?.position)
+                  return(
+                    <Box sx={{alignSelf: isNext ? 'flex-end' : 'flex-start', marginLeft: isNext ? 'auto' : '0', marginRight: isNext ? '0' : 'auto', }}>
+                      <Link href={"/tema/" + sibling?.slug}>
+                        <Button sx={{alignSelf: isNext ? 'flex-end' : 'flex-start'}} variant="articlePagination" sx={{fontSize: 2}}>
+                          <Flex>
+                            {!isNext &&
+                              <svg style={{color: 'inherit', marginRight: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                            }
+                            {sibling?.titulek}
+                            {isNext &&
+                              <svg style={{color: 'inherit', marginLeft: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            }
+                          </Flex>
+                        </Button>
+                      </Link>
+                    </Box>
+                  )
+                })}
+              </Flex>
             </Container>
             <style jsx global>{`
             .plain-content p, .plain-content ul, .plain-content ol {
@@ -179,28 +307,19 @@ const TopicPage = ({ post, preview }) => {
             .plain-content a:hover {
               color: #0000dc;
             }
-            .plain-content .leading-text {
-              margin-bottom: 48px;
-            }
-            .plain-content iframe {
-              max-width: 100%;
-              overflow: hidden;
-              border-radius: 5px;
-              box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px 5px;
-              margin-bottom: 1em;
-              margin-top: 1em;
-            }
             .plain-content img {
               max-width: 100%;
               overflow: hidden;
               border-radius: 5px;
               box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px 5px;
-              margin-bottom: 2em;
-              margin-top: 1em;
+              margin-bottom: 1em;
+              margin-top: .5em;
             }
             .leading-text p {
-              font-size: 24px;
-              margin-bottom: 1em;
+              font-size: 28px;
+              margin-bottom: 2em;
+              font-weight: 500;
+              color: #222;
             }
             `}</style>
           </Container>
@@ -214,13 +333,22 @@ const TopicPage = ({ post, preview }) => {
 export async function getStaticProps({ params, preview = false }) {
   const data = await getPostAndMorePosts(params.slug, preview)
   //const content = await markdownToHtml(data?.post?.content || '')
-
+  const siblings = data?.post?.parent?.children?.filter(sibling => {
+    return [data?.post?.position + 1, data?.post?.position - 1].includes(sibling.position)
+  })
+  let sortedSiblings = []
+  if (siblings) {
+    sortedSiblings = siblings.sort((a, b) => {
+      return a.position > b.position
+    })
+  }
   return {
     props: {
       preview,
       post: {
         ...data?.post,
       },
+      siblings: sortedSiblings,
     },
   }
 }
