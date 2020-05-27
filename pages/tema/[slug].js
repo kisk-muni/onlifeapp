@@ -50,7 +50,7 @@ const TopicPage = ({ post, siblings, topics, preview }) => {
           }}
         />
         {
-        <Flex flexWrap="wrap" mb="5">
+        <Box mb="5">
           {post?.picture && <Box width={[1]}>
             <DatoImage
               data={{
@@ -60,36 +60,36 @@ const TopicPage = ({ post, siblings, topics, preview }) => {
           </Box> }
           <Container variant="articleContentContainer">
             <Flex sx={{justifyContent: 'center'}}>
-            <Flex sx={{
-              mt: 3,
-              mb: 2,
-              fontSize: 2,
-              color: '#333',
-              backgroundColor: 'background',
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: '#ddd',
-              borderRadius: '5px',
-              px: '16px',
-              py: '14px',
-              transition: 'box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1), color .2s cubic-bezier(0.4, 0, 0.2, 1)',
-              '&:hover': {
-                boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-                borderColor: '#fafafa',
-                color: 'text',
-              },
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              color: '#666'
-            }}>
-              <Link href="/"><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>Témata</Lstyle></Link>
-              <svg style={{color: 'inherit', marginLeft: '8px', marginRight: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-              { post?.parent?.slug &&
-                <Fragment>
-                  <Link href={"/tema/" + post?.parent?.slug}><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>{ post?.parent?.titulek }</Lstyle></Link>
-                </Fragment>
-              }
-            </Flex>
+              <Flex sx={{
+                mt: 3,
+                mb: 2,
+                fontSize: 2,
+                color: '#333',
+                backgroundColor: 'background',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: '#ddd',
+                borderRadius: '5px',
+                px: '16px',
+                py: '14px',
+                transition: 'box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1), color .2s cubic-bezier(0.4, 0, 0.2, 1)',
+                '&:hover': {
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                  borderColor: '#fafafa',
+                  color: 'text',
+                },
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                color: '#666'
+              }}>
+                <Link href="/"><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>Témata</Lstyle></Link>
+                <svg style={{color: 'inherit', marginLeft: '8px', marginRight: '8px'}} viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                { post?.parent?.slug &&
+                  <Fragment>
+                    <Link href={"/tema/" + post?.parent?.slug}><Lstyle sx={{color: '#666', '&:hover': {color: 'text', textDecoration: 'none'}}}>{ post?.parent?.titulek }</Lstyle></Link>
+                  </Fragment>
+                }
+              </Flex>
             </Flex>
             <Heading sx={{color: 'text', textAlign: 'center', mb: 5, mt: 4, fontWeight: 700, fontSize: 7}}>
               { post?.titulek }
@@ -323,7 +323,7 @@ const TopicPage = ({ post, siblings, topics, preview }) => {
             }
             `}</style>
           </Container>
-        </Flex>
+        </Box>
       }
     </StarterLayout>
   )
