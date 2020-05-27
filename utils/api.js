@@ -261,7 +261,7 @@ export async function getAllPostsForHome(preview) {
         position
         slug
         thumbnailPicture {
-          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 800, h: 500 }) {
+          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 800, h: 400 }) {
             ...responsiveImageFragment
           }
         }
