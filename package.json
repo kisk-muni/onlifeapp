@@ -1,9 +1,6 @@
 {
   "name": "onlife-serverless-app",
   "version": "1.0.0",
-  "engines": {
-    "node": "12.15.0"
-  },
   "scripts": {
     "codegen": "graphql-let",
     "dev": "yarn codegen && NODE_ENV=development  next dev",
