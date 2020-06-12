@@ -251,7 +251,7 @@ const TopicPage = ({ post, siblings, topics, preview }) => {
                   const isNext = (sibling?.position > post?.position)
                   return(
                     <Box sx={{alignSelf: isNext ? 'flex-end' : 'flex-start', marginLeft: isNext ? 'auto' : '0', marginRight: isNext ? '0' : 'auto', }}>
-                      <Link href={"/tema/" + sibling?.slug}>
+                      <Link href={"/tema/[slug]"} as={"/tema/" + sibling?.slug}>
                         <Button sx={{alignSelf: isNext ? 'flex-end' : 'flex-start'}} variant="articlePagination" sx={{fontSize: 2}}>
                           <Flex>
                             {!isNext &&

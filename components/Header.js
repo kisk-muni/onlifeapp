@@ -2,10 +2,10 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { jsx, Link as Lstyle, Button } from 'theme-ui'
-import ProfileDropdown from "./ProfileDropdown"
+import ProfileDropdown, { ProfileDropdownPlaceholder } from "./ProfileDropdown"
 import { useUserQuery } from '../apollo/user.graphql'
 
-const Header = ({description = 'Kurz informační gramotnosti', showDescription = false }) => {
+const Header = ({description = 'Kurz informační gramotnosti',  showDescription = false }) => {
   const { loading, data } = useUserQuery()
 
   let userNav
@@ -74,7 +74,18 @@ const Header = ({description = 'Kurz informační gramotnosti', showDescription 
       </Fragment>
     }
   } else {
-    userNav = <div></div>
+    userNav = <Fragment>
+        <span sx={{
+            display: 'inline-block',
+            ml: 4,
+            background: '#eee',
+            borderRadius: '6px',
+            position: 'relative',
+            height: '21px',
+            width: '145px',
+        }}></span>
+      <ProfileDropdownPlaceholder />
+    </Fragment>
   }
 
   return (
