@@ -5,16 +5,16 @@ import { NextSeo } from 'next-seo'
 
 const features = [
   {
-    heading: 'Výuka pod kontrolou',
-    description: 'Lorem ipsum dolor sit amet',
+    heading: 'Spravujte třídy',
+    description: 'Založte třídu a pozvěvěte do ní žáky.',
   },
   {
-    heading: 'Zpětná vazba',
-    description: 'Lorem ipsum dolor sit amet',
+    heading: 'Přehled o aktivitě třídy',
+    description: 'Sledujte, jak se žákům daří v jednotlivých tématech.',
   },
   {
-    heading: 'Kurz je zcela zdarma',
-    description: 'Lorem ipsum dolor sit amet',
+    heading: 'Materiály na jednom místě',
+    description: 'Získejte ucelený přehled kurzu se všemi materiály na jednom místě.'
   }
 ]
 

@@ -50,7 +50,17 @@ const Header = ({description = 'Kurz informační gramotnosti',  showDescription
       </Fragment>
     } else {
       userNav = <Fragment>
-          <Link passHref href="/prihlaseni">
+        <Link passHref href="/registrace-ucitele">
+          <Lstyle
+            sx={{
+              variant: 'styles.navlink',
+              ml: 5,
+              py: 2,
+            }}>
+            Pro učitele
+          </Lstyle>
+        </Link>
+        <Link passHref href="/prihlaseni">
           <Lstyle
             sx={{
               variant: 'styles.navlink',
