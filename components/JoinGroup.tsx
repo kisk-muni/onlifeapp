@@ -1,12 +1,11 @@
 /** @jsx jsx */
-import { Fragment } from 'react'
+import { useState, Fragment, useCallback } from 'react'
 import { jsx, Heading, Flex, Box, Button } from 'theme-ui'
 import Reveal from '../components/Reveal'
-import { UserDocument } from '../apollo/user.graphql'
-import { useJoinGroupMutation } from '../apollo/joinGroup.graphql'
 import { AppNotifier } from '../utils/notifier'
 import { useRouter } from 'next/router'
 import FadeSpinner from './FadeSpinner'
+import { Response } from '../pages/api/join-group'
 
 const GroupThumbnail = ({ name }: { name: string }) => <Reveal delay={0} duration={1000}>
   <Box>
@@ -34,13 +33,26 @@ const GroupThumbnail = ({ name }: { name: string }) => <Reveal delay={0} duratio
     </Box>
   </Reveal>
 
-const JoinGroup = ({ name }: { name: string }) => {
+const JoinGroup = ({ name, onDissmiss }: { name: string, onDissmiss: () => void }) => {
   const router = useRouter()
-  const [joinGroup, { data, loading, error }] = useJoinGroupMutation({
-    refetchQueries: [{ query: UserDocument }],
-    onCompleted: (data) => {
-      if (data.joinGroup.joined) {
-        // prevent ssr
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const handleSubmit = useCallback(async () => {
+    setLoading(true)
+    setSuccess(false)
+    setErrorMessage('')
+    await fetch(`${process.env.SITE_URL}/api/join-group`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(async (response) => {
+      const resultGroup: Response = await response.json()
+      setLoading(false)
+      if (response.ok && resultGroup?.joined) {
+        setSuccess(true)
         if (AppNotifier !== null) {
           AppNotifier.show({
             message: 'Nyní jste ve třídě',
@@ -48,31 +60,18 @@ const JoinGroup = ({ name }: { name: string }) => {
           })
         }
         router.push('/')
+      } else {
+        setErrorMessage(resultGroup?.message)
       }
-    }
-  });
+    })
+    .catch(() => {
+      setLoading(false)
+      setErrorMessage('Vypadá to, že jste ztratili spojení. Zkontrolujte to a zkuste to znovu.')
+    })
+  }, []);
 
-  if (loading) {
+  if (loading || success) {
     return <FadeSpinner />
-  }
-
-  if (!loading && data) {
-    if (data?.joinGroup.joined) {
-      return <Heading sx={{
-        fontSize: 3,
-        textAlign: 'center',
-        mt: 4
-      }}>
-        Přesměrování …
-      </Heading>
-    }
-    return <Heading sx={{
-        fontSize: 6,
-        textAlign: 'center',
-        mt: 4
-      }}>
-        Něco se porouchalo, zkuste to prosím později :(
-      </Heading>
   }
   return (
     <Reveal delay={0} duration={300} >
@@ -84,13 +83,11 @@ const JoinGroup = ({ name }: { name: string }) => {
           mt: 4
         }}>Souhlasíte s udělením přístupu majiteli třídy k Vaší<br/>aktivitě a výsledkům v kurzu OnLife?</Heading>
         {
-          error ? 
+          errorMessage !== '' ? 
             <Fragment>
-              <div sx={{mt: 3, color: 'error'}}>{error.graphQLErrors.map(({ message }, i) => (
-                <span key={i}>{message}</span>
-                ))}</div>
+              <div sx={{mt: 3, color: 'error'}}>{errorMessage}</div>
               <Button
-                onClick={() => router.reload()}
+                onClick={() => onDissmiss()}
                 sx={{
                   mt: 4,
                   fontWeight: 500,
@@ -103,9 +100,7 @@ const JoinGroup = ({ name }: { name: string }) => {
             :
             <Fragment>
               <Button
-                onClick={() => {
-                  joinGroup()
-                }}
+                onClick={handleSubmit}
                 sx={{
                   mt: 4,
                   fontWeight: 500,
@@ -116,7 +111,7 @@ const JoinGroup = ({ name }: { name: string }) => {
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => router.reload()}
+                onClick={() => onDissmiss()}
                 sx={{
                   mt: 4,
                   fontWeight: 500,

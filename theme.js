@@ -520,7 +520,7 @@ export default {
       boxShadow: 'none'
     },
     header: {
-      py: 3,
+      py: 2,
       background: 'rgba(255, 255, 255, .8)',
     },
     navlink: {

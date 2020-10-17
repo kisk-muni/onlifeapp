@@ -1,6 +1,6 @@
-import { useUserQuery } from '../apollo/user.graphql'
 import Router from 'next/router'
 import { NextPage } from 'next'
+import useUser from '../data/useUser'
 
 function redirect(next?: string) {
   if (!next) {
@@ -21,25 +21,25 @@ const withAuthRedirect = (
   { next, roles }: {next?: string, roles?: string[]} = {}
 ): NextPage => {
   return ({...pageProps}) => {
-    const { data, loading, error } = useUserQuery()
+    const { user, loading, error } = useUser()
     if (!loading) {
-      if (!data?.user) {
+      if (!user) {
         redirect(next)
       } else if (roles) {
         roles.forEach((role) => {
           switch (role) {
             case 'student':
-              if (data?.user?.isTeacher) {
+              if (user?.isTeacher) {
                 redirect(next)
               }
               break;
             case 'teacher':
-              if (!data?.user?.isTeacher) {
+              if (user?.isTeacher) {
                 redirect(next)
               }
               break;
             case 'notInGroup':
-              if (data?.user?.isInGroup) {
+              if (user?.isInGroup) {
                 redirect(next)
               }
               break;
@@ -48,8 +48,11 @@ const withAuthRedirect = (
           }
         })
       }
+      if (user) {
+        return (<PageComponent {...pageProps} />)
+      }
     }
-    return (<PageComponent {...pageProps} />)
+    return <></>
   }
 }
 

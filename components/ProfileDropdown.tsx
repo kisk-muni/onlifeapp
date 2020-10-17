@@ -4,12 +4,12 @@ import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/cor
 import Router from 'next/router'
 import Link from 'next/link'
 import { Link as Lstyle, Flex } from 'theme-ui'
-import { useApolloClient } from "@apollo/react-hooks"
 import { AppNotifier } from '../utils/notifier'
 import Avatar from './Avatar'
+import { mutate } from 'swr'
 
 export const ProfileDropdownPlaceholder = () => 
-<Flex sx={{alignItems: 'center', py: '8px'}}>
+<Flex sx={{alignItems: 'center', py: '4px'}}>
   <span sx={{
     display: 'inline-block',
     ml: 4,
@@ -37,23 +37,18 @@ interface ProfileDropdownProps {
   loading: boolean
 }
 
-const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps) => {
-  const client = useApolloClient();
-  if (loading) {
-    return (<ProfileDropdownPlaceholder />)
-  }
+const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps) => {
   return (
     <Popover
       position={Position.BOTTOM}
     >
       <Lstyle
+        {...props}
         sx={{
           variant: 'styles.navlink',
-          ml: 5,
-          py: 2,
         }}>
         <Flex sx={{alignItems: 'center'}}>
-          {name ? name : email } 
+          { name ? name : email } 
           <Avatar
             name={name ? name : email}
             photoURL={photoURL}
@@ -74,11 +69,8 @@ const ProfileDropdown = ({photoURL, name, email, loading}: ProfileDropdownProps)
           <MenuDivider />
           <MenuItem
           onClick={async () => {
-            await fetch("/api/logout", {
-              method: "POST"
-            });
-            localStorage.clear();
-            client.resetStore()
+            await fetch("/api/logout")
+            mutate('/api/me')
             if (AppNotifier !== null) {
               AppNotifier.show({
                 message: 'Sbohem …',

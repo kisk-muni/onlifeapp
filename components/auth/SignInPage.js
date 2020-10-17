@@ -87,8 +87,8 @@ class SignInPage extends Component {
               <Lstyle 
                 sx={{
                   variant: 'styles.navlogo',
-                  letterSpacing: '.03em',
-                  fontSize: 5,
+                  letterSpacing: '1px',
+                  fontSize: 4,
                 }}>
                 {logo}
               </Lstyle>

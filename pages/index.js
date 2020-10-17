@@ -1,11 +1,10 @@
 /** @jsx jsx */
 import StarterLayout from '../components/StarterLayout'
-import { withApollo } from '../apollo/client'
 import Link from 'next/link'
 import { Image as DatoImage } from 'react-datocms'
 import { getAllPostsForHome } from '../utils/api'
 import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, Grid, Image } from 'theme-ui'
+import { jsx, Text, Heading, Grid, Image, Container } from 'theme-ui'
 import { NextSeo } from 'next-seo'
 
 const Topic = ({name, slug, responsiveImage}) => 
@@ -62,19 +61,15 @@ const Index = ({ allPosts }) => {
       Kurz informační gramotnosti<br />pro studenty středních škol
     </Heading>
     <Flex flexWrap='wrap'>
-      <Box
-        width={[1]}
-        maxWidth={1240}
-        px={35}
-        mx="auto"
+      <Container
         pb={80}
       > 
         <Grid gap="4" columns={2}>
           {
-            allPosts && allPosts.map((post, index) => <Topic key={index} slug={post.slug} name={post.titulek} responsiveImage={post.thumbnailPicture.responsiveImage} />)
+            allPosts && allPosts.map((post, index) => <Topic key={index} slug={post.slug} name={post.titulek} responsiveImage={post?.thumbnailPicture?.responsiveImage} />)
           }
         </Grid>
-      </Box>
+      </Container>
     </Flex>
 
     <Flex flexWrap="wrap" minHeight="60vh" backgroundColor="promobg">
@@ -148,4 +143,4 @@ export async function getStaticProps() {
   }
 }
 
-export default withApollo(Index)
+export default Index

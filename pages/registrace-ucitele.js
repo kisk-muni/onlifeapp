@@ -23,7 +23,7 @@ const SignIn = () => (
     <NextSeo title="Registrace učitele" />
     <SignInPage
       features={features}
-      logo="OnLife pro učitele"
+      logo="ONLIFE pro učitele"
       isForStudents={false}
       registerTeacher
       heading="Učte s námi informační gramotnost"

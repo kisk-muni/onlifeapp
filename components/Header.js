@@ -1,79 +1,38 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { jsx, Link as Lstyle, Button } from 'theme-ui'
+import { jsx, Link as Lstyle, Button, Container } from 'theme-ui'
 import ProfileDropdown, { ProfileDropdownPlaceholder } from "./ProfileDropdown"
-import { useUserQuery } from '../apollo/user.graphql'
+import useUser from '../data/useUser'
 
-const Header = ({description = 'Kurz informační gramotnosti',  showDescription = false }) => {
-  const { loading, data } = useUserQuery()
-
+const Header = () => {
+  const { user, loading, error } = useUser()
   let userNav
   if (!loading) {
-    if (data.user !== null) {
-      userNav = <Fragment>
-        { data?.user.isTeacher && 
-          <Link passHref href="/tridy">
-            <Lstyle
-              sx={{
-                variant: 'styles.navlink',
-                ml: 5,
-                py: 2,
-              }}>
-              Přehled tříd
-            </Lstyle>
-          </Link>
-        }
-        {
-          (!data?.user.isTeacher && !data?.user.isInGroup) &&
-          <Link passHref href="/pridat-se-ke-tride">
-            <Lstyle
-              sx={{
-                variant: 'styles.navlink',
-                ml: 5,
-              }}>
-                <Button
-                  sx={{
-                    py: 2,
-                    px: 4
-                  }}>
-                  Přidat se ke třídě
-                </Button>
-            </Lstyle>
-          </Link>
-        }
-        <ProfileDropdown
-          sx={{ml: 4}}
-          photoURL={data?.user.photoURL}
-          name={data?.user.name}
-          email={data?.user.email} />
-      </Fragment>
-    } else {
+    if (error || user.error) {
       userNav = <Fragment>
         <Link passHref href="/registrace-ucitele">
           <Lstyle
             sx={{
               variant: 'styles.navlink',
-              ml: 5,
-              py: 2,
+              ml: 4,
             }}>
             Pro učitele
           </Lstyle>
         </Link>
-        <Link passHref href="/prihlaseni">
+        <Link passHref href="/api/login">
           <Lstyle
             sx={{
               variant: 'styles.navlink',
-              ml: 5,
-              py: 2,
+              ml: 4,
             }}>
             Přihlásit se
           </Lstyle>
         </Link>
-        <Link passHref href="/registrace">
+        <Link passHref href="/api/login">
           <Button
             sx={{
-              ml: 5,
+              ml: 4,
               py: 2,
               px: 3,
               fontSize: 2
@@ -82,19 +41,47 @@ const Header = ({description = 'Kurz informační gramotnosti',  showDescription
           </Button>
         </Link>
       </Fragment>
+    } else {
+      userNav = <Fragment>
+          <Link passHref href="/tridy">
+            <Lstyle
+              sx={{
+                variant: 'styles.navlink',
+                ml: 4,
+                py: 2,
+              }}>
+              Přehled tříd
+            </Lstyle>
+          </Link>
+          <Link passHref href="/pridat-se-ke-tride">
+            <Lstyle
+              sx={{
+                variant: 'styles.navlink',
+                ml: 4,
+              }}>
+                <Button
+                  sx={{
+                    py: 2,
+                    px: 3
+                  }}>
+                  Přidat se ke třídě
+                </Button>
+            </Lstyle>
+          </Link>
+          <ProfileDropdown sx={{ml: 4}} name={user.name} photoURL={user.picture} />
+      </Fragment>
     }
   } else {
     userNav = <Fragment>
         <span sx={{
             display: 'inline-block',
             ml: 4,
-            background: '#eee',
+            background: '#fff',
             borderRadius: '6px',
             position: 'relative',
-            height: '21px',
-            width: '145px',
+            height: '40px',
+            width: '40px',
         }}></span>
-      <ProfileDropdownPlaceholder />
     </Fragment>
   }
 
@@ -105,11 +92,9 @@ const Header = ({description = 'Kurz informační gramotnosti',  showDescription
       width: '100%',
       zIndex: 18
     }}>
-    <div
+    <Container
       sx={{
         mx: 'auto',
-        px: 35,
-        minHeight: '48px',
         display: 'flex',
         alignItems: 'center',
       }}>
@@ -118,9 +103,10 @@ const Header = ({description = 'Kurz informační gramotnosti',  showDescription
         sx={{
           variant: 'styles.navlogo',
           fontWeight: 700,
-          fontSize: 5,
+          fontSize: 4,
+          letterSpacing: '1px',
         }}>
-        OnLife
+        ONLIFE
       </Lstyle>
       </Link>
         <span sx={{
@@ -131,15 +117,13 @@ const Header = ({description = 'Kurz informační gramotnosti',  showDescription
           ml: 2,
           fontSize: 2,
           lineHeight: '16px',
-          opacity: showDescription ? 1 : 0,
-          visibility: showDescription ? 'visible' : 'hidden',
           transition: 'opacity .2s ease 0s',
           visibility: '.2s ease 0s'
           }}
-        >{description}</span>
+        >Aplikace pro otestování znalostí v kurzu</span>
       <div sx={{ mx: 'auto' }} />
         {userNav}
-      </div>
+      </Container>
     </header>
   )
 }

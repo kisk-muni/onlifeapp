@@ -4,7 +4,7 @@ import Footer from './Footer'
 import { jsx, Text } from 'theme-ui'
 import { Sticky, StickyContainer } from 'react-sticky'
 // <MasarykBar />
-const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = false, ...props }) => (
+const StarterLayout = ({ children, stickHeaderByDefault }) => (
   <StickyContainer>
     <div
       sx={{
@@ -22,7 +22,7 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
         return (
           <div style={{zIndex: 18, ...style}}
             className={(isSticky ? 'not-sticky' : 'is-sticky')}>
-            <Header showDescription={showDescription(newDistanceFromTop, distanceFromBottom)}/>
+            <Header/>
           </div>
         )
       }
@@ -41,7 +41,7 @@ const StarterLayout = ({ showDescription = () => false, stickHeaderByDefault = f
       }
     `}</style>
       <main sx={{ width: '100%', flex: '1 1 auto' }}>
-        {props.children}
+        {children}
       </main>
       <Footer />
     </div>
