@@ -16,7 +16,15 @@ export default async function callback(req, res) {
           ,
             q.Create(
               q.Collection('User'),
-              { data: { name: user?.name, email: user?.email, picture: user?.picture, auth0_id: user.sub } },
+              {
+                data: {
+                  name: user?.name,
+                  email: user?.email,
+                  picture: user?.picture,
+                  auth0_id: user.sub,
+                  is_teacher: false
+                }
+              },
             )
           )
         )

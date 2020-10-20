@@ -42,9 +42,9 @@ const Topic = ({name, slug, responsiveImage}) =>
 const Index = ({ allPosts }) => {
  // const router = useRouter()
 
+ // showDescription={(fromTop, fromBottom) => -fromTop > 180}>
   return (
-  <StarterLayout
-    showDescription={(fromTop, fromBottom) => -fromTop > 180}>
+  <StarterLayout stickHeaderByDefault={false}>
     <NextSeo
       title="Kurz informační gramotnosti"
       description="Online kurz informační gramotnosti pro studenty středních škol vyvíjen na kabinetu informačních studií a knihovnictví Masarykovy univerzity."
@@ -84,7 +84,7 @@ const Index = ({ allPosts }) => {
           <Text sx={{textAlign: 'center', fontSize: 5, color: 'gray'}}>Propagace univerzity, KISKU, dnu otevřených dveří.</Text>
           <Flex width={[1]} mt="5" mb="5" flexDirection="row" justifyContent="center" alignItems="center">
             <Flex flexDirection="row" mr="4" >
-              <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, px: 48, width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
                 <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_70/v1589197379/index/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
               </Flex>
               <Flex sx={{borderRadius: 9999, ml: -4, overflow: 'hidden', width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#0000dc'}}>

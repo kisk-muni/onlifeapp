@@ -127,7 +127,7 @@ const JoinGroupPage: NextPage = () => {
           </Fragment>
         }
         {
-          success && !loading && <JoinGroup name={groupName} invitationCode={invitationCode} onDissmiss={handleDismiss} />
+          success && !loading && <JoinGroup name={groupName} onDissmiss={handleDismiss} />
         }
       </Flex>
     </StarterLayout>

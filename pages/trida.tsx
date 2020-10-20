@@ -2,7 +2,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import GroupHeader from '../components/dashboard/GroupHeader'
-import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
 import { useGroupQuery } from '../apollo/group.graphql'
 import { useGroupQuizEngagementQuery } from '../apollo/groupQuizEngagement.graphql'
@@ -64,7 +63,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
   const router = useRouter()
   //const [ activeStudent, setActiveStudent ] = useState('')
   const [ activeCategory, setActiveCategory ] = useState('')
-  const { data, loading, error } = useGroupQuery({variables: {id: router.query.trida as string}})
+  //const { data, loading, error } = useGroupQuery({variables: {id: router.query.trida as string}})
 
   useEffect(() => {
     setActiveCategory(router.query.category ? router.query.category : allPosts[0].slug)
@@ -75,7 +74,13 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
       return post.slug === activeCategory
     })
   }
-
+  return (
+    <DashboardLayout
+      header={<GroupHeader />}
+      stickHeaderByDefault>
+      {/*<NextSeo noindex title={data?.group?.name ? data?.group?.name : 'Třída' } />*/}
+    </DashboardLayout>
+    )
   return (
     <DashboardLayout
       header={<GroupHeader />}
@@ -168,7 +173,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                               {child.url && <a href={child.url}><Button sx={{ml: 3, alignSelf: 'flex-start'}} variant="detailAction">Stránka podtématu</Button></a>}
                             </Flex>
                           </Box>
-                        { child?.content?.map((quizBlock, index) => (quizBlock?.id &&
+                        {/* child?.content?.map((quizBlock, index) => (quizBlock?.id &&
                           <QuizBlock
                             key={index}
                             groupId={router.query.trida as string}
@@ -177,7 +182,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                             title={quizBlock?.quizLink?.title}
                             slug={quizBlock?.quizLink?.slug}
                           />
-                        )) }
+                        )) */}
                       </Box>
                     </Box>
                   )) }
@@ -201,4 +206,4 @@ export async function getStaticProps({ preview = false }) {
   }
 }
 
-export default withApollo(withAuthRedirect(Trida, {roles: ['teacher']}))
+export default withAuthRedirect(Trida, {roles: ['teacher']})

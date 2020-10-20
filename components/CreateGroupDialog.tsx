@@ -27,8 +27,8 @@ export function CreateGroupDialog(props: IProps) {
   }
   if (!success) {
     dialogContent = <form>
-        <div sx={{px: 2, py: 2}} className={Classes.DIALOG_BODY}>
-          <Heading as="h3" sx={{fontSize: '18px', mb: 2}}>Pojmenujte vaši třídu</Heading>
+        <div sx={{px: 2, py: 2, display: 'flex', flexDirection: 'column', alignItems: 'center'}} className={Classes.DIALOG_BODY}>
+          <Heading as="h2" sx={{fontSize: 5, mb: 3, mt: 2}}>Pojmenujte vaši třídu</Heading>
           <Heading as="h4" sx={{
             fontSize: '16px',
             mb: 4,
@@ -38,7 +38,7 @@ export function CreateGroupDialog(props: IProps) {
           </Heading>
           
           <Input
-            sx={{variant: errors?.name ? 'styles.forms.simpleinputError' : 'styles.forms.simpleinput',fontSize: 2}}
+            sx={{variant: errors?.name ? 'styles.forms.simpleinputError' : 'styles.forms.simpleinput',fontSize: 2, textAlign: 'center', maxWidth: '260px'}}
             placeholder="Zadejte jméno třídy, např. 4. A"
             type="text"
             name="name"
@@ -51,7 +51,7 @@ export function CreateGroupDialog(props: IProps) {
             {errorMessage !== '' && <Text sx={{variant: 'styles.simpleErrorMessageText'}}>Třídu se nepovedlo založit.</Text>}
         </div>
         <div className={Classes.DIALOG_FOOTER}>
-          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS} sx={{display: 'flex', justifyContent: 'center', pb: 2}}>
             <Button type="button" variant="secondary" sx={{mr: 2}} onClick={() => setIsOpen(false)}>Zrušit</Button>
             <Button
               type="submit"
@@ -131,7 +131,7 @@ export function CreateGroupDialog(props: IProps) {
       </Button>
       <Dialog
         autoFocus
-        sx={{background: '#f5f5f5'}}
+        sx={{background: '#fff', boxShadow: '0 30px 60px rgba(0,0,0,0.12)'}}
         isOpen={isOpen}>
           {dialogContent}
       </Dialog>

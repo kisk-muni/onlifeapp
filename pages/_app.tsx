@@ -44,7 +44,7 @@ export default class MyApp extends App {
               padding: 8px 12px 8px 12px;
             }
             .bp3-overlay-backdrop {
-              background-color: rgba(16, 22, 26, 0.3);
+              background-color: rgba(0, 0, 0, 0.2);
             }
           `}</style>
       </ThemeProvider>

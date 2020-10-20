@@ -2,7 +2,7 @@
 import { jsx, Text, Link as Lstyle } from 'theme-ui'
 import Link from 'next/link'
 
-const Footer = ({background}) => (
+const Footer = () => (
     <footer
     sx={{
         variant: 'styles.footer',

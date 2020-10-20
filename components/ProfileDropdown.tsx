@@ -34,7 +34,6 @@ interface ProfileDropdownProps {
   photoURL: string
   name: string
   email: string
-  loading: boolean
 }
 
 const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps) => {

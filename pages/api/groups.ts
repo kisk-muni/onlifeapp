@@ -24,6 +24,7 @@ interface FaunaData {
 }
 
 export default auth0.requireAuthentication(async function joinGroupAttempt(req: NextApiRequest, res: NextApiResponse<Response>) {
+  // there is no check for teacher role
   const { user } = await auth0.getSession(req)
   const listRes: FaunaData = await serverClient.query(
       q.Map(

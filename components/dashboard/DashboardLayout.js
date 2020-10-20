@@ -22,10 +22,12 @@ const DashboardLayout = ({header, showDescription = () => false, stickHeaderByDe
     </Sticky>
     <style jsx>{`
       .is-sticky {
-        box-shadow: 0 1px 0 0 rgba(0,0,0,0.1);
+        box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
         transition: box-shadow .1s ease 0s;
-        -webkit-backdrop-filter: saturate(180%) blur(5px);
-        backdrop-filter: saturate(180%) blur(5px);
+      }
+      .not-sticky {
+        transition: box-shadow .1s ease 0s;
+        box-shadow: none;
       }
     `}</style>
       <main sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column', flexWrap: 'wrap' }}>

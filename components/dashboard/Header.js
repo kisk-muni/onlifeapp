@@ -22,12 +22,10 @@ const Header = ({ description = 'Kurz informační gramotnosti pro studenty stř
   sx={{
     variant: 'styles.header',
     width: '100%',
-    zIndex: 18
   }}>
   <div
     sx={{
       mx: 'auto',
-      px: 35,
       display: 'flex',
       alignItems: 'center',
     }}>

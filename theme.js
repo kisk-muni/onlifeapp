@@ -520,8 +520,10 @@ export default {
       boxShadow: 'none'
     },
     header: {
-      py: 2,
-      background: 'rgba(255, 255, 255, .8)',
+      py: 3,
+      px: 3,
+      zIndex: 100,
+      backgroundColor: 'background',
     },
     navlink: {
       display: 'inline-block',
@@ -627,14 +629,6 @@ export default {
       }
     },
     dashboard: {
-      header: {
-        py: 3,
-        background: 'rgba(255, 255, 255, .8)',
-      },
-      groupHeader: {
-        pt: 3,
-        background: 'rgba(255, 255, 255, .8)',
-      },
       navlink: {
         display: 'inline-block',
         fontWeight: 400,
