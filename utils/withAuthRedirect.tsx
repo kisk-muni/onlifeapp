@@ -5,12 +5,12 @@ import useUser from '../data/useUser'
 function redirect(next?: string) {
   if (!next) {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: Router.asPath },
     })
   } else {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: next },
     })
   }
@@ -25,22 +25,20 @@ const withAuthRedirect = (
     if (!loading) {
       if (!user) {
         redirect(next)
+        return (<></>)
       } else if (roles) {
         roles.forEach((role) => {
           switch (role) {
             case 'student':
-              if (user?.isTeacher) {
+              if (!user?.in_group) {
                 redirect(next)
+                return (<></>)
               }
               break;
             case 'teacher':
-              if (user?.isTeacher) {
+              if (!user?.is_teacher) {
                 redirect(next)
-              }
-              break;
-            case 'notInGroup':
-              if (user?.isInGroup) {
-                redirect(next)
+                return (<></>)
               }
               break;
             default:
@@ -48,11 +46,9 @@ const withAuthRedirect = (
           }
         })
       }
-      if (user) {
-        return (<PageComponent {...pageProps} />)
-      }
+      return (<PageComponent {...pageProps} />)
     }
-    return <></>
+    return (<></>)
   }
 }
 

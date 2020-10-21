@@ -2,7 +2,7 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { CreateGroupDialog } from '../components/CreateGroupDialog'
-import { jsx, Text, Heading, Grid, Flex, Container, Box } from 'theme-ui'
+import { jsx, Text, Heading, Grid, Container, Flex, Card } from 'theme-ui'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import { DemoGroupBox, HelpBox } from "../components/HelpBox"
 import FullPageLoading from "../components/FullPageLoading"
@@ -15,37 +15,40 @@ import { Response } from './api/groups'
 
 const Groups = () => {
   const { data, error } = useSWR<Response>('/api/groups', fetcher)
-  if (error) return <div>Něco se pokazilo :(</div>
+  if (error) return <Container>
+    <Text sx={{color: 'red'}}></Text>
+  </Container>
   if (!data) return <FullPageLoading dashboard /> 
-  if (data.length === 0) 
-      <Fragment>
-        <Container>
-          <Heading sx={{color: 'text', mt: 5, fontWeight: 600, fontSize: 7}}>Vítejte v Onlife pro učitele!</Heading> 
-          <Text sx={{color: 'text', fontSize: 4, my: 4, mb: 4}}>Mějte přehled o tom, jak si v kurzu vedou vaši studenti.</Text>
+  if (data.length == 0) return <Fragment>
+      <Container>
+        <Flex sx={{flexDirection: 'column', alignItems: 'center'}}>
+          <Heading variant="ultratitle" sx={{mt: 5, textAlign: 'center'}}>Vítejte v Onlife pro učitele!</Heading> 
+          <Text variant="subtitle" sx={{color: 'text', textAlign: 'center', my: 4, mb: 4}}>Mějte přehled o tom, jak si v kurzu vedou vaši studenti.</Text>
           <CreateGroupDialog hasUserGroup={false} />
-        </Container>
-        <Container>
-          <Grid gap="4" columns={[1/3, '1fr 2fr']}>
-            <DemoGroupBox/>
-            <HelpBox/>
-          </Grid>
-        </Container>
-      </Fragment>
+        </Flex>
+      </Container>
+    </Fragment>
   return <Container>
     <Heading as="h3" sx={{fontSize: 4, mb: 3, mt: 4, color: 'text'}}>Vaše třídy</Heading>
-    <Grid gap="3" columns={3}>
+    <Grid gap="32px" columns={[2, 3, 4]}>
       <CreateGroupDialog hasUserGroup={true} />
       {
         data?.map(group => (
-          <Link key={group.id} href={"/trida?trida="+group.id}>
-            <Box
+          <Link key={group.id} href={"/aktivita?trida="+group.id}>
+            <Card
               key={group.id}
-              sx={{variant: 'styles.groupListItem',  }}
+              variant="interactive"
+              sx={{
+                height: 210,
+                ":hover,:focus": {
+                  cursor: "pointer",
+                }
+              }}
             >
-              <Heading as="h3" sx={{fontSize: 5}}>
+              <Heading as="h2">
                 {group.name}
               </Heading>
-            </Box>
+            </Card>
           </Link>
         ))
       }

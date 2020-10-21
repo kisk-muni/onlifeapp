@@ -3,7 +3,7 @@ import { jsx } from 'theme-ui'
 import { mutate } from 'swr'
 import { Fragment, useState } from 'react'
 import { Classes, Dialog, Spinner } from "@blueprintjs/core"
-import { Button, Heading, Input, Text } from 'theme-ui'
+import { Button, Heading, Input, Card, Text } from 'theme-ui'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 
@@ -27,7 +27,7 @@ export function CreateGroupDialog(props: IProps) {
   }
   if (!success) {
     dialogContent = <form>
-        <div sx={{px: 2, py: 2, display: 'flex', flexDirection: 'column', alignItems: 'center'}} className={Classes.DIALOG_BODY}>
+        <div sx={{px: 2, py: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 'default'}} className={Classes.DIALOG_BODY}>
           <Heading as="h2" sx={{fontSize: 5, mb: 3, mt: 2}}>Pojmenujte vaši třídu</Heading>
           <Heading as="h4" sx={{
             fontSize: '16px',
@@ -52,7 +52,7 @@ export function CreateGroupDialog(props: IProps) {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS} sx={{display: 'flex', justifyContent: 'center', pb: 2}}>
-            <Button type="button" variant="secondary" sx={{mr: 2}} onClick={() => setIsOpen(false)}>Zrušit</Button>
+            <Button type="button" variant="secondary" sx={{mr: 3}} onClick={() => setIsOpen(false)}>Zrušit</Button>
             <Button
               type="submit"
               onClick={handleSubmit(async (data: FormData) => {
@@ -117,18 +117,46 @@ export function CreateGroupDialog(props: IProps) {
           Třída  založena
       </Text>
       <div sx={{textAlign: 'center'}}>
-        <Link href={"/trida?trida=" + groupId}>
+        <Link href={"/aktivita?trida=" + groupId}>
           <Button sx={{mx: 'auto'}} type="submit" title="Pokračovat">Pokračovat</Button>
         </Link>  
       </div>
     </div>
   }
+  if (!props.hasUserGroup) {
+    return (
+      <Fragment>
+        <Button
+          onClick={() => setIsOpen(true)}
+          variant="buttons.lg"
+        >
+            Založit třídu
+        </Button>
+        <Dialog
+          autoFocus
+          sx={{background: '#fff', boxShadow: '0 30px 60px rgba(0,0,0,0.12)'}}
+          isOpen={isOpen}>
+            {dialogContent}
+        </Dialog>
+      </Fragment>
+    )
+  }
   return <Fragment>
-      <Button
-        variant={props.hasUserGroup ? 'styles.groupListItemButton' : "createclass"}
+      <Card
+        variant="interactive"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          ":hover,:focus": {
+            cursor: "pointer",
+            boxShadow: "elevated",
+          }
+        }}
         onClick={() => setIsOpen(true)}>
-          {props.hasUserGroup && <div sx={{mb: 2, fontSize: 7, fontWeight: 300}}>+</div>}Založit třídu
-      </Button>
+          <div sx={{mb: 2, fontSize: 7, fontWeight: 300}}>+</div> Založit třídu
+      </Card>
       <Dialog
         autoFocus
         sx={{background: '#fff', boxShadow: '0 30px 60px rgba(0,0,0,0.12)'}}

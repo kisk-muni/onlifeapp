@@ -31,7 +31,7 @@ const StarterLayout = ({ children, stickHeaderByDefault }: { children: ReactNode
     </Sticky>
     <style jsx>{`
       .is-sticky {
-        box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.125);
         transition: box-shadow .1s ease 0s;
       }
       .not-sticky {

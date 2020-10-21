@@ -15,6 +15,7 @@ import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect'
 import moment from 'moment'
 import 'moment/locale/cs'
+import { Response } from '../api/quiz/submit'
 import { NextSeo } from 'next-seo'
 
 export type PossibleResponds = {
@@ -66,7 +67,7 @@ const QuizRadio = ({possibleResponds, name, required, register}: PossibelItemRes
         conditionalRef = register
       }
       return (
-        <Label key={index} sx={{mb: 3, fontWeight: 'body', fontSize: 1}}>
+        <Label key={index} sx={{mb: 3, display: 'flex', flexDirection: 'row', fontWeight: 'body', fontSize: 2}}>
           <Radio
             ref={conditionalRef}
             name={name}
@@ -96,7 +97,7 @@ const QuizCheckbox = ({possibleResponds, name, required, getValues, register}: P
         conditionalRef = register
       }
       return (
-        <Label key={index} sx={{mb: 3, fontWeight: 'body', fontSize: 1}}>
+        <Label key={index} sx={{mb: 3, display: 'flex', flexDirection: 'row', fontWeight: 'body', fontSize: 2}}>
           <Checkbox
             ref={conditionalRef}
             name={name + '.' +index}
@@ -112,31 +113,34 @@ const QuizCheckbox = ({possibleResponds, name, required, getValues, register}: P
 
 const KvizPage: NextPage<Props> = ({quiz}) => {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [canSubmit, setCanSubmit] = useState(false)
-  const [showQuiz, setShowQuiz] = useState(false)
-  const [submitQuizMutation, { data, loading, error }] = useSubmitQuizMutation({
-    onCompleted: (data) => {
-      if (data.submitQuiz.submitted) {
-        // todo: where to push 
-        router.push('/feedback/'+quiz.slug+'?attempt='+data.submitQuiz.responseAttempt)
-      }
-    }
-  })
-  const userFeedbackList = useUserQuizFeedbackListQuery({
-    variables: {
-      quizId: quiz?.id as string
-    }
-  })
-  useEffect(() => {
-    if (userFeedbackList.data?.userQuizFeedbackList.length == 0) {
-      setShowQuiz(true)
-    }
-  })
+  const [showQuiz, setShowQuiz] = useState(true)
+  // const [submitQuizMutation, { data, loading, error }] = useSubmitQuizMutation({
+  //   onCompleted: (data) => {
+  //     if (data.submitQuiz.submitted) {
+  //       // todo: where to push 
+  //       router.push('/feedback/'+quiz.slug+'?attempt='+data.submitQuiz.responseAttempt)
+  //     }
+  //   }
+  // })
+  // const userFeedbackList = useUserQuizFeedbackListQuery({
+  //   variables: {
+  //     quizId: quiz?.id as string
+  //   }
+  // })
+  // useEffect(() => {
+  //   if (userFeedbackList.data?.userQuizFeedbackList.length == 0) {
+  //     setShowQuiz(true)
+  //   }
+  // })
   const { register, errors, handleSubmit, reset, getValues } = useForm<FormData>()
   let quizItemIndex = 0
 
   return (
-  <StarterLayout>
+  <StarterLayout stickHeaderByDefault>
     <NextSeo title={'Kvíz: ' + (quiz?.title ? quiz?.title : '') } />
     <Container variant="quiz">
       <Box sx={{mt: 2, px: 4}}>
@@ -144,7 +148,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
           <Fragment>
             {!showQuiz && 
               <Fragment>
-              <Heading sx={{fontSize: 6, mt: 4, mb: 2}}>
+              <Heading variant="ultratitle" sx={{mt: 4, mb: 2}}>
                 Kvíz: { quiz?.title }
               </Heading>
               <Flex sx={{
@@ -157,10 +161,10 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                   <Box>
                     <Text sx={{fontSize: 2}}>{ quiz?.items && 'Vyplnění zabere asi '+ (quiz?.items.length + 1) + ' min' }</Text>
                   </Box>
-                  { !userFeedbackList.loading && (userFeedbackList.data?.userQuizFeedbackList?.length > 0)
+                  { /*!userFeedbackList.loading && (userFeedbackList.data?.userQuizFeedbackList?.length > 0)
                     &&
                     <Slink onClick={() => setShowQuiz(true)} sx={{fontSize: 2, fontWeight: 'bold', alignSelf: 'flex-end', '&:hover': {textDecoration: 'none'}}}>Zkusit znovu</Slink>
-                  }
+                  */}
               </Flex>
               </Fragment>
             }
@@ -172,7 +176,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             </Box>
           </Fragment>
         }
-        {userFeedbackList.data?.userQuizFeedbackList.map((attempt, index) => {
+        {/*userFeedbackList.data?.userQuizFeedbackList.map((attempt, index) => {
             const createdAt = new Date(parseInt(attempt.createdAt))
             if (showQuiz) {
               return (
@@ -216,7 +220,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                 </Grid>
               </Box>
             )
-          })}
+          })*/}
         
         { showQuiz && 
           <Fragment>
@@ -273,17 +277,17 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
               >
                 <Flex sx={{alignItems: 'baseline'}}>
                   <Box sx={{flexBasis: '32px', flexGrow: 1}}>
-                    <Text sx={{fontSize: 1}}>{ quizItemIndex }.</Text>
+                    <Text sx={{fontSize: 2}}>{ quizItemIndex }.</Text>
                   </Box>
                   <Box sx={{flexGrow: 99999, flexBasis: 0}}>
-                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 2}}>
+                    <Text sx={{fontWeight: 'regular', fontSize: 2, mb: 2}}>
                       {item.question}
-                      {!item.required && <span sx={{m: 2, fontStyle: 'italic', fontSize: 1, fontWeight: 'body', color: 'gray'}}>
+                      {!item.required && <span sx={{m: 2, fontStyle: 'italic', fontSize: 2, fontWeight: 'body', color: 'gray'}}>
                         nepovinná otázka
                       </span>}
                     </Text>
-                    <Text sx={{fontWeight: 'regular', fontSize: 1, mb: 3}}>
-                      {item._modelApiKey === 'checkbox' && <span sx={{mb: 2, fontSize: 1, fontWeight: 'body', color: 'gray'}}>
+                    <Text sx={{fontWeight: 'regular', fontSize: 2, mb: 3}}>
+                      {item._modelApiKey === 'checkbox' && <span sx={{mb: 2, fontSize: 2, fontWeight: 'body', color: 'gray'}}>
                         Vyberte vše, co platí.
                       </span>}
                     </Text>
@@ -303,8 +307,8 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                       </Text>
                     }
                   </Box>
-                  <Box sx={{flexBasis: '70px', flexGrow: 1}}>
-                    <Text sx={{fontSize: 1, height: '32px', lineHeight: '32px', textAlign: 'center', px: 3, borderRadius: '16px', border: '1px solid #ddd'}}>1 bod</Text>
+                  <Box sx={{flexBasis: '80px', flexGrow: 1}}>
+                    <Text sx={{fontSize: 2, height: '32px', lineHeight: '32px', textAlign: 'center', px: 3, borderRadius: '16px', border: '1px solid #ddd'}}>1 bod</Text>
                   </Box>
                 </Flex>
               </Box>
@@ -322,7 +326,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             alignItems: 'center'
           }}>
           <Box>
-            <Label sx={{mb: 3, fontWeight: 'body'}}>
+            <Label sx={{mb: 3, fontWeight: 'body', display: 'flex', flexDirection: 'row'}}>
               <Checkbox
                 sx={{mr: 4}}
                 ref={register({ required: true})}
@@ -341,15 +345,13 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
           <Flex sx={{justifyContent: 'flex-end'}}>
             <Button
               type="submit"
-              disabled={
-                (!canSubmit || error as unknown as boolean)
-              }
+              disabled={!canSubmit || errorMessage != '' || loading}
               sx={{
                 fontSize: 3,
                 bg: !canSubmit ? 'gray!important' : 'primary',
                 transition: 'background .2s',
               }}
-              onClick={handleSubmit((data: any) => {
+              onClick={handleSubmit(async (data: any) => {
                 console.log('data:', data)
                 let items = []
                 // for each input response
@@ -367,17 +369,40 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                     })
                   }
                 }
-                console.log(items)
-                submitQuizMutation({variables: {input: {
-                  slug: quiz.slug,
-                  consent: canSubmit,
-                  items: items
-                }}})
+                setLoading(true)
+                setSuccess(false)
+                setErrorMessage('')
+                await fetch(`${process.env.SITE_URL}/api/quiz/submit`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    slug: quiz.slug,
+                    consent: canSubmit,
+                    items: items
+                  })
+                })
+                .then(async (response) => {
+                  const result: Response = await response.json()
+                  setLoading(false)
+                  if (response.ok) {
+                    setSuccess(true)
+                    router.push('/')
+                  } else {
+                    setErrorMessage(result?.message)
+                  }
+                  console.log(result)
+                })
+                .catch(() => {
+                  setLoading(false)
+                  setErrorMessage('Vypadá to, že jste ztratili spojení. Zkontrolujte to a zkuste to znovu.')
+                })
               })}
-              title="Odevzdat">{(loading || data?.submitQuiz?.submitted ) ? <Flex><Spinner size="24" strokeWidth="3" sx={{color: 'background', mr: 3}} /> Načítání…</Flex> : 'Odeslat'}</Button>
+              title="Odevzdat">{loading ? <Flex><Spinner size="24" strokeWidth="3" sx={{color: 'background', mr: 3}} /> Načítání…</Flex> : 'Odeslat'}</Button>
           </Flex>  
-          <div sx={{mt: 3, color: 'error', textAlign: 'right'}}>
-            { error && "Něco se pokazilo, zkuste to prosím později." } 
+          <div sx={{mt: 3, color: 'error-lighter', textAlign: 'right'}}>
+            { errorMessage && "Něco se pokazilo, zkuste to prosím později." } 
           </div>
         </Box>
       </form> }
@@ -407,4 +432,4 @@ export async function getStaticPaths() {
   }
 }
 
-export default withApollo(withAuthRedirect(KvizPage))
+export default withAuthRedirect(KvizPage)

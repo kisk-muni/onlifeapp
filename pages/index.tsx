@@ -63,12 +63,7 @@ const Index = ({ allPosts }) => {
     <Flex flexWrap='wrap'>
       <Container
         pb={80}
-      > 
-        <Grid gap="4" columns={2}>
-          {
-            allPosts && allPosts.map((post, index) => <Topic key={index} slug={post.slug} name={post.titulek} responsiveImage={post?.thumbnailPicture?.responsiveImage} />)
-          }
-        </Grid>
+      >
       </Container>
     </Flex>
 
