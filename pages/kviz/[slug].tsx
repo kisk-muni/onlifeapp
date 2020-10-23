@@ -1,22 +1,22 @@
 /** @jsx jsx */
 import { Fragment, useState, useEffect } from 'react'
 import StarterLayout from '../../components/StarterLayout'
-import { withApollo } from '../../apollo/client'
-import { useSubmitQuizMutation } from '../../apollo/submitQuiz.graphql'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import { useForm } from "react-hook-form"
-import { jsx, Radio, Checkbox, Label, Button, Grid, Message, Link as Slink, Spinner, Container, Heading, Text, Flex, Box } from 'theme-ui'
+import { jsx, Radio, Checkbox, Label, Grid, Button, Card, Message, Link as Slink, Spinner, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import FadeSpinner from '../../components/FadeSpinner'
-import { useUserQuizFeedbackListQuery } from '../../apollo/UserQuizFeedbackList.graphql'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect'
 import moment from 'moment'
 import 'moment/locale/cs'
 import { Response } from '../api/quiz/submit'
+import { Response as SubmissionsListResponse } from '../api/quiz/submissions-list/[id]'
 import { NextSeo } from 'next-seo'
+import useSWR from 'swr'
+import fetcher from '../../lib/fetcher'
 
 export type PossibleResponds = {
   choiceText: string
@@ -117,54 +117,43 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [canSubmit, setCanSubmit] = useState(false)
-  const [showQuiz, setShowQuiz] = useState(true)
-  // const [submitQuizMutation, { data, loading, error }] = useSubmitQuizMutation({
-  //   onCompleted: (data) => {
-  //     if (data.submitQuiz.submitted) {
-  //       // todo: where to push 
-  //       router.push('/feedback/'+quiz.slug+'?attempt='+data.submitQuiz.responseAttempt)
-  //     }
-  //   }
-  // })
-  // const userFeedbackList = useUserQuizFeedbackListQuery({
-  //   variables: {
-  //     quizId: quiz?.id as string
-  //   }
-  // })
-  // useEffect(() => {
-  //   if (userFeedbackList.data?.userQuizFeedbackList.length == 0) {
-  //     setShowQuiz(true)
-  //   }
-  // })
+  const [showQuiz, setShowQuiz] = useState(false)
+  const feedbackList = useSWR<SubmissionsListResponse>('/api/quiz/submissions-list/' + quiz?.id as string, fetcher)
+  useEffect(() => {
+    if (feedbackList?.data?.submissions.length == 0) {
+      setShowQuiz(true)
+    }
+  })
+  console.log(feedbackList?.data?.submissions)
   const { register, errors, handleSubmit, reset, getValues } = useForm<FormData>()
   let quizItemIndex = 0
 
   return (
-  <StarterLayout stickHeaderByDefault>
+  <StarterLayout stickHeaderByDefault sx={{bg: 'sheet'}}>
     <NextSeo title={'Kvíz: ' + (quiz?.title ? quiz?.title : '') } />
     <Container variant="quiz">
-      <Box sx={{mt: 2, px: 4}}>
+      <Box sx={{mb: 3, px: 4}}>
         { quiz?.items?.length !== 0 ?
           <Fragment>
             {!showQuiz && 
               <Fragment>
-              <Heading variant="ultratitle" sx={{mt: 4, mb: 2}}>
+              <Heading variant="title" sx={{mt: 5, mb: 2}}>
                 Kvíz: { quiz?.title }
               </Heading>
               <Flex sx={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   mb: 4,
-                  mt: 6,
+                  mt: 4,
                   pr: 4,
                 }}>
                   <Box>
                     <Text sx={{fontSize: 2}}>{ quiz?.items && 'Vyplnění zabere asi '+ (quiz?.items.length + 1) + ' min' }</Text>
                   </Box>
-                  { /*!userFeedbackList.loading && (userFeedbackList.data?.userQuizFeedbackList?.length > 0)
+                  { feedbackList.data && (feedbackList.data.submissions.length > 0)
                     &&
                     <Slink onClick={() => setShowQuiz(true)} sx={{fontSize: 2, fontWeight: 'bold', alignSelf: 'flex-end', '&:hover': {textDecoration: 'none'}}}>Zkusit znovu</Slink>
-                  */}
+                  }
               </Flex>
               </Fragment>
             }
@@ -176,14 +165,14 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             </Box>
           </Fragment>
         }
-        {/*userFeedbackList.data?.userQuizFeedbackList.map((attempt, index) => {
-            const createdAt = new Date(parseInt(attempt.createdAt))
+        <Card sx={{px: 0, py: "0!important"}}>
+          {feedbackList.data?.submissions.map((attempt, index) => {
             if (showQuiz) {
               return (
                 <Box sx={{mt: 2, mb: 3, borderRadius: '4px'}}>
                   <Message>
                     <Flex sx={{justifyContent: 'space-between'}}>
-                      <Text>Váš nejlepší výsledek v tomto kvízu je <b>{ attempt.points + ' / ' + attempt.maxPoints } bodů</b></Text>
+                      <Text>Váš nejlepší výsledek v tomto kvízu je <b>{ attempt.points + ' / ' + attempt.max_points } bodů</b></Text>
                       <Slink onClick={() => {
                         reset()
                         setShowQuiz(false)
@@ -194,14 +183,11 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
               )
             }
             return (
-              <Box sx={{pt: 3, pb: 4, mt: 4, mb: 4, px: 4, border: '1px solid #ddd', borderRadius: '4px'}}>
-                <Heading sx={{fontSize: 4, mt: 3, mb: 3}}>
-                  Váš nejlepší výsledek
-                </Heading>
+              <Box sx={{pt: 1, pb: 4, mt: 4, borderBottom: (index+1 != feedbackList.data?.submissions.length ? '1px solid #ddd' : 'none')}}>
                 <Grid gap="4" columns={3}>
                   <Box>
                     <Text sx={{fontSize: 2, fontWeight: 'body', color: 'gray'}}>
-                      { moment(createdAt).fromNow() as string }<br />{ moment(createdAt).format('MMMM Do YYYY, h:mm') as string }
+                      { moment(attempt.created_at["@ts"]).fromNow() as string }<br />{ moment(attempt.created_at["@ts"]).format('MMMM Do YYYY, h:mm') as string }
                     </Text>
                   </Box>
                   <Box>
@@ -209,28 +195,29 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                       Skóre
                     </Text>
                     <Text sx={{fontSize: 4 }}>
-                      { attempt.points + ' / ' + attempt.maxPoints } bodů
+                      { attempt.points + ' / ' + attempt.max_points } bodů
                     </Text>
                   </Box>
                   <Flex sx={{alignItems: 'center', justifyContent: 'flex-end'}}>
                     <Link passHref as={"/feedback/"+quiz.slug+"?attempt="+(attempt.id as string)} href={{ pathname: '/feedback', query: { slug: quiz.slug, attempt: attempt.id } }}>
-                      <a sx={{alignSelf: 'flex-end'}}><Button sx={{fontSize: 2}}>Zobrazit zpětnou vazbu</Button></a>
+                      <a sx={{alignSelf: 'flex-end'}}><Button variant="detailAction" sx={{fontSize: 2}}>Zobrazit zpětnou vazbu</Button></a>
                     </Link>
                   </Flex>
                 </Grid>
               </Box>
             )
-          })*/}
+          })}
+        </Card>
         
         { showQuiz && 
-          <Fragment>
-            <Heading sx={{fontSize: 6, mt: 5, mb: 2}}>
+          <Box sx={{py: 3}}>
+            <Heading sx={{fontSize: 6, mt: 4, mb: 2}}>
                 Kvíz: { quiz?.title }
             </Heading>
-            <Text sx={{pb: 3, fontWeight: 'bold', borderBottom: '1px solid #ddd'}}>
+            <Text sx={{mb: 3, fontWeight: 'bold'}}>
               Celkem { quiz?.items.length } otázek
             </Text>
-          </Fragment>
+          </Box>
         }
       </Box>
       { showQuiz && <form>
@@ -265,13 +252,14 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             }
             
             return (
-              <Box
+              <Card
                 key={index}
                 sx={{
+                  boxShadow: 'small',
                   pt: 3,
                   pb: 3,
                   px: 4,
-                  mb: 2,
+                  mb: 3,
                   backgroundColor: (errors[item.id] || (errors[item.id]?.length && errors[item.id][itemMaxIndex]) ) ? '#fff8f9' : 'background',
                 }}
               >
@@ -311,18 +299,17 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                     <Text sx={{fontSize: 2, height: '32px', lineHeight: '32px', textAlign: 'center', px: 3, borderRadius: '16px', border: '1px solid #ddd'}}>1 bod</Text>
                   </Box>
                 </Flex>
-              </Box>
+              </Card>
             )
 
           })
         }
         <Box sx={{
             mx: 4,
-            mt: 3,
+            mt: 2,
             pt: 4,
             pb: 3,
             mb: 5,
-            borderTop: '1px solid #ddd',
             alignItems: 'center'
           }}>
           <Box>
@@ -344,6 +331,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
           </Box>
           <Flex sx={{justifyContent: 'flex-end'}}>
             <Button
+              variant="lg"
               type="submit"
               disabled={!canSubmit || errorMessage != '' || loading}
               sx={{
@@ -387,12 +375,11 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                   const result: Response = await response.json()
                   setLoading(false)
                   if (response.ok) {
+                    router.push('/feedback/'+quiz.slug+'?attempt='+result?.id)
                     setSuccess(true)
-                    router.push('/')
                   } else {
                     setErrorMessage(result?.message)
                   }
-                  console.log(result)
                 })
                 .catch(() => {
                   setLoading(false)

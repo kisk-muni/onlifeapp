@@ -4,38 +4,39 @@ type SubmittedItem = {
     responses: string[]
   }
   
-  type Item = {
-    id: string
-    question: string
-    required: boolean
-    discarded: boolean
-    possibleResponds: {
-      choiceText: string
-        isCorrect: boolean
-      correctFeedback: string
-      incorrectFeedback: string
-    }[]
-    _modelApiKey: 'checkbox' | 'singleselect'
-  }
-  
-  interface FeedbackItem {
-    _modelApiKey: string
-    id: string
-    question: string
-    required: boolean
-    response: string
-    responses: string[]
-    correct: boolean
-    feedbackResponses: {
-      choiceText: string
-        sentiment: 'positive' | 'negative' | 'neutral'
-      feedback: string
-    }[]
-  }
+type Item = {
+  id: string
+  question: string
+  required: boolean
+  discarded: boolean
+  possibleResponds: {
+    choiceText: string
+      isCorrect: boolean
+    correctFeedback: string
+    incorrectFeedback: string
+  }[]
+  _modelApiKey: 'checkbox' | 'singleselect'
+}
+
+export interface FeedbackItem {
+  type: string
+  id: string
+  question: string
+  required: boolean
+  response: string
+  responses: string[]
+  correct: boolean
+  feedbackResponses: {
+    choiceText: string
+    sentiment: 'positive' | 'negative' | 'neutral'
+    feedback: string
+    chosen: boolean
+  }[]
+}
   
   export default function getFeedbackItem(item: Item, submittedItem: SubmittedItem): FeedbackItem {
     const feedbackItem: FeedbackItem  = {
-      _modelApiKey: item._modelApiKey,
+      type: item._modelApiKey,
       id: item.id,
       question: item.question,
       required: item.required,

@@ -1,138 +1,156 @@
 /** @jsx jsx */
+import { useState, useEffect, Fragment } from 'react'
 import StarterLayout from '../components/StarterLayout'
+import GroupHeader from '../components/dashboard/GroupHeader'
+import { useRouter } from 'next/router'
+import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
+import { jsx, Text, Heading, Container, Card, Link as SLink, Badge, Grid, Button, Box, Flex } from 'theme-ui'
+import { NextPage } from 'next'
 import Link from 'next/link'
-import { Image as DatoImage } from 'react-datocms'
-import { getAllPostsForHome } from '../utils/api'
-import { Flex, Box } from 'reflexbox'
-import { jsx, Text, Heading, Grid, Image, Container } from 'theme-ui'
+import { getAllPostsForGroup } from '../utils/api'
 import { NextSeo } from 'next-seo'
 
-const Topic = ({name, slug, responsiveImage}) => 
-  <Box sx={{variant: 'styles.topicCard', mb: 3}}>
-    <Link href={"/tema/[slug]"} as={"/tema/"+slug} passHref>
-      <a sx={{
-        '&:hover, &:focus': {
-          textDecoration: 'none'
-        }
-      }}>
-        <div
-          className="aspect-image"
-          sx={{
-            borderRadius: '6px',
-            overflow: 'hidden',
-            width: '100%',
-            transition: 'box-shadow: .1s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}>
-          <DatoImage
-            data={{
-              ...responsiveImage,
-            }}
-          />
-        </div>
-        <Heading as='h3' sx={{
-          mt: 3,
-          color: 'text',
-          fontSize: 5
-          }}>{name}</Heading>
-      </a>
-    </Link>
-  </Box>
-
-
-const Index = ({ allPosts }) => {
- // const router = useRouter()
-
- // showDescription={(fromTop, fromBottom) => -fromTop > 180}>
+const QuizBlock = ({quizId, title, slug, ...props}: {quizId: string, title: string, slug: string}) => {
+  const router = useRouter()
   return (
-  <StarterLayout stickHeaderByDefault={false}>
-    <NextSeo
-      title="Kurz informační gramotnosti"
-      description="Online kurz informační gramotnosti pro studenty středních škol vyvíjen na kabinetu informačních studií a knihovnictví Masarykovy univerzity."
-    />
-    <Heading sx={{
-      color: 'text',
-      textAlign: 'center',
-      fontWeight: 700,
-      fontSize: 7,
-      px: 35,
-      mt: 5,
-      mb: 6,
-    }}>
-      Kurz informační gramotnosti<br />pro studenty středních škol
-    </Heading>
-    <Flex flexWrap='wrap'>
-      <Container
-        pb={80}
-      >
-      </Container>
-    </Flex>
-
-    <Flex flexWrap="wrap" minHeight="60vh" backgroundColor="promobg">
-      <Box
-        px={35}
-        pt={130}
-        pb={60}
-        width={[1]}>    
-          <Heading sx={{color: 'text', textAlign: 'center', mb: 4, fontWeight: 700, fontSize: '40px'}}>
-            Kurz připravili odborníci z Masarykovy Univerzity
-          </Heading>
-          <Text sx={{textAlign: 'center', fontSize: 5, color: 'gray'}}>Propagace univerzity, KISKU, dnu otevřených dveří.</Text>
-          <Flex width={[1]} mt="5" mb="5" flexDirection="row" justifyContent="center" alignItems="center">
-            <Flex flexDirection="row" mr="4" >
-              <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
-                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_70/v1589197379/index/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
-              </Flex>
-              <Flex sx={{borderRadius: 9999, ml: -4, overflow: 'hidden', width: 168, height: 168, border: '1px solid', borderColor: 'lighten', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#0000dc'}}>
-                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_166/v1589197379/index/muni-lg-white.png" width='100%' sx={{alignSelf: 'center'}} />
-              </Flex>
-            </Flex>
-            <Flex mx="4" justifyContent="center" flexDirection="column" alignItems="center">
-              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
-                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
-              </Flex>
-              <Heading as='h3' sx={{
-                mt: 3,
-                textAlign: 'center',
-                color: 'text',
-                fontSize: 4
-                }}>Hanka Tulinská</Heading>
-            </Flex>
-            <Flex ml="4" mr="5" justifyContent="center" flexDirection="column" alignItems="center">
-              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, border: '1px solid', borderColor: '#eaeaea', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
-                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/michal-cerny.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
-              </Flex>
-              <Heading as='h3' sx={{
-                mt: 3,
-                textAlign: 'center',
-                color: 'text',
-                fontSize: 4
-                }}>Michal Černý</Heading>
-            </Flex>
-          </Flex>
-      </Box>
-    </Flex>
-
-    <Flex flexWrap="wrap" minHeight="60vh">
-      <Box
-        px={35}
-        pt={130}
-        pb={20}
-        width={[1]}>    
-          <Heading sx={{color: 'text', textAlign: 'center', mb: 4, fontWeight: 700, fontSize: 7}}>
-            Spojte se s námi
-          </Heading>
-          <Text sx={{textAlign: 'center', fontSize: 4, mb: 4, color: 'gray'}}>Pojtřebujete pomoc … ?</Text>
-          <Text sx={{textAlign: 'center', fontSize: 4, mb: 4, color: 'gray'}}>Ikonky sociálních sítí</Text>
-      </Box>
-    </Flex>
-  </StarterLayout>
+    <Card variant="interactive" {...props}
+      sx={{
+        mb: 3,
+        backgroundColor: 'background',
+        transition: 'box-shadow .1s ease 0s',
+        '&:hover .text': {
+          color: '#000',
+        },
+        ":hover,:focus": {
+          cursor: "pointer",
+        },
+      }}
+      onClick={() => router.push("/kviz/"+slug)}
+    >
+      <Grid gap={2} columns={[2]}>
+        <Box>
+          <div><Badge variant="badges.pill" sx={{mr: 2, mt: 0, mb: 3}}>Kvíz</Badge></div>
+          <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ title }</Heading>
+        </Box>
+      </Grid>
+    </Card>
   )
-
 }
 
-export async function getStaticProps() {
-  const allPosts = (await getAllPostsForHome(false)) || []
-  console.log(allPosts)
+interface Props {
+  allPosts: any
+}
+
+const Index: NextPage<Props> = ({ allPosts }) => {
+  const router = useRouter()
+  const [ activeCategory, setActiveCategory ] = useState('')
+  //const { data, loading, error } = useGroupQuery({variables: {id: router.query.trida as string}})
+  useEffect(() => {
+    setActiveCategory(router.query.category ? router.query.category : allPosts[0].slug)
+  });
+  let filteredPosts = allPosts
+  if (activeCategory) {
+    filteredPosts = allPosts.filter(post => {
+      return post.slug === activeCategory
+    })
+  }
+  return (
+    <StarterLayout stickHeaderByDefault>
+      <NextSeo noindex title={'Přehled kvízů'} />
+      <Flex sx={{
+        flexDirection: 'column',
+        flexGrow: 1,
+        height: '100%',
+        bg: 'sheet',
+        justifyContent: 'space-between'
+      }}>    
+      <Container sx={{mt: 4}}>
+        <Flex
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}>
+          <Box
+            sx={{
+              position: 'relative',
+              flexGrow: 1,
+              flexBasis: 'resultsFilterSidebar',
+            }}>
+            <Box sx={{position: 'sticky', top: '116px'}}>
+              <Heading sx={{mb: 4}}>Témata</Heading>
+              {
+                allPosts.map((post, i) => (
+                  <Box key={i} sx={{mb: '16px'}}>
+                    <Link passHref as={"/?category="+post.slug} href={{ pathname: '/', query: { category: post.slug } }} scroll={false}>
+                      <SLink sx={{
+                        fontWeight: (activeCategory === post.slug ? 600 : 400),
+                        color: (activeCategory === post.slug ? 'text' : 'gray'),
+                        fontSize: 2,
+                        '&:hover': {
+                          color: 'text',
+                          textDecoration: 'none',
+                        }
+                      }}>{post.titulek}</SLink>
+                    </Link>
+                  </Box>
+                ))
+              }
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 99999,
+              flexBasis: 0,
+              minWidth: 400,
+          }}>
+            {
+              filteredPosts.map((post) => (
+                <Box sx={{mb: 3}}>
+                  <Box>
+                    <Flex sx={{mb: 4, pb: 3, alignItems: 'center', borderBottom: '1px dashed #ddd'}}>
+                      <Heading sx={{fontSize: 6}}>{post.titulek}</Heading>
+                      {post.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', ':hover:focus': {textDecoration: 'none'}}} href={post.url}>Stránka tématu</a>}
+                    </Flex>
+                  </Box>
+                  { !(post.children.length > 0) && <Text sx={{color: 'gray', fontSize: 2}}>Téma nemá žádný interaktivní obsah</Text> }
+                  { post.children.map((child, i) => (
+                    <Box key={i} sx={{mb: 3}}>
+                      <Box sx={{
+                          mb: 2,
+                          pb: 2,
+                        }}>
+                          <Box>
+                            <Flex sx={{mb: 3, alignItems: 'center'}}>
+                              <Heading>{child.titulek}</Heading>
+                              {child.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', '&:hover&:focus': {textDecoration: 'none'}}} href={child.url}>Stránka podtématu</a>}
+                            </Flex>
+                          </Box>
+                        {child?.content?.map((quizBlock, index) => (quizBlock?.id &&
+                          <QuizBlock
+                            key={index}
+                            quizId={quizBlock?.quizLink?.id}
+                            title={quizBlock?.quizLink?.title}
+                            slug={quizBlock?.quizLink?.slug}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  )) }
+                </Box>
+              ))
+            }
+          </Box>
+        </Flex>
+        </Container>
+      </Flex>
+    </StarterLayout>
+  );
+  
+}
+
+export async function getStaticProps({ preview = false }) {
+  const allPosts = (await getAllPostsForGroup(false)) || []
+  //const allPostsSorted = allPosts.sort((a, b) => (a.position - b.position))
   return {
     props: { allPosts },
   }

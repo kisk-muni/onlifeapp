@@ -5,9 +5,10 @@ import Footer from './Footer'
 import { jsx } from 'theme-ui'
 import { Sticky, StickyContainer } from 'react-sticky'
 // <MasarykBar />
-const StarterLayout = ({ children, stickHeaderByDefault }: { children: ReactNode, stickHeaderByDefault: boolean }) => (
+const StarterLayout = ({ children, stickHeaderByDefault, ...props }: { children: ReactNode, stickHeaderByDefault: boolean }) => (
   <StickyContainer>
     <div
+      {...props}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -31,7 +32,7 @@ const StarterLayout = ({ children, stickHeaderByDefault }: { children: ReactNode
     </Sticky>
     <style jsx>{`
       .is-sticky {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.125);
+        box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
         transition: box-shadow .1s ease 0s;
       }
       .not-sticky {

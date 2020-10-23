@@ -34,6 +34,7 @@ const theme = {
     "error-light": "#FF1A1A",
     "error-default": "#E00",
     "error-dark": "#C50000",
+    "success-default": "#0d8000",
     "primary-background": "#FFF",
     "primary-accent-1": "#FAFAFA",
     "primary-accent-2": "#EAEAEA",
@@ -687,6 +688,7 @@ const theme = {
       py: 3,
       px: 3,
       zIndex: 100,
+      boxShadow: '0 0 15px 0 rgba(0,0,0,.1)',
       backgroundColor: 'background',
     },
     navlink: {
@@ -717,10 +719,7 @@ const theme = {
       display: 'inline-block',
       fontWeight: '700',
       fontSize: 4,
-      bg: 'primary',
-      px: 3,
-      borderRadius: 'circle',
-      color: 'background',
+      color: 'black',
       textDecoration: 'none',
       '&:hover, &:focus': {
         color: 'text',

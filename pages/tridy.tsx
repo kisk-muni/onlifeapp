@@ -60,7 +60,7 @@ const GroupsPage: NextPage = () => <Fragment>
     <NextSeo noindex title="Přehled tříd" />
     <DashboardLayout
       header={<Header />}
-      sx={{background: '#fafafa'}} 
+      sx={{bg: 'sheet'}} 
       stickHeaderByDefault
     >
       <Groups />

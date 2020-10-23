@@ -25,6 +25,10 @@ interface FaunaData {
   }
 }
 
+interface FaunaError {
+  description: string
+}
+
 export default auth0.requireAuthentication(async function joinGroupAttempt(req: NextApiRequest, res: NextApiResponse<Response>) {
   const {
     body: { slug, consent, items },
@@ -37,11 +41,13 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
   const { user } = await auth0.getSession(req)
   // fetch quiz items
   const data = await getGFQuizWithSlugforValidation(slug, false)
+  console.log(slug, data)
   const originalQuiz = data?.gfquiz
   if (!originalQuiz) {
-    throw new Error('Kvíz neexistuje.')
+    res.status(405).json({message: `Kvíz neexistuje`})
   }
   // loop over originalQuizItems and validate&check quiz submittion against it
+  // worst case scenario is O((n/2)*(n+1)) as the order is not guaranteed
   let feedbackItems = []
   let maxPoints = 0
   let points = 0
@@ -51,9 +57,9 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
       return
     }
     maxPoints += 1
-    const submittedItem = //input.items.find(x => x.fieldName === item.id)
+    const submittedItem = items.find(x => x.fieldName === item.id)
     if (!submittedItem) {
-      throw new Error('Missing submitted item')
+      res.status(405).json({message: `Missing submitted item.`})
     }
     let feedbackItem = getFeedbackItem(item, submittedItem)
     if (feedbackItem.correct) {
@@ -61,32 +67,60 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
     }
     feedbackItems.push(feedbackItem)
   })
-  console.log(feedbackItems)
-//   let batch = db.batch()
-//   let quizResponsesUsersRef = db.collection('quizResponses').doc(user.id).collection('quizzes').doc(originalQuiz.id)
-//   batch.set(quizResponsesUsersRef, {
-//     lastUpdateAt: admin.firestore.FieldValue.serverTimestamp()
-//   })
-//   let quizResponsesUsersAttemptsRef = quizResponsesUsersRef.collection('attempts')
-//   let newAttemptRef = quizResponsesUsersAttemptsRef.doc()
-//   batch.set(newAttemptRef, {
-//     feedback: feedbackItems,
-//     points: points,
-//     maxPoints: maxPoints,
-//     createdAt: admin.firestore.FieldValue.serverTimestamp()
-//   })
-//   batch.commit()
-//   return {
-//     submitted: true,
-//     submittedQuiz: originalQuiz.id,
-//     responseAttempt: newAttemptRef.id,
-//     points: points,
-//     maxPoints: maxPoints
-//   }
-//   const response: FaunaData = await serverClient.query(
-//     )
-  res.json({
-    name: response.data.name,
-    id: response.ref.id
-  })
+  try {
+    const response: FaunaData = await serverClient.query(
+      q.Let(
+        {
+          "user": q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub)),
+          "user_ref": q.Select("ref", q.Var("user")),
+          "attempt": q.Create(q.Collection("QuizSubmission"),
+            {
+              data: {
+                quiz_id: originalQuiz.id,
+                user: q.Var("user_ref"),
+                points: points,
+                max_points: maxPoints,
+                // by storing feedback to the attempt, we can ensure fast retrieval
+                feedback: feedbackItems,
+                created_at: q.Now()
+              }
+            }
+          ),
+          "attempt_ref": q.Select(["ref"], q.Var("attempt"))
+        },
+        // save feedback responses attempts according to user
+        q.Var("attempt")
+        // q.Do(
+        //   q.Foreach(
+        //     q.Select(["data", "feedback"], q.Var("attempt")),
+        //     q.Lambda('feedback_item',
+        //       q.Create(q.Collection("QuizSubmissionFeedback"),
+        //         {
+        //           data: q.Merge(
+        //             {
+        //               user: q.Var("user_ref"),
+        //               quiz_id: originalQuiz.id,
+        //               attempt: q.Var("attempt_ref")
+        //             },
+        //             q.Var("feedback_item")
+        //           )
+        //         }
+        //       )
+        //     )
+        //   ),
+        //   // return QuizSubmission ref id
+        //   q.Var("attempt")
+        // )
+      )
+    )
+    res.json({
+      id: response.ref.id
+    })
+  } catch (error: any | FaunaError) {
+    if (!error?.description) {
+      res.status(400).json({message: error?.message})
+    } else {
+      res.status(400).json({message: error?.description})
+    }
+  }
 })

@@ -18,7 +18,7 @@ function redirect(next?: string) {
 
 const withAuthRedirect = (
   PageComponent: NextPage,
-  { next, roles }: {next?: string, roles?: string[]} = {}
+  { next = '', roles }: {next?: string, roles?: string[]} = {}
 ): NextPage => {
   return ({...pageProps}) => {
     const { user, loading, error } = useUser()
