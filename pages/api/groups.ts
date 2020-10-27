@@ -28,7 +28,10 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
   const { user } = await auth0.getSession(req)
   const listRes: FaunaData = await serverClient.query(
       q.Map(
-        q.Paginate(q.Match(q.Index("group_by_auth0_id"), user.sub)),
+        q.Paginate(q.Match(q.Index("group_by_user"), q.Select(
+          "ref",
+          q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub))
+        ))),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     )

@@ -4,36 +4,51 @@ import StarterLayout from '../components/StarterLayout'
 import GroupHeader from '../components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
-import { jsx, Text, Heading, Container, Card, Link as SLink, Badge, Grid, Button, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Container, Card, Donut, Link as SLink, AspectRatio, Grid, Button, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { getAllPostsForGroup } from '../utils/api'
 import { NextSeo } from 'next-seo'
+import { CircularProgressbar } from 'react-circular-progressbar'
+import useSWR from 'swr'
+import fetcher from '../lib/fetcher'
+import { Response } from './api/quiz/submissions-list'
 
-const QuizBlock = ({quizId, title, slug, ...props}: {quizId: string, title: string, slug: string}) => {
+const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoaded, ...props}: {quizId: string, points: number, maxPoints: number, progressLoaded: boolean, title: string, slug: string}) => {
   const router = useRouter()
   return (
-    <Card variant="interactive" {...props}
+    <Link href={"/kviz/"+slug} passHref><a><Card variant="interactive" {...props}
       sx={{
-        mb: 3,
+        mb: 2,
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: 'background',
-        transition: 'box-shadow .1s ease 0s',
         '&:hover .text': {
           color: '#000',
         },
         ":hover,:focus": {
           cursor: "pointer",
         },
+        px: '14px!important', py: '18px!important',
       }}
-      onClick={() => router.push("/kviz/"+slug)}
     >
-      <Grid gap={2} columns={[2]}>
-        <Box>
-          <div><Badge variant="badges.pill" sx={{mr: 2, mt: 0, mb: 3}}>Kvíz</Badge></div>
-          <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ title }</Heading>
-        </Box>
-      </Grid>
-    </Card>
+        <AspectRatio ratio={1/.29} sx={{display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+          <Box sx={{minWidth: 24}}>
+            {
+              progressLoaded ?
+              <Donut strokeWidth={3} size={24} value={points/maxPoints} />
+              :
+              <Donut strokeWidth={3} size={24} value={0} />
+            }
+          </Box>
+          <Box sx={{ml: 2}}>
+            <Heading variant="headline" sx={{mb: 1, mt: 0}}>{ title }</Heading>
+            <Text sx={{mt: 0, fontSize: 1, color: 'primary-accent-3'}}>
+              {progressLoaded ? points.toString() + '/' + maxPoints.toString() + ' otázek správně' : "5 otázek k vyplnění"}
+            </Text>
+          </Box>
+        </AspectRatio>
+    </Card></a></Link>
   )
 }
 
@@ -42,20 +57,9 @@ interface Props {
 }
 
 const Index: NextPage<Props> = ({ allPosts }) => {
-  const router = useRouter()
-  const [ activeCategory, setActiveCategory ] = useState('')
-  //const { data, loading, error } = useGroupQuery({variables: {id: router.query.trida as string}})
-  useEffect(() => {
-    setActiveCategory(router.query.category ? router.query.category : allPosts[0].slug)
-  });
-  let filteredPosts = allPosts
-  if (activeCategory) {
-    filteredPosts = allPosts.filter(post => {
-      return post.slug === activeCategory
-    })
-  }
+  const {data, error} = useSWR<Response>('/api/quiz/submissions-list', fetcher)
   return (
-    <StarterLayout stickHeaderByDefault>
+    <StarterLayout>
       <NextSeo noindex title={'Přehled kvízů'} />
       <Flex sx={{
         flexDirection: 'column',
@@ -64,83 +68,42 @@ const Index: NextPage<Props> = ({ allPosts }) => {
         bg: 'sheet',
         justifyContent: 'space-between'
       }}>    
-      <Container sx={{mt: 4}}>
-        <Flex
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-          }}>
-          <Box
-            sx={{
-              position: 'relative',
-              flexGrow: 1,
-              flexBasis: 'resultsFilterSidebar',
-            }}>
-            <Box sx={{position: 'sticky', top: '116px'}}>
-              <Heading sx={{mb: 4}}>Témata</Heading>
-              {
-                allPosts.map((post, i) => (
-                  <Box key={i} sx={{mb: '16px'}}>
-                    <Link passHref as={"/?category="+post.slug} href={{ pathname: '/', query: { category: post.slug } }} scroll={false}>
-                      <SLink sx={{
-                        fontWeight: (activeCategory === post.slug ? 600 : 400),
-                        color: (activeCategory === post.slug ? 'text' : 'gray'),
-                        fontSize: 2,
-                        '&:hover': {
-                          color: 'text',
-                          textDecoration: 'none',
-                        }
-                      }}>{post.titulek}</SLink>
-                    </Link>
-                  </Box>
-                ))
-              }
+        <Container sx={{mt: 4}}>
+        {
+          allPosts.map((post) => (
+            <Box sx={{mb: 5, mt: 4}}>
+              <Flex sx={{mb: 4, alignItems: 'center'}}>
+                <Heading variant="title">{post.titulek}</Heading>
+                {post.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', ':hover,:focus': {textDecoration: 'none'}}} href={post.url}>Stránka tématu</a>}
+              </Flex>
+              { !(post.children.length > 0) && <Text sx={{color: 'gray', fontSize: 2}}>Téma nemá žádný interaktivní obsah</Text> }
+              <Grid gap="32px" columns={[1, 2, null, 3]}>
+                { post.children.map((child, i) => (
+                  <>
+                      {child?.content?.map((quizBlock, index) => {
+                        const quiz_progress = data?.submissions.filter((submission) => submission.quiz_id == quizBlock?.quizLink?.id)
+                        const quiz_progress_sorted = quiz_progress?.sort((a, b) => b.points - a.points)
+                        const loaded = quiz_progress_sorted?.length >= 1
+                        return (
+                          quizBlock?.id &&
+                            <QuizBlock
+                              key={index}
+                              quizId={quizBlock?.quizLink?.id}
+                              title={quizBlock?.quizLink?.title}
+                              slug={quizBlock?.quizLink?.slug}
+                              maxPoints={loaded ? quiz_progress_sorted[0].max_points : 0}
+                              points={loaded ? quiz_progress_sorted[0].points : 0}
+                              progressLoaded={loaded}
+                            />
+                        )
+                      })}
+                    </>
+                  ))
+                }
+              </Grid>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              flexGrow: 99999,
-              flexBasis: 0,
-              minWidth: 400,
-          }}>
-            {
-              filteredPosts.map((post) => (
-                <Box sx={{mb: 3}}>
-                  <Box>
-                    <Flex sx={{mb: 4, pb: 3, alignItems: 'center', borderBottom: '1px dashed #ddd'}}>
-                      <Heading sx={{fontSize: 6}}>{post.titulek}</Heading>
-                      {post.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', ':hover:focus': {textDecoration: 'none'}}} href={post.url}>Stránka tématu</a>}
-                    </Flex>
-                  </Box>
-                  { !(post.children.length > 0) && <Text sx={{color: 'gray', fontSize: 2}}>Téma nemá žádný interaktivní obsah</Text> }
-                  { post.children.map((child, i) => (
-                    <Box key={i} sx={{mb: 3}}>
-                      <Box sx={{
-                          mb: 2,
-                          pb: 2,
-                        }}>
-                          <Box>
-                            <Flex sx={{mb: 3, alignItems: 'center'}}>
-                              <Heading>{child.titulek}</Heading>
-                              {child.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', '&:hover&:focus': {textDecoration: 'none'}}} href={child.url}>Stránka podtématu</a>}
-                            </Flex>
-                          </Box>
-                        {child?.content?.map((quizBlock, index) => (quizBlock?.id &&
-                          <QuizBlock
-                            key={index}
-                            quizId={quizBlock?.quizLink?.id}
-                            title={quizBlock?.quizLink?.title}
-                            slug={quizBlock?.quizLink?.slug}
-                          />
-                        ))}
-                      </Box>
-                    </Box>
-                  )) }
-                </Box>
-              ))
-            }
-          </Box>
-        </Flex>
+          ))
+        }
         </Container>
       </Flex>
     </StarterLayout>

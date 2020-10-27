@@ -319,6 +319,7 @@ const theme = {
       fontSize: 2,
       ":focus,:hover": {
         bg: "smoke",
+        color: 'primary',
         transform: 'none',
         boxShadow: 'none',
       },

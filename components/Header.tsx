@@ -91,10 +91,10 @@ const Header = () => {
 
   return (
     <header
-    sx={{
-      variant: 'styles.header',
-      width: '100%',
-    }}>
+      sx={{
+        variant: 'styles.header',
+        width: '100%',
+      }}>
     <Container
       sx={{
         mx: 'auto',

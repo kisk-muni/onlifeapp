@@ -70,7 +70,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
           data: {
             name: name,
             invitation_code: invitationCode,
-            user: q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub))
+            user: q.Select("ref", q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub)))
           }
         }
       )

@@ -66,11 +66,23 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
     const response: FaunaData = await serverClient.query(
       q.Let(
         {
-          "group": q.Ref(q.Collection('Group'), id)
+          "group": q.Ref(q.Collection('Group'), id),
+          "user": q.Select(
+              "ref",
+              q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub))
+            ),
         },
-        q.If(
-          q.Not(q.Exists(q.Var("group"))),
-          q.Abort("Třída neexistuje."),
+        q.Do(
+          q.If(
+            q.Not(q.Exists(q.Var("group"))),
+            q.Abort("Třída neexistuje."),
+            "false"
+          ),
+          q.If(
+            q.Not(q.Equals(q.Select(["data", "user"], q.Get(q.Var("group")), q.Var("user")))),
+            q.Abort("Třída uživateli nepatří."),
+            "false"
+          ),
           q.Merge(
             q.Get(q.Var("group")),
             {
@@ -88,9 +100,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
         )
       )
     )
-    if (response.data.user.data.auth0_id !== user.sub) {
-      res.status(400).json({message: 'Nejste majitelem třídy.'})
-    }
+    
     res.json({
       name: response.data.name,
       invitation_code: response.data.invitation_code,
