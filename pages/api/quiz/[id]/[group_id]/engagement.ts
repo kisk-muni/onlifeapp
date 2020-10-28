@@ -2,36 +2,14 @@ import { query as q } from 'faunadb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import auth0 from '../../../../../lib/auth0'
 import { serverClient } from '../../../../../utils/fauna-auth'
-import { FeedbackItem } from '../../../../../lib/quiz/itemFeedback'
 
 export type Response = {
-  id?: string
-  points?: number
-  max_points?: number
-  created_at?: string
-  feedback?: FeedbackItem[]
+  count?: number
   message?: string
 }
 
 interface FaunaData {
-  ref: {
-    id: string
-  }
-  ts: number
-  data: {
-    quiz_id: string
-    user: {
-      ref: {
-        id: string
-      }
-    }
-    points: number
-    max_points: number
-    feedback: FeedbackItem[]
-    created_at: {
-      value: string
-    }
-  }
+  count: number
 }
 
 interface FaunaError {
@@ -39,7 +17,7 @@ interface FaunaError {
 }
 
 export default auth0.requireAuthentication(async function joinGroupAttempt(req: NextApiRequest, res: NextApiResponse<Response>) {
-  const {query: {id}, method} = req
+  const {query: {id, group_id}, method} = req
   const { user } = await auth0.getSession(req)
   if (method !== 'GET') {
     res.setHeader('Allow', ['GET'])
@@ -48,40 +26,19 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
   if (id == null || id == '' || isNaN(Number(id))) {
     res.status(400).json({message: 'Id není číslo.'})
   }
+  if (group_id == null || group_id == '' || isNaN(Number(group_id))) {
+    res.status(400).json({message: 'group_id není číslo.'})
+  }
   try {
     const response: FaunaData = await serverClient.query(
-      q.Let(
-        {
-          "submission_ref": q.Ref(q.Collection('QuizSubmission'), id),
-          "submission": q.Get(q.Var("submission_ref")),
-          "user": q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub))
-        },
-        q.Do(
-          q.If(
-            q.Not(q.Exists(q.Var("submission_ref"))),
-            q.Abort("Pokus neexistuje."),
-            "false"
-          ),
-          q.If(
-            q.Not(
-              q.Equals(
-                q.Select(["ref"], q.Var("user")),
-                q.Select(["data", "user"], q.Var("submission"))
-              )
-            ),
-            q.Abort("Uživatel se neshoduje."),
-            "false"
-          ),
-          q.Var("submission")
-        )
-      )
+      q.Call(q.Function("group_quiz_engagement_count"), [
+        user.sub,
+        group_id,
+        id
+      ])
     )
     res.json({
-      id: response.ref.id as string,
-      points: response.data.points,
-      max_points: response.data.max_points,
-      feedback: response.data.feedback,
-      created_at: response.data.created_at.value
+      count: response.count,
     })
   } catch (error: any | FaunaError) {
     if (!error?.description) {

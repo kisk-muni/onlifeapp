@@ -11,9 +11,13 @@ import useGroup from '../data/useGroup'
 import withAuthRedirect from '../utils/withAuthRedirect'
 import { getAllPostsForGroup } from '../utils/api'
 import { NextSeo } from 'next-seo'
+import useSWR from 'swr'
+import { Response } from './api/quiz/[id]/[group_id]/engagement'
+import fetcher from '../lib/fetcher'
 
 const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {groupId: string, studentsCount: number, quizId: string, title: string, slug: string}) => {
   const router = useRouter()
+  const {data, error} = useSWR<Response>('/api/quiz/'+quizId+'/'+groupId+'/engagement', fetcher)
   // const quizEngagement = useGroupQuizEngagementQuery({
   //   variables: {
   //     quizId: quizId,
@@ -35,7 +39,7 @@ const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {gro
           <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ title }</Heading>
           <Flex>
           <Text className="text" sx={{color: 'gray', fontSize: 2}}>Zapojených studentů:</Text>
-          <Text sx={{color: 'text', ml: 3, fontSize: 2}}>{ true ? 'načítání' : 'engaged_count'} / {studentsCount}</Text>
+          <Text sx={{color: 'text', ml: 3, fontSize: 2}}>{ !data ? 'načítání' : data.count} / {studentsCount}</Text>
           </Flex>
         </Box>
         <Flex sx={{justifyContent: 'flex-end'}}>
@@ -101,7 +105,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
               {
                 allPosts.map((post, i) => (
                   <Box key={i} sx={{mb: '16px'}}>
-                    <Link passHref as={"/trida?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/trida', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
+                    <Link passHref as={"/aktivita?trida="+router.query.trida+"&category="+post.slug} href={{ pathname: '/aktivita', query: { trida: router.query.trida, category: post.slug } }} scroll={false}>
                       <SLink sx={{
                         fontWeight: (activeCategory === post.slug ? 600 : 400),
                         color: (activeCategory === post.slug ? 'text' : 'gray'),
