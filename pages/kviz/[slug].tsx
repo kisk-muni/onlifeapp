@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form"
 import { jsx, Radio, Checkbox, Label, Grid, Button, Card, Message, Link as Slink, Spinner, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect'
 import moment from 'moment'
@@ -129,7 +128,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
   let quizItemIndex = 0
 
   return (
-  <StarterLayout stickHeaderByDefault sx={{bg: 'sheet'}}>
+  <StarterLayout sx={{bg: 'sheet'}}>
     <NextSeo title={'Kvíz: ' + (quiz?.title ? quiz?.title : '') } />
     <Container variant="quiz">
       <Box sx={{mb: 3, px: 4}}>

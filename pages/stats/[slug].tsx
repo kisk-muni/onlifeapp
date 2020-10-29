@@ -3,10 +3,9 @@ import { useState, Fragment } from 'react'
 import DashboardLayout from '../../components/dashboard/DashboardLayout'
 import GroupHeader from '../../components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
-import { jsx, Container, Button, Heading, Select, Text, Flex, Box } from 'theme-ui'
+import { jsx, Container, Button, Heading, Select, Spinner, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 import { Props } from '../kviz/[slug]'
@@ -54,13 +53,13 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
       {router.query.tab === 'individual' ? 
         <Container sx={{pt: 2, mt: 2}}>
           {!stats.data
-          ? <FadeSpinner />
+          ? <Spinner size={24} />
           : <Individual students={[]/*stats?.data?.groupQuizStats?.engagedStudents*/} />
           }
         </Container>
       : <Container sx={{pt: 2, mt: 2}}>
           {!stats.data
-          ? <FadeSpinner />
+          ? <Spinner size={24} />
           : <Fragment>
               <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
                 <Text sx={{fontSize: 2}}>{engagedCount} {engagedText}</Text>

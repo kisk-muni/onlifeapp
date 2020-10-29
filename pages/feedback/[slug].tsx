@@ -3,9 +3,8 @@ import { Fragment } from 'react'
 import StarterLayout from '../../components/StarterLayout'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
-import { jsx, Container, Heading, Label, Radio, Checkbox, Text, Flex, Box } from 'theme-ui'
+import { jsx, Container, Heading, Spinner, Label, Radio, Checkbox, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
-import FadeSpinner from '../../components/FadeSpinner'
 import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 import { Props } from '../kviz/[slug]'
@@ -69,7 +68,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
       </Box>
       { !data &&
         <Box sx={{py: 5}}>
-          <FadeSpinner />
+          <Spinner size={24} />
         </Box>
       }
       {data?.feedback.map((item, index) => {

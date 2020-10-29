@@ -190,7 +190,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
       students: students
     })
     return
-  } catch (error: any | FaunaError) {
+  } catch (error: any) {
     if (!error?.description) {
       res.status(400).json({message: error?.message})
     } else {

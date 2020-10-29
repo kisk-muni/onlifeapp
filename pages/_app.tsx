@@ -5,7 +5,6 @@ import theme from '../theme'
 import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
 import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
-import '../utils/sentry'
 
 export default class MyApp extends App {
 

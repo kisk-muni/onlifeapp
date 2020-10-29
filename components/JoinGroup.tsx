@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { useState, Fragment, useCallback } from 'react'
-import { jsx, Heading, Flex, Box, Button } from 'theme-ui'
+import { jsx, Heading, Flex, Box, Button, Spinner } from 'theme-ui'
 import Reveal from '../components/Reveal'
 import { AppNotifier } from '../utils/notifier'
 import { useRouter } from 'next/router'
-import FadeSpinner from './FadeSpinner'
 import { Response } from '../pages/api/join-group'
 
 const GroupThumbnail = ({ name }: { name: string }) => <Reveal delay={0} duration={1000}>
@@ -71,7 +70,7 @@ const JoinGroup = ({ name, onDissmiss }: { name: string, onDissmiss: () => void 
   }, []);
 
   if (loading || success) {
-    return <FadeSpinner />
+    return <Spinner size={24} />
   }
   return (
     <Reveal delay={0} duration={300} >

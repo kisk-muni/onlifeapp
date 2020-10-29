@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { useState, useCallback, Fragment } from 'react'
-import { jsx, Heading, Text, Flex, Button } from 'theme-ui'
+import { jsx, Heading, Text, Flex, Button, Spinner } from 'theme-ui'
 import { useRouter } from 'next/router'
 import StarterLayout from '../components/StarterLayout'
-import FadeSpinner from '../components/FadeSpinner'
 import ReactCodeInput from 'react-code-input'
 import { NextPage } from 'next'
 import JoinGroup from '../components/JoinGroup'
@@ -57,11 +56,11 @@ const JoinGroupPage: NextPage = () => {
     })
   }, [invitationCode]);
   return (
-    <StarterLayout stickHeaderByDefault>
+    <StarterLayout>
       <NextSeo title="Přidat se ke třídě" />
       <Flex sx={{alignSelf: 'center', height: '100%', flexDirection: 'column', alignItems: 'center'}}>
         {
-          loading && <FadeSpinner />
+          loading && <Spinner size={24} />
         } 
         {
           ((!success && !loading ) || errorMessage !== '') && <Fragment>

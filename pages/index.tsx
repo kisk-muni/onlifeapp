@@ -66,8 +66,8 @@ const Index: NextPage<Props> = ({ allPosts }) => {
       }}>    
         <Container sx={{mt: 4}}>
         {
-          allPosts.map((post) => (
-            <Box sx={{mb: 5, mt: 4}}>
+          allPosts.map((post, index) => (
+            <Box key={index} sx={{mb: 5, mt: 4}}>
               <Flex sx={{mb: 4, alignItems: 'center'}}>
                 <Heading variant="title">{post.titulek}</Heading>
                 {post.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', ':hover,:focus': {textDecoration: 'none'}}} href={post.url}>Stránka tématu</a>}
