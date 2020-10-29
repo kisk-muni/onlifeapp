@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import StarterLayout from '../../components/StarterLayout'
-import { withApollo } from '../../apollo/client'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import Link from 'next/link'
@@ -361,4 +360,4 @@ export async function getStaticPaths() {
   }
 }
 
-export default withApollo(TopicPage)
+export default TopicPage
