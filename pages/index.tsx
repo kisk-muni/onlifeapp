@@ -1,20 +1,16 @@
 /** @jsx jsx */
-import { useState, useEffect, Fragment } from 'react'
 import StarterLayout from '../components/StarterLayout'
-import GroupHeader from '../components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
-import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
-import { jsx, Text, Heading, Container, Card, Donut, Link as SLink, AspectRatio, Grid, Button, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Container, Card, Donut, Link as SLink, Spinner, AspectRatio, Grid, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { getAllPostsForGroup } from '../utils/api'
 import { NextSeo } from 'next-seo'
-import { CircularProgressbar } from 'react-circular-progressbar'
 import useSWR from 'swr'
 import fetcher from '../lib/fetcher'
 import { Response } from './api/quiz/submissions-list'
 
-const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoaded, ...props}: {quizId: string, points: number, maxPoints: number, progressLoaded: boolean, title: string, slug: string}) => {
+const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoading, ...props}: {quizId: string, points: number, maxPoints: number, progressLoading: boolean, title: string, slug: string}) => {
   const router = useRouter()
   return (
     <Link href={"/kviz/"+slug} passHref><a><Card variant="interactive" {...props}
@@ -32,20 +28,20 @@ const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoaded, ...p
         px: '14px!important', py: '18px!important',
       }}
     >
-        <AspectRatio ratio={1/.29} sx={{display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-          <Box sx={{minWidth: 24}}>
-            {
-              progressLoaded ?
-              <Donut strokeWidth={3} size={24} value={points/maxPoints} />
-              :
-              <Donut strokeWidth={3} size={24} value={0} />
-            }
-          </Box>
+        <AspectRatio ratio={1/.29}>
           <Box sx={{ml: 2}}>
-            <Heading variant="headline" sx={{mb: 1, mt: 0}}>{ title }</Heading>
-            <Text sx={{mt: 0, fontSize: 1, color: 'primary-accent-3'}}>
-              {progressLoaded ? points.toString() + '/' + maxPoints.toString() + ' otázek správně' : "5 otázek k vyplnění"}
-            </Text>
+            <Heading variant="headline" sx={{mb: 3, mt: 1}}>{ title }</Heading>
+            <Flex>
+              {
+                progressLoading ?
+                <Spinner strokeWidth={3} size={24} />
+                :
+                <>{maxPoints != 0 ? <Donut strokeWidth={3} size={24} value={points/maxPoints} /> : <Donut strokeWidth={3} size={24} value={0} /> }</>
+              }
+              <Text sx={{ml: 2, fontSize: 2, color: 'primary-accent-3'}}>
+                {progressLoading ? '' : (maxPoints != 0 ?  points.toString() + '/' + maxPoints.toString() + ' otázek správně' : 'čeká na vyplnění')}
+              </Text>
+            </Flex>
           </Box>
         </AspectRatio>
     </Card></a></Link>
@@ -93,7 +89,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                               slug={quizBlock?.quizLink?.slug}
                               maxPoints={loaded ? quiz_progress_sorted[0].max_points : 0}
                               points={loaded ? quiz_progress_sorted[0].points : 0}
-                              progressLoaded={loaded}
+                              progressLoading={!data}
                             />
                         )
                       })}

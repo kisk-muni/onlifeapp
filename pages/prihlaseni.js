@@ -8,7 +8,6 @@ import Router from 'next/router'
 import Link from 'next/link'
 import { jsx, Text, Link as Lstyle, Heading } from 'theme-ui'
 import StarterLayout from '../components/StarterLayout'
-import { withApollo } from '../apollo/client'
 import clearAuthDataCache from '../utils/clearAuthDataCache'
 import { ApolloConsumer } from 'react-apollo'
 import { NextSeo } from 'next-seo'
@@ -82,4 +81,4 @@ class Login extends Component {
 
 const LoginWithApolloConsumer = () => <ApolloConsumer>{ client => <Login apolloClient={client} /> }</ApolloConsumer>
 
-export default withApollo(LoginWithApolloConsumer)
+export default LoginWithApolloConsumer

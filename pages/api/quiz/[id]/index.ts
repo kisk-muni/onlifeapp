@@ -1,8 +1,8 @@
 import { query as q } from 'faunadb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import auth0 from '../../../lib/auth0'
-import { serverClient } from '../../../utils/fauna-auth'
-import { FeedbackItem } from '../../../lib/quiz/itemFeedback'
+import auth0 from '../../../../lib/auth0'
+import { serverClient } from '../../../../utils/fauna-auth'
+import { FeedbackItem } from '../../../../lib/quiz/itemFeedback'
 
 export type Response = {
   id?: string

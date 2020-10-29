@@ -73,44 +73,43 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
         {
           "user": q.Get(q.Match(q.Index("user_by_auth0_id"), user.sub)),
           "user_ref": q.Select("ref", q.Var("user")),
-          "attempt": q.Create(q.Collection("QuizSubmission"),
+          "submission": q.Create(q.Collection("QuizSubmission"),
             {
               data: {
                 quiz_id: originalQuiz.id,
                 user: q.Var("user_ref"),
                 points: points,
                 max_points: maxPoints,
-                // by storing feedback to the attempt, we can ensure fast retrieval
+                // by storing feedback to the submission, we can ensure fast retrieval
                 feedback: feedbackItems,
                 created_at: q.Now()
               }
             }
           ),
-          "attempt_ref": q.Select(["ref"], q.Var("attempt"))
+          "submission_ref": q.Select(["ref"], q.Var("submission"))
         },
-        // save feedback responses attempts according to user
-        q.Var("attempt")
-        // q.Do(
-        //   q.Foreach(
-        //     q.Select(["data", "feedback"], q.Var("attempt")),
-        //     q.Lambda('feedback_item',
-        //       q.Create(q.Collection("QuizSubmissionFeedback"),
-        //         {
-        //           data: q.Merge(
-        //             {
-        //               user: q.Var("user_ref"),
-        //               quiz_id: originalQuiz.id,
-        //               attempt: q.Var("attempt_ref")
-        //             },
-        //             q.Var("feedback_item")
-        //           )
-        //         }
-        //       )
-        //     )
-        //   ),
-        //   // return QuizSubmission ref id
-        //   q.Var("attempt")
-        // )
+        // save feedback responses submissions according to user
+        q.Do(
+          q.Foreach(
+            q.Select(["data", "feedback"], q.Var("submission")),
+            q.Lambda('feedback_item',
+              q.Create(q.Collection("QuizSubmissionFeedback"),
+                {
+                  data: q.Merge(
+                    {
+                      user: q.Var("user_ref"),
+                      quiz_id: originalQuiz.id,
+                      submission: q.Var("submission_ref")
+                    },
+                    q.Var("feedback_item")
+                  )
+                }
+              )
+            )
+          ),
+          // return submission ref id
+          q.Var("submission")
+        )
       )
     )
     res.json({

@@ -2,8 +2,6 @@
 import { useState, Fragment } from 'react'
 import DashboardLayout from '../../components/dashboard/DashboardLayout'
 import GroupHeader from '../../components/dashboard/GroupHeader'
-import { withApollo } from '../../apollo/client'
-import { useGroupQuizStatsQuery } from '../../apollo/groupQuizStats.graphql'
 import { useRouter } from 'next/router'
 import { jsx, Container, Button, Heading, Select, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
@@ -13,21 +11,26 @@ import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
 import withAuthRedirect from '../../utils/withAuthRedirect' 
 import { Props } from '../kviz/[slug]'
 import Item from '../../components/stats/Item'
-import Navigation from '../../components/stats/Navigation'
+// import Navigation from '../../components/stats/Navigation'
 import FilterSelect from '../../components/stats/FilterSelect'
 import Individual from '../../components/stats/Individual'
 import { NextSeo } from 'next-seo'
+import fetcher from '../../lib/fetcher'
+import useSWR from 'swr'
+import { Response } from '../api/quiz/[id]/[group_id]/stats'
 
 const StatsPage: NextPage<Props> = ({quiz}) => {
   const router = useRouter()
   const [ filterValue, setFilterValue ] = useState('best')
-  const stats = useGroupQuizStatsQuery({variables: {
-    quizId: quiz?.id as string,
-    groupId: router.query.trida as string,
-    filter: filterValue
-  }})
+  // const stats = useGroupQuizStatsQuery({variables: {
+  //   quizId: quiz?.id as string,
+  //   groupId: router.query.trida as string,
+  //   filter: filterValue
+  // }})
   let engagedText = ''
-  const engagedCount = stats?.data?.groupQuizStats.engagedCount
+  const stats = useSWR<Response>('/api/quiz/' + quiz?.id as string + '/' + router.query.trida + '/stats', fetcher)
+
+  const engagedCount = stats.data?.submissions.length
   if (engagedCount === 0 || engagedCount >= 5 ) {
     engagedText = 'zapojených studentů'
   } else if (engagedCount === 1) {
@@ -50,13 +53,13 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
       </Container>
       {router.query.tab === 'individual' ? 
         <Container sx={{pt: 2, mt: 2}}>
-          {stats.loading
+          {!stats.data
           ? <FadeSpinner />
-          : <Individual students={stats?.data?.groupQuizStats?.engagedStudents} />
+          : <Individual students={[]/*stats?.data?.groupQuizStats?.engagedStudents*/} />
           }
         </Container>
       : <Container sx={{pt: 2, mt: 2}}>
-          {stats.loading
+          {!stats.data
           ? <FadeSpinner />
           : <Fragment>
               <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
@@ -68,9 +71,11 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
                 />
               </Flex>
               <Box>
-                {stats?.data?.groupQuizStats?.questions.map((question, index) =>
-                  <Item question={question} key={index} index={index} />
-                )}
+                {
+                  stats.data.questions.map((question, index) => (
+                    <Item question={question} key={index} index={index} />
+                  ))
+                }
               </Box>
             </Fragment>
           }
@@ -101,4 +106,4 @@ export async function getStaticPaths() {
   }
 }
 
-export default withApollo(withAuthRedirect(StatsPage))
+export default withAuthRedirect(StatsPage)

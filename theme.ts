@@ -377,8 +377,8 @@ const theme = {
   },
   images: {
     avatar: {
-      width: 48,
-      height: 48,
+      width: 38,
+      height: 38,
       borderRadius: 9999,
     },
   },

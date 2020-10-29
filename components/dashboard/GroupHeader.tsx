@@ -42,7 +42,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
                 }}></span>
             </Fragment>
            : <Fragment>
-                <Text sx={{fontSize: 4, fontWeight: 'bold', mx: 2, display: 'inline', color: '#ccc'}}>{'/'}</Text>
+                <Text sx={{fontSize: 4, fontWeight: 'normal', mx: 2, display: 'inline', color: '#ccc'}}>{'|'}</Text>
                 <Link href={'/aktivita?trida='+router.query.trida}>
                   <Text sx={{fontSize: 4, fontWeight: 'bold', ml: 1, display: 'inline'}}>{groupQuery?.group?.name}</Text>
                 </Link>

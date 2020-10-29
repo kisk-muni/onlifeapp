@@ -4,7 +4,7 @@ import DashboardLayout from '../components/dashboard/DashboardLayout'
 import GroupHeader from '../components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
-import { jsx, Text, Heading, Container, Card, Link as SLink, Badge, Grid, Button, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Container, Card, Link as SLink, Badge, Donut, Spinner, Grid, Button, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import useGroup from '../data/useGroup'
@@ -35,11 +35,17 @@ const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {gro
     }}>
       <Grid gap={2} columns={[2]}>
         <Box>
-          <div><Badge variant="badges.pill" sx={{mr: 2, mt: 0, mb: 3}}>Kvíz</Badge></div>
-          <Heading sx={{fontSize: 2, fontWeight: 600, mb: 3, mt: 2}}>{ title }</Heading>
+          <Heading variant="headline" sx={{mb: 3, mt: 0}}>{ title }</Heading>
           <Flex>
-          <Text className="text" sx={{color: 'gray', fontSize: 2}}>Zapojených studentů:</Text>
-          <Text sx={{color: 'text', ml: 3, fontSize: 2}}>{ !data ? 'načítání' : data.count} / {studentsCount}</Text>
+          
+          {
+            !data ? <Spinner strokeWidth={3} size={24} /> : 
+            
+            <Flex>
+              <Donut strokeWidth={3} size={24} value={data.count/studentsCount} />
+              <Text className="text" sx={{color: 'gray', ml: 2, fontSize: 2}}>{data.count} / {studentsCount} studentů se zapojilo</Text>
+            </Flex>
+          }
           </Flex>
         </Box>
         <Flex sx={{justifyContent: 'flex-end'}}>
@@ -140,15 +146,15 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
                   { post.children.map((child, i) => (
                     <Box key={i} sx={{mb: 3}}>
                       <Box sx={{
-                          mb: 2,
-                          pb: 2,
+                          //mb: 2,
+                          //pb: 2,
                         }}>
-                          <Box>
+                          {/*<Box>
                             <Flex sx={{mb: 3, alignItems: 'center'}}>
                               <Heading>{child.titulek}</Heading>
                               {child.url && <a sx={{variant: 'buttons.detailAction', ml: 3, px: 3, py: 2, alignSelf: 'flex-start', '&:hover&:focus': {textDecoration: 'none'}}} href={child.url}>Stránka podtématu</a>}
                             </Flex>
-                          </Box>
+                          </Box>*/}
                         {child?.content?.map((quizBlock, index) => (quizBlock?.id &&
                           <QuizBlock
                             key={index}

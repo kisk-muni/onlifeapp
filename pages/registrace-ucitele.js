@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import SignInPage from '../components/auth/SignInPage'
-import { withApollo } from '../apollo/client'
 import { NextSeo } from 'next-seo'
 
 const features = [
@@ -31,4 +30,4 @@ const SignIn = () => (
   </Fragment>
   )
 
-export default withApollo(SignIn)
+export default SignIn

@@ -3,9 +3,8 @@ import { jsx } from 'theme-ui'
 import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/core"
 import Router from 'next/router'
 import Link from 'next/link'
-import { Link as Lstyle, Flex } from 'theme-ui'
+import { Link as Lstyle, Flex, Avatar } from 'theme-ui'
 import { AppNotifier } from '../utils/notifier'
-import Avatar from './Avatar'
 import { mutate } from 'swr'
 
 export const ProfileDropdownPlaceholder = () => 
@@ -49,17 +48,8 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
         <Flex sx={{alignItems: 'center'}}>
           { name ? name : email } 
           <Avatar
-            name={name ? name : email}
-            photoURL={photoURL}
-            sx={{
-              height: '32px',
-              width: '32px',
-              lineHeight: '32px',
-              marginLeft: 3,
-              display: 'inline-block',
-              borderRadius: '16px',
-              overflow: 'hidden'
-            }}
+            sx={{ml: 2}}
+            src={photoURL}
           />
         </Flex>
       </Lstyle>

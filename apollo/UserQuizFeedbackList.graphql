@@ -1,8 +1,0 @@
-query UserQuizFeedbackList($quizId: ID!) {
-  userQuizFeedbackList(quiz: $quizId) {
-    id
-    createdAt
-    points
-    maxPoints
-  }
-}

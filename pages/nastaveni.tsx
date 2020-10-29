@@ -2,7 +2,6 @@
 import { jsx, Flex, Box, Heading, Text, Input, Button, Checkbox, Label } from 'theme-ui'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import Header from '../components/Header'
-import { withApollo } from '../apollo/client'
 import { NextPage } from 'next'
 import withAuthRedirect from '../utils/withAuthRedirect' 
 import { NextSeo } from 'next-seo'
@@ -102,4 +101,4 @@ const SettingsPage: NextPage = () => (
   </DashboardLayout>
 )
 
-export default withApollo(withAuthRedirect(SettingsPage))
+export default withAuthRedirect(SettingsPage)

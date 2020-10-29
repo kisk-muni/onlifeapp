@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { useState, Fragment } from 'react'
-import { GroupQuizStatsQuestion, Student } from '../../apollo/groupQuizStats.graphql'
 import { jsx, Button, Grid, Heading, Select, Text, Flex, Box } from 'theme-ui'
 import Avatar from '../Avatar'
 
-const Individual = ({students}: {students: Student[]}) => {
+const Individual = ({students}: {students: {}[]}) => {
   const [selectedStudentIndex, setSelectedStudentIndex] = useState(0)
   const testStudents = [
     {

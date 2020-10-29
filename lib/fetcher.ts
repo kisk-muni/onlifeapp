@@ -11,12 +11,12 @@ interface Error {
 function redirectToLogin(next?: string) {
   if (!next) {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: Router.asPath },
     })
   } else {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: next },
     })
   }
@@ -30,7 +30,7 @@ input: RequestInfo,
     if (!res.ok) {
       // if not authenticated for route/action different than standard user data fetch,
       // redirect user to the login page
-      if (res.status === 401 && Router.pathname !== '/prihlaseni' && input !== '/api/me') {
+      if (res.status === 401 && Router.pathname !== '/api/login' && input !== '/api/me') {
         redirectToLogin()
       }
       const error: Error = new Error('An error occurred while fetching the data.')

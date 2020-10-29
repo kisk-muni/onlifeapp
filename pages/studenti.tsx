@@ -2,9 +2,7 @@
 import DashboardLayout from '../components/dashboard/DashboardLayout'
 import Avatar from '../components/Avatar'
 import GroupHeader from '../components/dashboard/GroupHeader'
-import { withApollo } from '../apollo/client'
 import { useRouter } from 'next/router'
-import { useGroupQuery } from '../apollo/group.graphql'
 import { jsx, Text, Heading, Container, Grid, Box, Flex } from 'theme-ui'
 import FullPageLoading from "../components/FullPageLoading"
 import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
@@ -72,4 +70,4 @@ const Studenti: NextPage = () => {
   
 }
 
-export default withApollo(withAuthRedirect(Studenti, {roles: ['teacher']}))
+export default withAuthRedirect(Studenti, {roles: ['teacher']})

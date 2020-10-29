@@ -1,5 +1,0 @@
-query Quiz($id: ID!) {
-  quiz(id: $id) {
-    prefill
-  }
-}

@@ -47,7 +47,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
   const { data, error } = useSWR<Response>('/api/quiz/'+attemptId, fetcher)
   moment.locale('cs')
   return (
-    <StarterLayout stickHeaderByDefault={false}>
+    <StarterLayout>
     <NextSeo title={'Zpětná vazba:' + quiz?.title } />
     <Container sx={{mt: 4}}>
       <Flex sx={{justifyContent: 'space-between', alignItems: 'center'}}>
