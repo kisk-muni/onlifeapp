@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import NewFirebaseAuth from '../NewFirebaseAuth'
 import { Flex, Box } from 'reflexbox'
 import Link from 'next/link'
 import { jsx, Text, Heading, Link as Lstyle } from 'theme-ui'
@@ -66,7 +65,7 @@ const SignInPage = ({ features, logo, heading, isForStudents = true }) => (
             {heading}
           </Heading>
           <Box width="400px" mr="auto">
-            <NewFirebaseAuth />
+            {/*<NewFirebaseAuth />*/}
           </Box>
           <Text color="grey" sx={{mt: 2, mb: 4, fontSize: 2, fontWeight: 400}}>
             Kliknutím na tlačítko souhlasíte s podmínkami a zásadami o soukromí naší služby.
