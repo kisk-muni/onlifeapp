@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { CreateGroupDialog } from '../components/CreateGroupDialog'
 import { jsx, Text, Heading, Grid, Container, Flex, Card } from 'theme-ui'
 import DashboardLayout from '../components/dashboard/DashboardLayout'
-import { DemoGroupBox, HelpBox } from "../components/HelpBox"
 import FullPageLoading from "../components/FullPageLoading"
 import Header from "../components/Header"
 import { NextPage } from 'next'
