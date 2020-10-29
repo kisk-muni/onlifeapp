@@ -107,7 +107,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
       id: id as string,
       students: response.students
     })
-  } catch (error: any) {
+  } catch (error) {
     if (!error?.description) {
       res.status(400).json({message: error?.message})
     } else {

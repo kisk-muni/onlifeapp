@@ -40,7 +40,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
     res.json({
       count: response.count,
     })
-  } catch (error: any) {
+  } catch (: any) {
     if (!error?.description) {
       res.status(400).json({message: error?.message})
     } else {
