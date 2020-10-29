@@ -1,7 +1,5 @@
 /** @jsx jsx */
-import {Fragment} from 'react'
-import { jsx, Text, Heading, Grid, Card, Button, Code, Link as Slink, AspectImage, Box, Flex, Input } from 'theme-ui'
-import Link from 'next/link'
+import { jsx, Text, Heading, Grid, Card, Button, Flex, Input } from 'theme-ui'
 import { Popover, Callout } from '@blueprintjs/core'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
