@@ -4491,6 +4491,11 @@ mdast-add-list-metadata@1.0.1:
   dependencies:
     unist-util-visit-parents "1.1.2"
 
+memoize-one@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
+  integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
+
 memory-fs@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
@@ -5698,6 +5703,13 @@ react-smooth@^1.0.5:
     raf "^3.4.0"
     react-transition-group "^2.5.0"
 
+react-stickup@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-stickup/-/react-stickup-1.11.0.tgz#a16e5c31f9d81adfcebd49f231d5921322a9325a"
+  integrity sha512-FFK3Tfx6vEReNCWfL0pdBZZ3S6Syef86RSuOK+0x5btHhmQfuisntI1fA+K25wIOmIYp6P7ZNef1PIP9UciyKQ==
+  dependencies:
+    react-viewport-utils "^1.11.0"
+
 react-sticky@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-6.0.3.tgz#7a18b643e1863da113d7f7036118d2a75d9ecde4"
@@ -5715,6 +5727,13 @@ react-transition-group@^2.5.0, react-transition-group@^2.9.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
+
+react-viewport-utils@^1.11.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/react-viewport-utils/-/react-viewport-utils-1.12.1.tgz#7e2cf3f4818f96132d9327c1142a67704cbc5f69"
+  integrity sha512-sjj8rNIKSlzwhVf3mJJJl3Z+34ILFrMxCdP2jmzkAGtwXjdvKm2my9lZMV54oh837bUGx3k6XZlF/988Up3GZg==
+  dependencies:
+    memoize-one "^5.1.1"
 
 react@^16.13.1, react@^16.3.2:
   version "16.13.1"
