@@ -1130,6 +1130,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@biossun/color@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@biossun/color/-/color-2.0.0.tgz#28f0f82dd7697c84eb53e516f71933cf4362eea0"
+  integrity sha512-Grv6xdKjeORs4RKL/5DuUzFsKFiZUy+eivD+XBkGbplf/1rl736ugZQHIJzzj5dvPadmvtXbPZcrw6cKbi5DCw==
+  dependencies:
+    color-convert "^2.0.1"
+
 "@blueprintjs/core@^3.26.0":
   version "3.26.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.26.0.tgz#b56470517fa57734434e1fcb552676c1b2aab4f4"

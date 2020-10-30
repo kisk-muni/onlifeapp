@@ -22,6 +22,7 @@ const theme = {
     instagram: "#e1306c",
     text: "#1f2d3d",  
     background: "#ffffff",
+    foreground: "#000000",
     elevated: "#ffffff",
     sheet: "#f9fafc",
     sunken: "#e0e6ed",
@@ -93,6 +94,7 @@ const theme = {
     narrow: 512
   },
   radii: {
+    none: 0,
     small: 4,
     default: 8,
     extra: 12,
@@ -192,7 +194,7 @@ const theme = {
       cursor: "pointer",
       fontFamily: "inherit",
       fontWeight: "bold",
-      borderRadius: "small",
+      borderRadius: "none",
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
@@ -205,8 +207,8 @@ const theme = {
         transform: "scale(1.0625)"
       },
       svg: {
-        ml: -1,
-        mr: 2
+        ml: 2,
+        mr: 0
       }
     },
     lg: {
@@ -390,7 +392,7 @@ const theme = {
         3,
         4
       ],
-      borderRadius: "extra",
+      borderRadius: "none",
       boxShadow: "card",
       overflow: "hidden"
     },
@@ -634,6 +636,12 @@ const theme = {
           outline: 'none'
         },
       }
+    },
+    progressDonut: {
+      color: 'success-default',
+    },
+    engagementDonut: {
+      color: 'primary',
     },
     topicCard: {
       '&:hover .aspect-image, &focus .aspect-image': {

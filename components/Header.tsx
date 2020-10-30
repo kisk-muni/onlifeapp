@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { jsx, Link as Lstyle, Button, Container, Text } from 'theme-ui'
+import { jsx, Link as Lstyle, Button, Container, Text, Heading } from 'theme-ui'
 import ProfileDropdown from "./ProfileDropdown"
 import useUser from '../data/useUser'
 
@@ -77,15 +77,15 @@ const Header = () => {
     }
   } else {
     userNav = <Fragment>
-        <span sx={{
-            display: 'inline-block',
-            ml: 4,
-            background: '#fff',
-            borderRadius: '6px',
-            position: 'relative',
-            height: '40px',
-            width: '40px',
-        }}></span>
+    <span sx={{
+        display: 'inline-block',
+        ml: 4,
+        background: '#fff',
+        borderRadius: '6px',
+        position: 'relative',
+        height: '40px',
+        width: '40px',
+    }}></span>
     </Fragment>
   }
 
@@ -103,18 +103,16 @@ const Header = () => {
         alignItems: 'center',
       }}>
       <Link passHref href="/">
-      <Lstyle 
-        sx={{
-          variant: 'styles.navlogo',
-          fontWeight: 700,
-          fontSize: 4,
-          letterSpacing: '1px',
-        }}>
-        ONLIFE
-      </Lstyle>
+        <Lstyle
+          sx={t => t.util.gxText('instagram', '#0000dc')}
+          as="h2" 
+        >
+          ONLIFE
+        </Lstyle>
       </Link>
         <Text sx={{
           color: 'text',
+          display: ['none', 'block'],
           borderLeft: '1px solid',
           borderColor: '#ddd',
           pl: 2,
