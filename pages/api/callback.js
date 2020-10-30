@@ -1,6 +1,6 @@
 import { query as q } from 'faunadb'
-import auth0 from '../../lib/auth0'
-import { serverClient } from '../../utils/fauna-auth'
+import auth0 from 'lib/auth0'
+import { serverClient } from 'utils/fauna-auth'
 
 export default async function callback(req, res) {
   try {

@@ -1,15 +1,15 @@
 /** @jsx jsx */
-import DashboardLayout from '../components/dashboard/DashboardLayout'
-import Avatar from '../components/Avatar'
-import GroupHeader from '../components/dashboard/GroupHeader'
+import DashboardLayout from 'components/dashboard/DashboardLayout'
+import Avatar from 'components/Avatar'
+import GroupHeader from 'components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
 import { jsx, Text, Heading, Container, Grid, Box, Flex } from 'theme-ui'
-import FullPageLoading from "../components/FullPageLoading"
-import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
+import FullPageLoading from "components/FullPageLoading"
+import InviteStudentsBlock from 'components/dashboard/InviteStudentsBlock'
 import { NextPage } from 'next'
-import withAuthRedirect from '../utils/withAuthRedirect'
+import withAuthRedirect from 'utils/withAuthRedirect'
 import { NextSeo } from 'next-seo'
-import useGroup from '../data/useGroup'
+import useGroup from 'data/useGroup'
 
 const Studenti: NextPage = () => {
   const router = useRouter()

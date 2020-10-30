@@ -2,13 +2,13 @@
 import { useState, useCallback, Fragment } from 'react'
 import { jsx, Heading, Text, Flex, Button, Spinner } from 'theme-ui'
 import { useRouter } from 'next/router'
-import StarterLayout from '../components/StarterLayout'
+import StarterLayout from 'components/StarterLayout'
 import ReactCodeInput from 'react-code-input'
 import { NextPage } from 'next'
-import JoinGroup from '../components/JoinGroup'
-import { Response } from './api/join-group-attempt'
+import JoinGroup from 'components/JoinGroup'
+import { Response } from 'pages/api/join-group-attempt'
 import { NextSeo } from 'next-seo'
-import withAuthRedirect from '../utils/withAuthRedirect'
+import withAuthRedirect from 'utils/withAuthRedirect'
 
 const JoinGroupPage: NextPage = () => {
   const router = useRouter()

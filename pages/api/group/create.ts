@@ -1,8 +1,8 @@
 import { query as q } from 'faunadb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import auth0 from '../../../lib/auth0'
+import auth0 from 'lib/auth0'
 import { customAlphabet } from 'nanoid'
-import { serverClient } from '../../../utils/fauna-auth'
+import { serverClient } from 'utils/fauna-auth'
 
 interface ResponseItem {
   name: string

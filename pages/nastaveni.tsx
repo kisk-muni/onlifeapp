@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx, Flex, Box, Heading, Text, Input, Button, Checkbox, Label } from 'theme-ui'
-import DashboardLayout from '../components/dashboard/DashboardLayout'
-import Header from '../components/Header'
+import DashboardLayout from 'components/dashboard/DashboardLayout'
+import Header from 'components/Header'
 import { NextPage } from 'next'
-import withAuthRedirect from '../utils/withAuthRedirect' 
+import withAuthRedirect from 'utils/withAuthRedirect' 
 import { NextSeo } from 'next-seo'
 
 const SettingsPage: NextPage = () => (

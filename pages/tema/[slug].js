@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
-import StarterLayout from '../../components/StarterLayout'
+import StarterLayout from 'components/StarterLayout'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import Link from 'next/link'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../utils/api'
+import { getAllPostsWithSlug, getPostAndMorePosts } from 'utils/api'
 import { Flex, Box } from 'reflexbox'
 import { jsx, Text, Heading, Button, Container, Embed, Grid, Link as Lstyle, AspectImage, AspectRatio } from 'theme-ui'
 import ReactMarkdown from 'react-markdown/with-html'

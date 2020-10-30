@@ -1,10 +1,10 @@
 import React from 'react'
 import App from 'next/app'
 import { ThemeProvider } from 'theme-ui'
-import theme from '../theme'
+import theme from 'theme'
 import { DefaultSeo } from 'next-seo'
-import SEO from '../next-seo.config'
-import "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
+import SEO from 'next-seo.config'
+import "node_modules/@blueprintjs/core/lib/css/blueprint.css"
 
 export default class MyApp extends App {
 

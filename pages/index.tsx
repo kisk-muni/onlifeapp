@@ -1,14 +1,14 @@
 /** @jsx jsx */
-import StarterLayout from '../components/StarterLayout'
+import StarterLayout from 'components/StarterLayout'
 import { useRouter } from 'next/router'
 import { jsx, Text, Heading, Container, Card, Donut, Link as SLink, Spinner, AspectRatio, Grid, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { getAllPostsForGroup } from '../utils/api'
+import { getAllPostsForGroup } from 'utils/api'
 import { NextSeo } from 'next-seo'
 import useSWR from 'swr'
-import fetcher from '../lib/fetcher'
-import { Response } from './api/quiz/submissions-list'
+import fetcher from 'lib/fetcher'
+import { Response } from 'pages/api/quiz/submissions-list'
 
 const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoading, ...props}: {quizId: string, points: number, maxPoints: number, progressLoading: boolean, title: string, slug: string}) => {
   const router = useRouter()

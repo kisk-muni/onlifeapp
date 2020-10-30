@@ -1,6 +1,6 @@
 // This import is only needed when checking authentication status directly from getInitialProps
 // import auth0 from '../lib/auth0'
-import useUser from '../data/useUser'
+import useUser from 'data/useUser'
 
 function ProfileCard({ user }) {
   return (

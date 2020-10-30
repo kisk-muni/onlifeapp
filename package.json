@@ -6,7 +6,6 @@
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production next start -p $PORT",
     "export": "next export",
-    "heroku-postbuild": "yarn build",
     "type-check": "tsc",
     "prepare": "patch-package"
   },
@@ -28,6 +27,7 @@
     "react-dom": "^16.12.0",
     "react-hook-form": "^5.2.0",
     "react-markdown": "^4.3.1",
+    "react-stickup": "^1.11.0",
     "react-sticky": "^6.0.3",
     "recharts": "^1.8.5",
     "reflexbox": "^4.0.6",

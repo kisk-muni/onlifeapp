@@ -1,21 +1,21 @@
 /** @jsx jsx */
 import { Fragment, useState, useEffect } from 'react'
-import StarterLayout from '../../components/StarterLayout'
+import StarterLayout from 'components/StarterLayout'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import { useForm } from "react-hook-form"
 import { jsx, Radio, Checkbox, Label, Grid, Button, Card, Message, Link as Slink, Spinner, Container, Heading, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
-import withAuthRedirect from '../../utils/withAuthRedirect'
+import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from 'utils/api'
+import withAuthRedirect from 'utils/withAuthRedirect'
 import moment from 'moment'
 import 'moment/locale/cs'
-import { Response } from '../api/quiz/submit'
-import { Response as SubmissionsListResponse } from '../api/quiz/submissions-list/[id]'
+import { Response } from 'pages/api/quiz/submit'
+import { Response as SubmissionsListResponse } from 'pages/api/quiz/submissions-list/[id]'
 import { NextSeo } from 'next-seo'
 import useSWR from 'swr'
-import fetcher from '../../lib/fetcher'
+import fetcher from 'lib/fetcher'
 
 export type PossibleResponds = {
   choiceText: string

@@ -19,7 +19,7 @@ import {
     Textarea
   } from 'theme-ui'
   import { NextSeo } from 'next-seo'
-  import theme from '../theme'
+  import theme from 'theme'
   //import ColorSwitcher from '../components/color-switcher'
   
   export default () => (

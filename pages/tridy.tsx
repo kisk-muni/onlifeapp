@@ -1,16 +1,16 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { CreateGroupDialog } from '../components/CreateGroupDialog'
+import { CreateGroupDialog } from 'components/CreateGroupDialog'
 import { jsx, Text, Heading, Grid, Container, Flex, Card } from 'theme-ui'
-import DashboardLayout from '../components/dashboard/DashboardLayout'
-import FullPageLoading from "../components/FullPageLoading"
-import Header from "../components/Header"
+import DashboardLayout from 'components/dashboard/DashboardLayout'
+import FullPageLoading from "components/FullPageLoading"
+import Header from "components/Header"
 import { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import useSWR from 'swr'
-import fetcher from '../lib/fetcher'
-import { Response } from './api/groups'
+import fetcher from 'lib/fetcher'
+import { Response } from 'pages/api/groups'
 
 const Groups = () => {
   const { data, error } = useSWR<Response>('/api/groups', fetcher)

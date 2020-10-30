@@ -1,20 +1,20 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
-import StarterLayout from '../../components/StarterLayout'
+import StarterLayout from 'components/StarterLayout'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
 import { jsx, Container, Heading, Spinner, Label, Radio, Checkbox, Text, Flex, Box } from 'theme-ui'
 import { NextPage } from 'next'
-import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from '../../utils/api'
-import withAuthRedirect from '../../utils/withAuthRedirect' 
-import { Props } from '../kviz/[slug]'
+import { getAllGFQuizzesWithSlug, getGFQuizWithSlug } from 'utils/api'
+import withAuthRedirect from 'utils/withAuthRedirect' 
+import { Props } from 'pages/kviz/[slug]'
 import queryString from 'query-string'
-import fetcher from '../../lib/fetcher'
+import fetcher from 'lib/fetcher'
 import useSWR from 'swr'
 import moment from 'moment'
 import 'moment/locale/cs'
 import { NextSeo } from 'next-seo'
-import { Response } from '../api/quiz/[id]'
+import { Response } from 'pages/api/quiz/[id]'
 
 const Feedback = ({text, sentiment}: {text: string, sentiment: string}) => (
   <Text

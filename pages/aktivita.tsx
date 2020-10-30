@@ -1,19 +1,19 @@
 /** @jsx jsx */
 import { useState, useEffect, Fragment } from 'react'
-import DashboardLayout from '../components/dashboard/DashboardLayout'
-import GroupHeader from '../components/dashboard/GroupHeader'
+import DashboardLayout from 'components/dashboard/DashboardLayout'
+import GroupHeader from 'components/dashboard/GroupHeader'
 import { useRouter } from 'next/router'
-import InviteStudentsBlock from '../components/dashboard/InviteStudentsBlock'
+import InviteStudentsBlock from 'components/dashboard/InviteStudentsBlock'
 import { jsx, Text, Heading, Container, Card, Link as SLink, Badge, Donut, Spinner, Grid, Button, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import useGroup from '../data/useGroup'
-import withAuthRedirect from '../utils/withAuthRedirect'
-import { getAllPostsForGroup } from '../utils/api'
+import useGroup from 'data/useGroup'
+import withAuthRedirect from 'utils/withAuthRedirect'
+import { getAllPostsForGroup } from 'utils/api'
 import { NextSeo } from 'next-seo'
 import useSWR from 'swr'
 import { Response } from './api/quiz/[id]/[group_id]/engagement'
-import fetcher from '../lib/fetcher'
+import fetcher from 'lib/fetcher'
 
 const QuizBlock = ({groupId, studentsCount, quizId, title, slug, ...props}: {groupId: string, studentsCount: number, quizId: string, title: string, slug: string}) => {
   const router = useRouter()

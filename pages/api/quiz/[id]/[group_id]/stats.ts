@@ -1,9 +1,7 @@
-import { resolvePtr } from 'dns'
 import { query as q } from 'faunadb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import auth0 from '../../../../../lib/auth0'
-import { serverClient } from '../../../../../utils/fauna-auth'
-import studenti from '../../../../studenti'
+import auth0 from 'lib/auth0'
+import { serverClient } from 'utils/fauna-auth'
 
 export type QuestionChoice = {
   question: string
