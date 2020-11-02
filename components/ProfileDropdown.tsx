@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
+import { useState } from 'react'
 import { Menu, MenuItem, MenuDivider, Popover, Position } from "@blueprintjs/core"
 import Router from 'next/router'
 import Link from 'next/link'
@@ -36,6 +37,7 @@ interface ProfileDropdownProps {
 }
 
 const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps) => {
+  const [loading, setLoading] = useState(false)
   return (
     <Popover
       position={Position.BOTTOM}
@@ -53,24 +55,10 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
           />
         </Flex>
       </Lstyle>
-      <Menu sx={{zIndex: 80}}>
+      <Menu sx={{zIndex: 101}}>
           <Link href="/nastaveni"><MenuItem text="Nastavení" /></Link>
           <MenuDivider />
-          <MenuItem
-          onClick={async () => {
-            await fetch("/api/logout")
-            mutate('/api/me')
-            if (AppNotifier !== null) {
-              AppNotifier.show({
-                message: 'Sbohem …',
-                icon: "hand",
-                intent: 'warning',
-              })
-            }
-            Router.push('/')
-          }}
-          text="Odhlásit se"
-          />
+          <Link href="/api/logout"><MenuItem text="Odhlásit se" /></Link>
         </Menu>
     </Popover>)
   }

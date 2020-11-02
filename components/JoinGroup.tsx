@@ -41,7 +41,7 @@ const JoinGroup = ({ name, onDissmiss }: { name: string, onDissmiss: () => void 
     setLoading(true)
     setSuccess(false)
     setErrorMessage('')
-    await fetch(`${process.env.SITE_URL}/api/join-group`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/join-group`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

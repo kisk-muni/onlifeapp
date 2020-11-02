@@ -695,7 +695,6 @@ const theme = {
     },
     header: {
       py: 3,
-      px: 3,
       zIndex: 100,
       boxShadow: '0 0 15px 0 rgba(0,0,0,.1)',
       backgroundColor: 'background',

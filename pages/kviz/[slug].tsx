@@ -359,7 +359,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                 setLoading(true)
                 setSuccess(false)
                 setErrorMessage('')
-                await fetch(`${process.env.SITE_URL}/api/quiz/submit`, {
+                await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/quiz/submit`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'

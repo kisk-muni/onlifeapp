@@ -37,3 +37,4 @@ yarn-error.log*
 
 # fauna database secret key file
 .faunarc
+.vercel

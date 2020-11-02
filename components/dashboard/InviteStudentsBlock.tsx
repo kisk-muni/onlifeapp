@@ -17,7 +17,7 @@ const CopyButton = ({textToCopy}: {textToCopy: string}) => (
 const CopiedCallout = () => <Callout intent="success"><span sx={{color: '#0d8050'}}>Zkopírováno do schránky</span></Callout>
 
 const InviteStudentsBlock = ({invitationCode, ...props}: {invitationCode: string}) => {
-  const link = process.env.SITE_URL + '/pridat-se-ke-tride?invitation=' + invitationCode
+  const link = process.env.NEXT_PUBLIC_SITE_URL + '/pridat-se-ke-tride?invitation=' + invitationCode
   return (
     <Grid columns={[3]} gap="32px" {...props}>
       <Card sx={{

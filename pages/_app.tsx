@@ -110,6 +110,10 @@ export default class MyApp extends App {
             .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
               stroke: transparent;
             }
+
+            .bp3-transition-container {
+              z-index: 120;
+            }
           `}</style>
       </ThemeProvider>
     )

@@ -10,7 +10,7 @@ const DashboardLayout = ({header, showDescription = () => false, stickHeaderByDe
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        bg: 'sheet'
+        bg: 'primary-accent-1'
       }}>
       <Sticky>
       {({ style }) => 

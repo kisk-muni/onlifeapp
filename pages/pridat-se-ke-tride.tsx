@@ -30,7 +30,7 @@ const JoinGroupPage: NextPage = () => {
     setSuccess(false)
     setGroupName('')
     setErrorMessage('')
-    await fetch(`${process.env.SITE_URL}/api/join-group-attempt`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/join-group-attempt`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

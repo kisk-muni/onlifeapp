@@ -29,7 +29,7 @@ const Header = () => {
             Přihlásit se
           </Lstyle>
         </Link>
-        <Link passHref href="/api/login">
+        <Link passHref href="/api/registrace">
           <Button
             sx={{
               ml: 4,
@@ -92,13 +92,11 @@ const Header = () => {
   return (
     <header
       sx={{
-        variant: 'styles.header',
-        width: '100%',
+        variant: 'styles.header'
       }}>
     <Container
       sx={{
         mx: 'auto',
-        maxWidth: '100%',
         display: 'flex',
         alignItems: 'center',
       }}>
