@@ -161,6 +161,20 @@ import {
               sx={{ gridColumn: [null, 'span 2'] }}
             />
           </Grid>
+          <Heading variant="headline">Logo</Heading>
+          <Heading
+            sx={t => t.util.gxText('instagram', '#0000dc')}
+            as="h1" 
+          >
+            ONLIFE
+          </Heading>
+          <Heading
+            sx={t => t.util.gxText('instagram', '#0000dc')}
+            as="h1"
+            variant="ultratitle" 
+          >
+            ONLIFE
+          </Heading>
           <Heading variant="headline">Badges</Heading>
           {Object.keys(theme.badges).map(key => (
             <Badge
