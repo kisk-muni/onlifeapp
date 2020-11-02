@@ -44,9 +44,9 @@ const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoading, use
         px: '14px!important', py: '18px!important',
       }}
     >
-        <AspectRatio ratio={1/.29}>
+        <AspectRatio ratio={1/.30}>
           <Box sx={{ml: 2}}>
-            <Heading variant="headline" sx={{mb: 3, mt: 1}}>{ title }</Heading>
+            <Heading variant="subheadline" sx={{mb: 2, mt: 1}}>{ title }</Heading>
             {
               userLogged && 
               <Flex>
@@ -56,7 +56,7 @@ const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoading, use
                   :
                   <>{maxPoints != 0 ? <Donut variant="styles.progressDonut" strokeWidth={3} size={24} value={points/maxPoints} /> : <Donut variant="styles.progressDonut" strokeWidth={3} size={24} value={0} /> }</>
                 }
-                <Text sx={{ml: 2, fontSize: 2, color: 'primary-accent-3'}}>
+                <Text sx={{ml: 2, mt: 0, fontSize: 2, color: 'primary-accent-3'}}>
                   {progressLoading ? '' : (maxPoints != 0 ?  points.toString() + '/' + maxPoints.toString() + ' otázek správně' : 'čeká na vyplnění')}
                 </Text>
               </Flex>
@@ -98,10 +98,11 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               py: [3, 4, 5],
               overflow: 'hidden',
               position: 'relative',
+              background: primaryColor.toString('rgb'),
               ':after': {
                 content: '""',
                 zIndex: 2,
-                background: 'linear-gradient(90deg, '+primaryColor.toString('rgb')+' 40%, rgba(255,255,255,0) 100%)',
+                background: 'linear-gradient(90deg, '+primaryColor.toString('rgb')+' 35%, rgba(255,255,255,0) 100%)',
                 top: 0,
                 left: 0,
                 right: '100px',
@@ -139,7 +140,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                   }
                   {/*post.url && <a sx={{variant: 'buttons.lg', bg: 'rgba(0,0,0,.5)', color: 'background', mt: 2, mb: 3, px: 3, py: 3, alignSelf: 'flex-start', ':hover,:focus': {textDecoration: 'none', color: 'background'}}} href={post.url}>Stránka tématu<svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>*/}
                 </Container>
-                <Grid gap="32px" columns={[1, 2, null, 3]}>
+                <Grid gap="32px" columns={[1, 3, null, 4]}>
                   { post.children.map((child, i) => {
                     if (!user.user || user.error) {
                       return (
