@@ -1,20 +1,6 @@
 /** @jsx jsx */
-import { jsx, Text, Heading, Grid, Card, Button, Flex, Input } from 'theme-ui'
-import { Popover, Callout } from '@blueprintjs/core'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-
-const CopyButton = ({textToCopy}: {textToCopy: string}) => (
-  <Popover popoverClassName="popover-success" hoverCloseDelay={300}>
-    <CopyToClipboard text={textToCopy}> 
-      <Button sx={{bg: 'black', fontSize: 3}}>
-        Kopírovat
-      </Button>
-    </CopyToClipboard>
-    <CopiedCallout />
-  </Popover>
-)
-
-const CopiedCallout = () => <Callout intent="success"><span sx={{color: '#0d8050'}}>Zkopírováno do schránky</span></Callout>
+import { jsx, Text, Heading, Grid, Card, Flex, Input } from 'theme-ui'
+import CopyButton from 'components/CopyButton'
 
 const InviteStudentsBlock = ({invitationCode, ...props}: {invitationCode: string}) => {
   const link = process.env.NEXT_PUBLIC_SITE_URL + '/pridat-se-ke-tride?invitation=' + invitationCode
