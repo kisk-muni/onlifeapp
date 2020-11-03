@@ -6,12 +6,12 @@ function redirect(next?: string) {
   if (!next) {
     Router.push({
       pathname: '/api/login',
-      query: { next: process.env.NEXT_PUBLIC_SITE_URL + Router.asPath },
+      query: { next: Router.asPath },
     })
   } else {
     Router.push({
       pathname: '/api/login',
-      query: { next: next },
+      query: { next: process.env.NEXT_PUBLIC_SITE_URL + next },
     })
   }
 }
