@@ -57,7 +57,7 @@ export function CreateGroupDialog(props: IProps) {
               type="submit"
               onClick={handleSubmit(async (data: FormData) => {
                 setLoading(true)
-                await fetch(`${process.env.SITE_URL}/api/group/create`, {
+                await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/group/create`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
