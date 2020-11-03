@@ -1,42 +1,29 @@
 /** @jsx jsx */
-import { jsx, Text, Link as Lstyle } from 'theme-ui'
+import { jsx, Text, Link as Lstyle, Container, Box } from 'theme-ui'
 import Link from 'next/link'
 
 const Footer = () => (
-    <footer
-    sx={{
-        variant: 'styles.footer',
-        fontSize: 1,
-        color: 'text',
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center',
-        maxWidth: 1240,
-        mx: 'auto',
-        px: 35,
-        py: 4,
-    }}>
-    <Link href="/">
-    <Lstyle sx={{ variant: 'styles.footerlink', p: 2 }}>
-    Podpora
-    </Lstyle>
-    </Link>
-    <Text sx={{color: 'gray', display: 'inline'}}>·</Text>
-    <Link href="/">
-    <Lstyle sx={{ variant: 'styles.footerlink', p: 2 }}>
-    O kurzu
-    </Lstyle>
-    </Link>
-    <Text sx={{color: 'gray', display: 'inline'}}>·</Text>
-    <Link href="/">
-    <Lstyle sx={{ variant: 'styles.footerlink', p: 2 }}>
-    Kontakt
-    </Lstyle>
-    </Link>
-    <Text sx={{color: 'gray', display: 'inline'}}>·</Text>
-    <Text sx={{color: 'gray', display: 'inline', mx: 3}}>© 2020 Masarykova Univerzita</Text>
-    </footer>
-    )
-    
-    export default Footer
+<footer sx={{py: 4}}>
+    <Container as="nav" sx={{display: 'flex'}}>
+        <Link href="/">
+            <Lstyle sx={{ variant: 'styles.footerlink', pr: 3, py: 2, fontSize: 2 }}>
+                O aplikaci
+            </Lstyle>
+        </Link>
+        <Link href="/obsah">
+            <Lstyle sx={{ variant: 'styles.footerlink', px: 3, py: 2, fontSize: 2 }}>
+                Obsah
+            </Lstyle>
+        </Link>
+        <Link href="/">
+            <Lstyle sx={{ variant: 'styles.footerlink', px: 3, py: 2, fontSize: 2 }}>
+                Kontakt
+            </Lstyle>
+        </Link>
+        <Box sx={{mx: 'auto'}}></Box>
+        <Text sx={{color: 'gray', display: 'inline',  pl: 3, py: 2, fontSize: 2}}>© 2020 Masarykova Univerzita</Text>
+    </Container>
+</footer>
+)
+
+export default Footer

@@ -759,10 +759,9 @@ const theme = {
     },
     footerlink: {
       display: 'inline',
-      fontWeight: 'body',
-      color: 'gray',
-      '&:hover, &:focus': {
-        color: 'text',
+      color: 'primary-accent-4',
+      ':hover,:focus': {
+        color: 'foreground',
         textDecoration: 'none'
       },
     },
