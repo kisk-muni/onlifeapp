@@ -16,6 +16,7 @@ import { Response as SubmissionsListResponse } from 'pages/api/quiz/submissions-
 import { NextSeo } from 'next-seo'
 import useSWR from 'swr'
 import fetcher from 'lib/fetcher'
+import shuffleArray from 'utils/shuffleArray'
 
 export type PossibleResponds = {
   choiceText: string
@@ -229,6 +230,8 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             quizItemIndex += 1
             const itemMaxIndex = item.possibleResponds.length - 1
             let inputContent
+            // mutates array
+            shuffleArray(item.possibleResponds)
             switch (item._modelApiKey) {
               case 'singleselect':
                 inputContent = <QuizRadio
