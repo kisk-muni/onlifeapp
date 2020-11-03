@@ -6,9 +6,13 @@ export default async function login(req, res) {
     method,
   } = req
   try {
-    let redirectURL = '/'
+    let redirectURL = process.env.SITE_URL
     if (next) {
-      redirectURL += next
+      if (next.charAt(0) === '/') {
+        redirectURL += next
+      } else {
+        redirectURL += '/' + next
+      }
     }
     await auth0.handleLogin(req, res, {
       getState: (req) => {

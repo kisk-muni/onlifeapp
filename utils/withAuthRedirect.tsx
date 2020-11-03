@@ -11,7 +11,7 @@ function redirect(next?: string) {
   } else {
     Router.push({
       pathname: '/api/login',
-      query: { next: process.env.NEXT_PUBLIC_SITE_URL + next },
+      query: { next: next },
     })
   }
 }
