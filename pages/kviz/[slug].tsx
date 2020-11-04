@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useMemo } from 'react'
 import StarterLayout from 'components/StarterLayout'
 import { useRouter } from 'next/router'
 import { Image as DatoImage } from 'react-datocms'
@@ -124,7 +124,19 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
       setShowQuiz(true)
     }
   })
-  console.log(feedbackList?.data?.submissions)
+  // side effect
+  const shuffled_items = useMemo(() => {
+    if (quiz?.items?.length !== 0) {
+      quiz?.items.forEach(item => {
+        if (item?.possibleResponds.length !== 0) {
+          // mutates array  
+          shuffleArray(item.possibleResponds)
+        }
+      })
+    }
+    return quiz?.items
+  }, [quiz?.items])
+  // console.log(feedbackList?.data?.submissions)
   const { register, errors, handleSubmit, reset, getValues } = useForm<FormData>()
   let quizItemIndex = 0
 
@@ -133,7 +145,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
     <NextSeo title={'Kvíz: ' + (quiz?.title ? quiz?.title : '') } />
     <Container variant="quiz">
       <Box sx={{mb: 3, px: 4}}>
-        { quiz?.items?.length !== 0 ?
+        { shuffled_items?.length !== 0 ?
           <Fragment>
             {!showQuiz && 
               <Fragment>
@@ -148,7 +160,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                   pr: 4,
                 }}>
                   <Box>
-                    <Text sx={{fontSize: 2}}>{ quiz?.items && 'Vyplnění zabere asi '+ (quiz?.items.length + 1) + ' min' }</Text>
+                    <Text sx={{fontSize: 2}}>{ shuffled_items && 'Vyplnění zabere asi '+ (shuffled_items?.length + 1) + ' min' }</Text>
                   </Box>
                   { feedbackList.data && (feedbackList.data.submissions.length > 0)
                     &&
@@ -215,14 +227,14 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                 Kvíz: { quiz?.title }
             </Heading>
             <Text sx={{mb: 3, fontWeight: 'bold'}}>
-              Celkem { quiz?.items.length } otázek
+              Celkem { shuffled_items?.length } otázek
             </Text>
           </Box>
         }
       </Box>
       { showQuiz && <form>
         {
-          quiz?.items.map((item, index) => {
+          shuffled_items?.map((item, index) => {
             if (item.discarded) {
               return
             }
@@ -230,8 +242,6 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             quizItemIndex += 1
             const itemMaxIndex = item.possibleResponds.length - 1
             let inputContent
-            // mutates array
-            shuffleArray(item.possibleResponds)
             switch (item._modelApiKey) {
               case 'singleselect':
                 inputContent = <QuizRadio
