@@ -114,6 +114,16 @@ const theme = {
       mt: 0,
       mb: 0
     },
+    specialtitle: {
+      fontSize: [
+        6,
+        7,
+        8
+      ],
+      lineHeight: "limit",
+      fontWeight: "bold",
+      letterSpacing: "title"
+    },
     ultratitle: {
       fontSize: [
         5,

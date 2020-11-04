@@ -11,7 +11,7 @@ const Header = () => {
   if (!loading) {
     if (!user || error) {
       userNav = <Fragment>
-        <Link passHref href="/registrace-ucitele">
+        <Link passHref href="/ucitele">
           <Lstyle
             sx={{
               variant: 'styles.navlink',
@@ -102,23 +102,12 @@ const Header = () => {
       }}>
       <Link passHref href="/">
         <Lstyle
-          sx={t => t.util.gxText('instagram', '#0000dc')}
-          as="h2" 
+          sx={t => t.util.gxText('instagram', 'primary')}
+          as="h1" 
         >
           ONLIFE
         </Lstyle>
       </Link>
-        <Text sx={{
-          color: 'text',
-          display: ['none', 'block'],
-          borderLeft: '1px solid',
-          borderColor: '#ddd',
-          pl: 2,
-          ml: 2,
-          fontSize: 2,
-          lineHeight: '16px',
-          }}
-        >Aplikace pro otestování znalostí v kurzu</Text>
       <div sx={{ mx: 'auto' }} />
         {userNav}
       </Container>
