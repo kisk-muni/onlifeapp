@@ -77,9 +77,7 @@ const Trida: NextPage<Props> = ({ allPosts }) => {
     })
   }
   return (
-    <DashboardLayout
-      header={<GroupHeader />}
-      stickHeaderByDefault>
+    <DashboardLayout header={<GroupHeader />} >
       <NextSeo noindex title={groupQuery?.group?.name ? groupQuery?.group?.name : 'Načítání' } />
       <Flex sx={{
         flexDirection: 'column',

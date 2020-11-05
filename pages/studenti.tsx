@@ -19,9 +19,7 @@ const Studenti: NextPage = () => {
   const groupQuery = useGroup(router.query.trida as string)
 
   return (
-    <DashboardLayout
-      header={<GroupHeader />}
-      stickHeaderByDefault> 
+    <DashboardLayout header={<GroupHeader />} > 
       <NextSeo noindex title={groupQuery?.group?.name ? groupQuery?.group?.name : 'Načítání' } />
       <Flex sx={{
         flexDirection: 'column',

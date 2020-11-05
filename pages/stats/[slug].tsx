@@ -38,9 +38,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
     engagedText = 'zapojení studenti' 
   }
   return (
-    <DashboardLayout
-      header={<GroupHeader currentPage={'Kvíz: ' + quiz?.title} hideSubnav />}
-      stickHeaderByDefault>
+    <DashboardLayout header={<GroupHeader currentPage={'Kvíz: ' + quiz?.title} />}>
       <NextSeo title="Odpovědi a statistiky" />
       <Container sx={{mt: 4}}>
         <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 0}}>

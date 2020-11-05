@@ -10,10 +10,7 @@ import useUser from 'data/useUser'
 const SettingsPage: NextPage = () => {
   const userQuery = useUser()
   return (
-    <DashboardLayout
-      header={<Header />}
-      stickHeaderByDefault
-    >
+    <DashboardLayout header={<Header />}>
       <NextSeo title="Nastavení" />
       <Container variant="narrow">
         <Box sx={{mt: 4}}>
