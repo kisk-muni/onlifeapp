@@ -204,7 +204,7 @@ const theme = {
       cursor: "pointer",
       fontFamily: "inherit",
       fontWeight: "bold",
-      borderRadius: "none",
+      borderRadius: "small",
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
@@ -402,7 +402,7 @@ const theme = {
         3,
         4
       ],
-      borderRadius: "none",
+      borderRadius: "default",
       boxShadow: "card",
       overflow: "hidden"
     },

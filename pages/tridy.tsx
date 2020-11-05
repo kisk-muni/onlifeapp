@@ -2,7 +2,7 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { CreateGroupDialog } from 'components/CreateGroupDialog'
-import { jsx, Text, Heading, Grid, Container, Flex, Card } from 'theme-ui'
+import { jsx, Text, Heading, Grid, Container, Box, Flex, Card } from 'theme-ui'
 import DashboardLayout from 'components/dashboard/DashboardLayout'
 import FullPageLoading from "components/FullPageLoading"
 import Header from "components/Header"
@@ -55,13 +55,10 @@ const Groups = () => {
   </Container>
 }
 
-const GroupsPage: NextPage = () => <Fragment>
+const GroupsPage: NextPage = () =>
+  <DashboardLayout header={<Header />} >
     <NextSeo noindex title="Přehled tříd" />
-    <DashboardLayout
-      header={<Header />}
-    >
-      <Groups />
-    </DashboardLayout>
-  </Fragment>
+    <Groups />
+  </DashboardLayout>
 
 export default GroupsPage

@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { Fragment } from 'react'
 import Link from 'next/link'
+import Router from 'next/router'
 import { jsx, Link as Lstyle, Button, Container, Text, Heading } from 'theme-ui'
 import ProfileDropdown from "./ProfileDropdown"
 import useUser from '../data/useUser'
@@ -20,26 +21,30 @@ const Header = () => {
             Pro učitele
           </Lstyle>
         </Link>
-        <Link passHref href="/api/login">
-          <Lstyle
-            sx={{
-              variant: 'styles.navlink',
-              ml: 4,
-            }}>
-            Přihlásit se
-          </Lstyle>
-        </Link>
-        <Link passHref href="/api/registrace">
-          <Button
-            sx={{
-              ml: 4,
-              py: 2,
-              px: 3,
-              fontSize: 2
-            }}>
-            Zaregistrovat se
-          </Button>
-        </Link>
+        {
+          Router.asPath !== '/' && <Fragment>
+            <Link passHref href="/api/login">
+              <Lstyle
+                sx={{
+                  variant: 'styles.navlink',
+                  ml: 4,
+                }}>
+                Přihlásit se
+              </Lstyle>
+            </Link>
+            <Link passHref href="/api/registrace">
+              <Button
+                sx={{
+                  ml: 4,
+                  py: 2,
+                  px: 3,
+                  fontSize: 2
+                }}>
+                Zaregistrovat se
+              </Button>
+            </Link>
+          </Fragment>
+        }
       </Fragment>
     } else {
       userNav = <Fragment>
@@ -100,8 +105,12 @@ const Header = () => {
         display: 'flex',
         alignItems: 'center',
       }}>
-      <Link passHref href="/">
+      <Link passHref href={!user ? '/' : '/prehled'}>
         <Lstyle
+          onContextMenu={(e) => {
+            e.preventDefault()
+            Router.push('/design')
+          }}
           sx={t => t.util.gxText('instagram', 'primary')}
           as="h1" 
         >

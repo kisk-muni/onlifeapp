@@ -22,11 +22,6 @@ const Footer = () => (
                 Pro učitele
             </Lstyle>
         </Link>
-        <Link href="/">
-            <Lstyle sx={{ variant: 'styles.footerlink', pl: 3, py: 2, fontSize: 2 }}>
-                Kontakt
-            </Lstyle>
-        </Link>
     </Container>
 </footer>
 )
