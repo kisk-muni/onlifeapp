@@ -30,15 +30,15 @@ const Index: NextPage<Props> = ({ allPosts }) => {
   return (
     <StarterLayout>
       <NextSeo noindex title={'Přehled kvízů'} />
-      <Box sx={{py: 6}}>
+      <Box sx={{py: [4, 5]}}>
         <Container>
-          <Heading as="h1" sx={{mb: 4, fontSize: '78px', textAlign: 'center'}} >Kvízy informační<br/>gramotnosti</Heading>
+          <Heading as="h1" sx={{mb: 4, fontSize: ['32px', '48px', '78px'], textAlign: 'center'}} >Kvízy informační<br/>gramotnosti</Heading>
           <Flex sx={{alignItems: 'center', justifyContent: 'center'}}>
             <Link passHref href="/api/registrace">
               <Button
                 variant="ctaLg"
                 sx={{
-                  borderRadius: 'circle',
+                  borderRadius: 'small',
                   fontSize: 3,
                   mr: 4,
                   backgroundImage: t => t.util.gx('instagram', 'purple'),
@@ -57,7 +57,11 @@ const Index: NextPage<Props> = ({ allPosts }) => {
       <Container>
       <Flex sx={{mb: 5}}>
         <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
-          <Heading variant="specialtitle" sx={{color: 'purple'}}>50+</Heading>
+          <Heading sx={{fontSize: 9, color: 'primary'}}>360+</Heading>
+          <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>otázek</Text>
+        </Flex>
+        <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
+          <Heading sx={{fontSize: 8, color: 'orange'}}>60+</Heading>
           <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>kvízů</Text>
         </Flex>
         <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column'}}>
