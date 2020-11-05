@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Router from 'next/router'
 import { jsx, Link as Lstyle, Button, Container, Text, Heading } from 'theme-ui'
 import ProfileDropdown from "./ProfileDropdown"
-import useUser from '../data/useUser'
+import useUser from 'data/useUser'
 
 const Header = () => {
   const { user, loading, error } = useUser()

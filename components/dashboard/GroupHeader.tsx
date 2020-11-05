@@ -3,14 +3,13 @@ import { Fragment } from 'react'
 import Link from 'next/link'
 import { jsx, Link as Lstyle, Grid, Container, Button, Badge, Text, Flex } from 'theme-ui'
 import ProfileDropdown from "../ProfileDropdown"
-import useUser from '../../data/useUser'
-import useGroup from '../../data/useGroup'
-import { useRouter } from 'next/router'
+import useUser from 'data/useUser'
+import useGroup from 'data/useGroup'
+import Router from 'next/router'
 
 const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}) => {
-  const router = useRouter()
-  const userQuery = useUser()
-  const groupQuery = useGroup(router.query.trida as string)
+  const { user, loading, error } = useUser()
+  const groupQuery = useGroup(Router.query.trida as string)
   return (
   <header sx={{
       variant: 'styles.header',
@@ -20,11 +19,15 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
     <Container sx={{maxWidth: '100%'}} >
       <Grid sx={{alignItems: 'center', gridTemplateColumns: 'repeat(3, 1fr)'}}>
         <Flex sx={{alignItems: 'center' }}>
-          <Link passHref href="/">
-            <Lstyle 
-              sx={{
-                variant: 'styles.navlogo'
-              }}>
+          <Link passHref href={!user ? '/' : '/prehled'}>
+            <Lstyle
+              onContextMenu={(e) => {
+                e.preventDefault()
+                Router.push('/design')
+              }}
+              sx={t => t.util.gxText('instagram', 'primary')}
+              as="h1" 
+            >
               ONLIFE
             </Lstyle>
           </Link>
@@ -43,7 +46,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
             </Fragment>
            : <Fragment>
                 <Text sx={{fontSize: 4, fontWeight: 'normal', mx: 2, display: 'inline', color: '#ccc'}}>{'|'}</Text>
-                <Link href={'/aktivita?trida='+router.query.trida}>
+                <Link href={'/aktivita?trida='+Router.query.trida}>
                   <Text sx={{fontSize: 4, fontWeight: 'bold', ml: 1, display: 'inline'}}>{groupQuery?.group?.name}</Text>
                 </Link>
                 { currentPage
@@ -69,19 +72,19 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
                 }}></span>
               </Fragment>
             : <Fragment>
-                <Link as={"/aktivita?trida="+router.query.trida} href={{ pathname: '/aktivita', query: { trida: router.query.trida } }} passHref>
+                <Link as={"/aktivita?trida="+Router.query.trida} href={{ pathname: '/aktivita', query: { trida: Router.query.trida } }} passHref>
                   <Button
                     sx={{
-                      variant: (router.pathname  == '/aktivita' ? 'buttons.menuActive' : 'buttons.menu'),
+                      variant: (Router.pathname  == '/aktivita' ? 'buttons.menuActive' : 'buttons.menu'),
                       mr: 2
                     }}>
                     Přehled aktivity
                   </Button>
                 </Link>
-                <Link as={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }} passHref>
+                <Link as={"/studenti?trida="+Router.query.trida} href={{ pathname: '/studenti', query: { trida: Router.query.trida } }} passHref>
                   <Button
                     sx={{
-                      variant: (router.pathname  == '/studenti' ? 'buttons.menuActive' : 'buttons.menu'),
+                      variant: (Router.pathname  == '/studenti' ? 'buttons.menuActive' : 'buttons.menu'),
                     }}>
                     Studenti {!groupQuery.loading && <Badge variant="count" sx={{ml: 1}}>{groupQuery.group?.students?.length}</Badge> }
                   </Button>
@@ -101,7 +104,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
             </Lstyle>
           </Link>
           {
-            userQuery.loading
+            loading
              ? <Fragment>
                 <span sx={{
                   display: 'inline-block',
@@ -122,18 +125,18 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
                   borderRadius: '50%'
                   }}></div>
               </Fragment>
-             : <ProfileDropdown sx={{ml: 4}} name={userQuery.user.name} email={userQuery.user.email} photoURL={userQuery.user.picture} />
+             : <ProfileDropdown sx={{ml: 4}} name={user.name} email={user.email} photoURL={user.picture} />
           }
         </Flex>
       </Grid>
       {/* !hideSubnav &&
         <Box>
-          <Link as={"/aktivita?trida="+router.query.trida} href={{ pathname: '/aktivita', query: { trida: router.query.trida } }} passHref>
+          <Link as={"/aktivita?trida="+Router.query.trida} href={{ pathname: '/aktivita', query: { trida: Router.query.trida } }} passHref>
             <Lstyle
               sx={{
                 variant: 'styles.navlink',
-                color: (router.pathname  == '/aktivita' ? 'text' : 'gray'),
-                borderBottom: (router.pathname  == '/aktivita' ? '2px solid #000' : '2px solid transparent'),
+                color: (Router.pathname  == '/aktivita' ? 'text' : 'gray'),
+                borderBottom: (Router.pathname  == '/aktivita' ? '2px solid #000' : '2px solid transparent'),
                 pb: 3,
                 mr: 4,
                 pt: 3
@@ -141,12 +144,12 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
               Přehled
             </Lstyle>
           </Link>
-          <Link as={"/studenti?trida="+router.query.trida} href={{ pathname: '/studenti', query: { trida: router.query.trida } }} passHref>
+          <Link as={"/studenti?trida="+Router.query.trida} href={{ pathname: '/studenti', query: { trida: Router.query.trida } }} passHref>
             <Lstyle
               sx={{
                 variant: 'styles.navlink',
-                color: (router.pathname  == '/studenti' ? 'text' : 'gray'),
-                borderBottom: (router.pathname  == '/studenti' ? '2px solid #000' : '2px solid transparent'),
+                color: (Router.pathname  == '/studenti' ? 'text' : 'gray'),
+                borderBottom: (Router.pathname  == '/studenti' ? '2px solid #000' : '2px solid transparent'),
                 pb: 3,
                 mr: 4,
                 pt: 3
