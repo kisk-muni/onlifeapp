@@ -31,12 +31,12 @@ const Index: NextPage<Props> = ({ allPosts }) => {
   return (
     <StarterLayout>
       <NextSeo noindex title={'Přehled kvízů'} />
-      <Box sx={{py: 5}}>
+      <Box sx={{py: 6}}>
         <Container>
           <Grid columns={[2]}>
             <Flex sx={{justifyContent: 'center', flexDirection: 'column'}}>
-              <Heading as="h1" sx={{mb: 4, fontSize: ['32px', '48px', '78px']}} >Kvízy informační<br/>gramotnosti</Heading>
-              <Flex sx={{alignItems: 'center'}}>
+              <Heading variant="specialtitle" sx={t => t.util.gxText('instagram', 'primary')}>Kvízy<br/>informační<br/>gramotnosti</Heading>
+              <Flex sx={{alignItems: 'center', mt: 4}}>
                 <Link passHref href="/api/registrace">
                   <Button
                     variant="ctaLg"
@@ -44,7 +44,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                       borderRadius: 'small',
                       fontSize: 3,
                       mr: 4,
-                      backgroundImage: t => t.util.gx('instagram', 'purple'),
+                      bg: 'foreground',
                     }}>
                     Zaregistrovat se
                   </Button>
