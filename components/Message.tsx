@@ -30,6 +30,7 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
       background: #0070f3;
       color: #fff;
       margin-bottom: 8px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px 0px;
     }
     .message-bubble:before {
       content: "";
@@ -64,13 +65,14 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
     .message-avatar-avatar {
       flex-basis: 64px;
       width: 64px;
-      border-radius: 100%;
+      border-radius: 999999;
       display: inline-block;
       overflow: hidden;
       line-height: 0;
       vertical-align: top;
       -webkit-mask-image: -webkit-radial-gradient(circle,#fff,#000);
       background: #fff;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px 0px;
       transition: border .2s ease,background .2s ease;
       box-sizing: border-box;
     }

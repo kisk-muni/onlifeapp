@@ -78,8 +78,8 @@ const Index: NextPage<Props> = ({ allPosts }) => {
     <StarterLayout>
       <NextSeo noindex title={'Přehled kvízů'} />
       <Box sx={{backgroundImage: t => t.util.gx('red', 'primary'), color: 'white'}}>
-        <Container sx={{py: 5, mb: 5}}>
-          <Heading variant="ultratitle">Obsah</Heading>
+        <Container sx={{py: 6, mb: 5}}>
+          <Heading variant="specialtitle" sx={{color: 'background'}}>Obsah</Heading>
           <Text variant="subtitle">Celkový přehled obsahu v aplikaci.</Text>
         </Container>
       </Box>

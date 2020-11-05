@@ -3,17 +3,12 @@ import {useEffect} from 'react'
 import StarterLayout from 'components/StarterLayout'
 import Router from 'next/router'
 import Message from 'components/Message'
-import htmlParser from 'react-markdown/plugins/html-parser'
-import { jsx, Text, Heading, Container, Card, Button, Link as SLink, Spinner, AspectRatio, Grid, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Container, Card, Button, Image, Grid, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { getAllPostsForGroup } from 'utils/api'
 import { NextSeo } from 'next-seo'
-import useSWR from 'swr'
 import Color from '@biossun/color'
-import fetcher from 'lib/fetcher'
-import ReactMarkdown from 'react-markdown/with-html'
-import { Response } from 'pages/api/quiz/submissions-list'
 import useUser from 'data/useUser'
 
 interface Props {
@@ -129,6 +124,45 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               </Box>
             </Flex>
           </Grid>
+        </Container>
+      </Box>
+      <Box sx={{bg: 'snow', py: 6}}>
+        <Container>
+          <Heading variant="ultratitle" sx={{textAlign: 'center'}}>
+            Připraveno odborníky<br/>Masarykovy Univerzity.
+          </Heading>
+          <Flex sx={{mt: 5,  flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <Flex sx={{flexDirection: "row", mr: "4"}}>
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, width: 168, height: 168, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_70/v1589197379/index/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
+              </Flex>
+              <Flex sx={{borderRadius: 9999, ml: -4, overflow: 'hidden', width: 168, height: 168, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#0000dc'}}>
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_166/v1589197379/index/muni-lg-white.png" width='100%' sx={{alignSelf: 'center'}} />
+              </Flex>
+            </Flex>
+            <Flex sx={{mx: "4", justifyContent: "center", flexDirection: "column", alignItems: "center",}}>
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/hanka-tulinska.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+              </Flex>
+              <Heading as='h3' sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'text',
+                fontSize: 4
+                }}>Hanka Tulinská</Heading>
+            </Flex>
+            <Flex sx={{ml:"4", mr: "5", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+              <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
+                <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_110/v1589197379/index/michal-cerny.jpg" width='100%' sx={{borderRadius: 9999, alignSelf: 'center'}} />
+              </Flex>
+              <Heading as='h3' sx={{
+                mt: 3,
+                textAlign: 'center',
+                color: 'text',
+                fontSize: 4
+                }}>Michal Černý</Heading>
+            </Flex>
+          </Flex>
         </Container>
       </Box>
     </StarterLayout>
