@@ -3,7 +3,7 @@ import {useEffect} from 'react'
 import StarterLayout from 'components/StarterLayout'
 import Router from 'next/router'
 import Message from 'components/Message'
-import { jsx, Text, Heading, Container, Card, Button, Image, Grid, Box, Flex } from 'theme-ui'
+import { jsx, Text, Heading, Container, Card, AspectRatio, Button, Image, Grid, Box, Flex } from 'theme-ui'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { getAllPostsForGroup } from 'utils/api'
@@ -26,7 +26,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
   return (
     <StarterLayout>
       <NextSeo noindex title={'Přehled kvízů'} />
-      <Box sx={{py: 6}}>
+      <Box sx={{py: [5, 6, 7], mt: '-78px'}}>
         <Container>
           <Grid columns={[2]}>
             <Flex sx={{justifyContent: 'center', flexDirection: 'column'}}>
@@ -50,6 +50,20 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                   </a>
                 </Link>
               </Flex>
+            </Flex>
+            <Flex sx={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+              <Box>
+                <Heading variant="title" sx={{textAlign: 'center', mb: 4, color: 'muted'}}>Kdy je vhodné použít<br/>výsečový graf?</Heading>
+                <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
+                  <Text sx={{fontSize: 3}}><b>A.</b> Vývoj akcií dané společnosti</Text>
+                </Box>
+                <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
+                  <Text sx={{fontSize: 3, color: 'success-default'}}><b>B.</b> Výsledky ankety o nejoblíbenější značku bot</Text>
+                </Box>
+                <Box sx={{bg: 'white', maxWidth: 450, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 40px 0px', }}>
+                  <Text sx={{fontSize: 3}}><b>C.</b> Žádná odpověď není správná</Text>
+                </Box>
+              </Box>
             </Flex>
           </Grid>
         </Container>
