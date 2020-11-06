@@ -54,12 +54,14 @@ const Index: NextPage<Props> = ({ allPosts }) => {
             </Flex>
             <Flex sx={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
               <Box>
-                <Heading variant="title" sx={{textAlign: 'center', mb: 4, color: 'muted'}}>Kdy je vhodné použít<br/>výsečový graf?</Heading>
+                <Heading sx={{textAlign: 'center', mb: 4, fontSize: 6, color: 'muted'}}>
+                  Kdy je <span sx={{borderRadius: '6px', backgroundColor: 'rgb(255 193 7 / 41%)', color: '#976ae8', padding: '0 3px', margin: '0 -3px'}}>vhodné</span> použít<br/>výsečový graf?
+                  </Heading>
                 <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
                   <Text sx={{fontSize: 3}}><b>A.</b> Vývoj HDP České republiky</Text>
                 </Box>
-                <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
-                  <Text sx={{fontSize: 3, color: 'success-default'}}><b>B.</b> Výsledky ankety o nejoblíbenější značku bot</Text>
+                <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', transform: "scale(1.0625)", borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
+                  <Text sx={{fontSize: 3, color: '#09986e'}}><b>B.</b> Výsledky ankety o nejoblíbenější značku bot</Text>
                 </Box>
                 <Box sx={{bg: 'white', maxWidth: 450, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 40px 0px', }}>
                   <Text sx={{fontSize: 3}}><b>C.</b> Srovnání platů v jednotlivých městech v ČR</Text>
@@ -73,21 +75,21 @@ const Index: NextPage<Props> = ({ allPosts }) => {
         <Container>
           <Grid columns={[2]}>
             <Flex sx={{flexDirection: 'column', justifyContent: 'center'}}>
-              <Heading variant="ultratitle" sx={{mb: 3}}>
+              <Heading variant="ultratitle" sx={{mb: 4}}>
                 Otázky pro<br/>každé téma.
               </Heading>
               <Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
-                  <Heading sx={{fontSize: 9, color: 'orange'}}>360+</Heading>
+                  <Heading sx={{fontSize: 8, color: 'orange'}}>360+</Heading>
                   <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>otázek</Text>
                 </Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
-                  <Heading sx={{fontSize: 8}}>60+</Heading>
+                  <Heading variant="ultratitle">60+</Heading>
                   <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>kvízů</Text>
                 </Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column'}}>
                   <Heading variant="ultratitle">12</Heading>
-                  <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>oblastí</Text>
+                  <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>témat</Text>
                 </Flex>
               </Flex>
             </Flex>
