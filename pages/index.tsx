@@ -55,13 +55,13 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               <Box>
                 <Heading variant="title" sx={{textAlign: 'center', mb: 4, color: 'muted'}}>Kdy je vhodné použít<br/>výsečový graf?</Heading>
                 <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
-                  <Text sx={{fontSize: 3}}><b>A.</b> Vývoj akcií dané společnosti</Text>
+                  <Text sx={{fontSize: 3}}><b>A.</b> Vývoj HDP České republiky</Text>
                 </Box>
                 <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
                   <Text sx={{fontSize: 3, color: 'success-default'}}><b>B.</b> Výsledky ankety o nejoblíbenější značku bot</Text>
                 </Box>
                 <Box sx={{bg: 'white', maxWidth: 450, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 40px 0px', }}>
-                  <Text sx={{fontSize: 3}}><b>C.</b> Žádná odpověď není správná</Text>
+                  <Text sx={{fontSize: 3}}><b>C.</b> Srovnání platů v jednotlivých městech v ČR</Text>
                 </Box>
               </Box>
             </Flex>

@@ -8,7 +8,7 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
         <div className="message-bubble">{message}</div>
         <div className="message-name">{name}</div>
       </div>
-      <div className="message-avatar"><span className="message-avatar-avatar"><Avatar src={avatar} size={64} sx={{width: 50, height: 50}} /></span></div>
+      <div className="message-avatar"><span className="message-avatar-avatar"><Avatar src={avatar} size={64} sx={{width: 58, height: 58}} /></span></div>
     <style jsx>{`
     .message-container {
       display: flex;
@@ -28,43 +28,42 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
       font-size: 19px;
       padding: 12px 16px;
       background: #0070f3;
-      color: rgba(255,255,255,.88);
+      color: rgba(255,255,255,.94);
       margin-bottom: 8px;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px 0px;
     }
     .message-bubble:before {
       content: "";
       position: absolute;
       z-index: 0;
       bottom: 0;
-      right: -8px;
-      height: 20px;
-      width: 20px;
+      right: -6px;
+      height: 18px;
+      width: 18px;
       background: inherit;
-      border-bottom-left-radius: 15px;
+      border-bottom-left-radius: 20px;
     }
     .message-bubble:after {
       content: "";
       position: absolute;
       z-index: 1;
       bottom: 0;
-      right: -10px;
-      width: 10px;
-      height: 21px;
+      right: -12px;
+      width: 12px;
+      height: 23px;
       background: #fff;
       border-bottom-left-radius: 10px;
     }
     .message-name {
       text-align: right;
-      font-size: 16px;
+      font-size: 18px;
       color: #666;
     }
     .message-avatar {
       margin-bottom: 1.65rem;
     }
     .message-avatar-avatar {
-      flex-basis: 64px;
-      width: 64px;
+      flex-basis: 58px;
+      width: 58px;
       border-radius: 999999;
       display: inline-block;
       overflow: hidden;
