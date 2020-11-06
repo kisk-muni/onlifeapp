@@ -142,10 +142,15 @@ const Index: NextPage<Props> = ({ allPosts }) => {
       </Box>
       <Box sx={{bg: 'snow', py: 6}}>
         <Container>
-          <Heading variant="ultratitle" sx={{textAlign: 'center'}}>
-            Připraveno odborníky<br/>Masarykovy Univerzity.
-          </Heading>
-          <Flex sx={{mt: 5,  flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <Container variant="narrow">
+            <Heading variant="ultratitle" sx={{textAlign: 'center'}}>
+              Připraveno odborníky<br/>z Masarykovy Univerzity.
+            </Heading>
+            <Text variant="lead" sx={{textAlign: 'center'}}>
+              Vzdělávací program tvoří odborníci, kteří se tématem rozvoje informační gramotnosti zabývají mnoho let. Spolupracují při tom se studenty KISK MUNI, učiteli a žáky středních škol. Kurz podpořila Technologická agentura České republiky.
+            </Text>
+          </Container>
+          <Flex sx={{mt: 5, mb: 5,  flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
             <Flex sx={{flexDirection: "row", mr: "4"}}>
               <Flex sx={{borderRadius: 9999, overflow: 'hidden', px: 48, width: 168, height: 168, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center', background: '#fff'}}>
                 <Image src="https://res.cloudinary.com/diwkzuny7/image/upload/c_scale,q_auto:best,w_70/v1589197379/index/tacr-logo.png" width='100%' sx={{alignSelf: 'center'}} />
@@ -162,8 +167,8 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                 mt: 3,
                 textAlign: 'center',
                 color: 'text',
-                fontSize: 4
-                }}>Hanka Tulinská</Heading>
+                fontSize: 3
+                }}>Mgr. Hanka Tulinská</Heading>
             </Flex>
             <Flex sx={{ml:"4", mr: "5", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
               <Flex sx={{borderRadius: 9999, overflow: 'hidden', width: 112, height: 112, boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px 0px', alignContent: 'center'}}>
@@ -173,8 +178,8 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                 mt: 3,
                 textAlign: 'center',
                 color: 'text',
-                fontSize: 4
-                }}>Michal Černý</Heading>
+                fontSize: 3
+                }}>RNDr. Michal Černý</Heading>
             </Flex>
           </Flex>
         </Container>
