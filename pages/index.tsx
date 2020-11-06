@@ -124,7 +124,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
           <Grid columns={[2]}>
             <Flex sx={{ alignItems: 'center', justifyContent: 'flex-end'}}>
               <Box sx={{maxWidth: 400}}>
-                <Message avatar="/hanka-tulinska.jpg" message="Ano! Práce s uvozovkami je velmi dobrý nápad. Pokud výrazu přidáme uvozovky, pak výsledky budou obsahovat speciálně tento pojem. Pokud by v uvozovkách nebyl, vyhledali bychom dokumenty, ve kterých se tato dvě slova kdekoli vyskytnou." name="Hanka Tulinská" />
+                <Message avatar="/hanka-tulinska.jpg" message="Ano! Práce s uvozovkami je velmi dobrý nápad. Pokud výrazu přidáme uvozovky, pak výsledky budou obsahovat speciálně tento pojem…" name="Hanka Tulinská" />
               </Box>
             </Flex>
             <Flex sx={{justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>

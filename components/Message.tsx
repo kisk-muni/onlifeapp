@@ -25,10 +25,10 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
     .message-bubble {
       position: relative;
       border-radius: 1rem;
-      font-size: 18px;
+      font-size: 19px;
       padding: 12px 16px;
       background: #0070f3;
-      color: #fff;
+      color: rgba(255,255,255,.88);
       margin-bottom: 8px;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px 0px;
     }
@@ -72,7 +72,8 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
       vertical-align: top;
       -webkit-mask-image: -webkit-radial-gradient(circle,#fff,#000);
       background: #fff;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px 0px;
+      box-shadow: 
+      ;
       transition: border .2s ease,background .2s ease;
       box-sizing: border-box;
     }
