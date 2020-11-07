@@ -101,7 +101,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
             <Container sx={{position: 'relative', zIndex: 10}}>
               <Box key={index}>
                 <Container variant="narrow" sx={{ml: 0, px: 0, pb: 4}}>
-                  <Heading variant="ultratitle" sx={t => t.util.gxText(primaryColor.toString(), secondaryColor.toString())}>{post.titulek}</Heading>
+                  <Heading variant="title" sx={t => t.util.gxText(primaryColor.toString(), secondaryColor.toString())}>{post.titulek}</Heading>
                   {/*
                     filteredLeadingTexts?.length > 0 && filteredLeadingTexts.map((leadingText, ltIndex) => (
                       <Text variant="lead">
