@@ -31,7 +31,6 @@ const QuizBlock = ({quizId, title, slug, points, maxPoints, progressLoading, use
   return (
     <Link href={"/kviz/"+slug} passHref><a><Card variant="interactive" {...props}
       sx={{
-        mb: 2,
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'background',
@@ -100,18 +99,8 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               }}>
             <Container sx={{position: 'relative', zIndex: 10}}>
               <Box key={index}>
-                <Container variant="narrow" sx={{ml: 0, px: 0, pb: 4}}>
-                  <Heading variant="title" sx={t => t.util.gxText(primaryColor.toString(), secondaryColor.toString())}>{post.titulek}</Heading>
-                  {/*
-                    filteredLeadingTexts?.length > 0 && filteredLeadingTexts.map((leadingText, ltIndex) => (
-                      <Text variant="lead">
-                        <DatoText text={leadingText.text} />
-                      </Text>
-                    ))
-                  */}
-                  {/*post.url && <a sx={{variant: 'buttons.lg', bg: 'rgba(0,0,0,.5)', color: 'background', mt: 2, mb: 3, px: 3, py: 3, alignSelf: 'flex-start', ':hover,:focus': {textDecoration: 'none', color: 'background'}}} href={post.url}>Stránka tématu<svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" shape-rendering="geometricPrecision"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>*/}
-                </Container>
-                <Grid gap="32px" columns={[1, 3, null, 4]}>
+                <Heading variant="title" sx={t => t.util.gxText(primaryColor.toString(), secondaryColor.toString())}>{post.titulek}</Heading>
+                <Grid gap={3} columns={[1, 3, null, 4]} sx={{mt: 3}}>
                   { post.children.map((child, i) => {
                     if (!user.user || user.error) {
                       return (
