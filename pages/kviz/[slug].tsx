@@ -20,6 +20,9 @@ import shuffleArray from 'utils/shuffleArray'
 
 export type PossibleResponds = {
   choiceText: string
+  isCorrect: boolean
+  correctFeedback: string
+  incorrectFeedback: string
 }[]
 
 export type Item = {

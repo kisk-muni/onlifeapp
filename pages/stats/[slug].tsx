@@ -28,7 +28,7 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
   // }})
   let engagedText = ''
   const stats = useSWR<Response>('/api/quiz/' + quiz?.id as string + '/' + router.query.trida + '/stats', fetcher)
-
+  console.log(stats.data)
   const engagedCount = stats.data?.submissions.length
   if (engagedCount === 0 || engagedCount >= 5 ) {
     engagedText = 'zapojených studentů'
@@ -38,11 +38,14 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
     engagedText = 'zapojení studenti' 
   }
   return (
-    <DashboardLayout header={<GroupHeader currentPage={'Kvíz: ' + quiz?.title} />}>
+    <DashboardLayout header={<GroupHeader />}>
       <NextSeo title="Odpovědi a statistiky" />
       <Container sx={{mt: 4}}>
-        <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 0}}>
-          <Heading sx={{mb: 2, mt: 1, fontSize: 6}}>Kvíz: { quiz?.title }</Heading>
+        <Flex sx={{justifyContent: 'space-between', alignItems: 'flex-start', mb: 0}}>
+          <Box>
+            <Heading variant="eyebrow">Statistika kvízu</Heading>
+            <Heading variant="ultratitle">{ quiz?.title }</Heading>
+          </Box>
           <Link href={"/kviz/"+quiz?.slug}>
             <Button sx={{px: 4, fontWeight: 500, fontSize: 2}}>Stránka kvízu</Button>
           </Link>
@@ -56,22 +59,27 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
           }
         </Container>
       : <Container sx={{pt: 2, mt: 2}}>
-          {!stats.data
+          {!quiz?.items
           ? <Spinner size={24} />
           : <Fragment>
               <Flex sx={{justifyContent: 'space-between', alignItems: 'center', mb: 3}}>
                 <Text sx={{fontSize: 2}}>{engagedCount} {engagedText}</Text>
-                <FilterSelect
+                {/*<FilterSelect
                   value={filterValue}
                   defaultValue="best"
                   onChange={(e) => setFilterValue(e.target.value)}
-                />
+                />*/}
               </Flex>
               <Box>
                 {
-                  stats.data.questions.map((question, index) => (
-                    <Item question={question} key={index} index={index} />
-                  ))
+                  quiz?.items.map((question, index) => {
+                    //return <Box>{question.question}</Box>
+                    const stat = stats?.data?.questions?.filter(statQuestion => statQuestion.id == question.id)
+                    // choices={stat.length > 0 ? stat[0].choices : {}}
+                    return (
+                      <Item question={question} key={index} statsQuestion={stat?.length > 0 ? stat[0] : undefined} index={index} />
+                    )
+                  })
                 }
               </Box>
             </Fragment>

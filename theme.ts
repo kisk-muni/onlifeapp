@@ -35,6 +35,7 @@ const theme = {
     "error-light": "#FF1A1A",
     "error-default": "#E00",
     "error-dark": "#C50000",
+    "success-lighter": "#d4f7d8",
     "success-default": "#0d8000",
     "primary-background": "#FFF",
     "primary-accent-1": "#FAFAFA",
