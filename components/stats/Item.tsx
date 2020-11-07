@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { useState, Fragment } from 'react'
 import { jsx, Button, Grid, Heading, Text, Flex, Box } from 'theme-ui'
-import { BarChart, PieChart, Pie, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Avatar from '../Avatar'
 import { Question as StatsQuestion } from '../../pages/api/quiz/[id]/[group_id]/stats'
 import { Item as Question } from 'pages/kviz/[slug]'
@@ -132,9 +131,9 @@ const Item = ({question, index, statsQuestion}: {question: Question, index: numb
                   }
                   <Text sx={{flexGrow: 99999, fontSize: 2, lineHeight: 1.2, flexBasis: 0, ml: 1}}>{item.name}</Text>
                 </Flex>
-                <Text sx={{fontSize: 3, fontWeight: 'bold', position: 'absolute', right: '-30px', bottom: '0'}}>{item.number}⨉</Text>
-                <Box sx={{bg: 'primary-accent-2', position: 'relative', ':after': {position: 'absolute', content: '""', left: '-10px', top: '11px', width: 20, height: 2, bg: '#666'}}}>
-                  <Box sx={{bg: item.fill, height: '24px', mt: 0, width: (item.number/data_max*100).toString()+'%'}}></Box>
+                <Text sx={{fontSize: 3, fontWeight: 'bold', position: 'absolute', right: '-30px', bottom: '0'}}>{data_max != 0 ? item.number : 0}⨉</Text>
+                <Box sx={{bg: 'primary-accent-2', position: 'relative', width: '100%', height: '24px', ':after': {position: 'absolute', content: '""', left: '-10px', top: '11px', width: 20, height: 2, bg: '#666'}}}>
+                  {data_max != 0 && <Box sx={{bg: item.fill, height: '24px', mt: 0, width: (item.number/data_max*100).toString()+'%'}}></Box>}
                 </Box>
               </Box>
             )
@@ -145,7 +144,7 @@ const Item = ({question, index, statsQuestion}: {question: Question, index: numb
               0
             </Box>
             <Box sx={{':after': {height: '20px', width: '2px', bg: '#666', content: '""', position: 'absolute', top: '-20px', right: '6.5px'}, position: 'absolute', top: '10px', right: '-8px', width: 16, height: 16, textAlign: 'center'}}>
-              {data_max}
+              {data_max != 0 && data_max}
             </Box>
           </Box>
         </Box>
