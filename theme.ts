@@ -241,18 +241,32 @@ const theme = {
     outline: {
       variant: "buttons.primary",
       bg: "transparent",
-      color: "primary",
-      border: "2px solid currentColor"
+      color: "primary-accent-3",
+      border: "1px solid",
+      boxShadow: "none",
+      borderColor: 'border',
+      ":focus,:hover": {
+        borderColor: "foreground",
+        color: 'primary-accent-7',
+        boxShadow: "none",
+      },
     },
     outlineLg: {
       variant: "buttons.primary",
       bg: "transparent",
-      color: "primary",
-      border: "2px solid currentColor",
+      color: "primary-accent-3",
+      border: "1px solid",
+      boxShadow: "none",
+      borderColor: 'border',
       lineHeight: "title",
       fontSize: 3,
       px: 4,
-      py: 3
+      py: 3,
+      ":focus,:hover": {
+        borderColor: "foreground",
+        color: 'primary-accent-7',
+        boxShadow: "none",
+      },
     },
     cta: {
       variant: "buttons.primary",

@@ -37,25 +37,24 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                   <Button
                     variant="ctaLg"
                     sx={{
-                      borderRadius: 'small',
-                      fontSize: 3,
-                      mr: 4,
+                      mr: 3,
                       bg: 'foreground',
                     }}>
                     Zaregistrovat se
                   </Button>
                 </Link>
                 <Link passHref href="/api/login">
-                  <a sx={{fontSize: 3, color: 'primary-accent-4', ':hover,:focus': {color: 'primary-accent-8'}}}>
+                  <Button
+                    variant="outlineLg">
                     Již mám účet
-                  </a>
+                    </Button>
                 </Link>
               </Flex>
             </Flex>
             <Flex sx={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
               <Box>
                 <Heading sx={{textAlign: 'center', mb: 4, fontSize: 6, color: 'muted'}}>
-                  Kdy je <span sx={{borderRadius: '6px', backgroundColor: 'rgb(255 193 7 / 41%)', color: '#976ae8', padding: '0 3px', margin: '0 -3px'}}>vhodné</span> použít<br/>výsečový graf?
+                  Kdy je <span sx={{borderRadius: '6px', backgroundColor: '#fff2bc', color: 'orange', padding: '0 3px', margin: '0 -3px'}}>vhodné</span> použít<br/>výsečový graf?
                   </Heading>
                 <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
                   <Text sx={{fontSize: 3}}><b>A.</b> Vývoj HDP České republiky</Text>
