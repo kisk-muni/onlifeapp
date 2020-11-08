@@ -11,7 +11,7 @@ const FullPageLoading = ({dashboard = false}) => (
     background: (dashboard ? '#fafafa' : '#fff')
     }}>
     <Box>
-      <Spinner intent="none" size={32} />
+      <Spinner intent="none" size={24} />
     </Box>
   </Flex>
 )

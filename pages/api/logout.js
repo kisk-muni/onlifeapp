@@ -1,10 +1,10 @@
-import commonMiddleware from '../../utils/middleware/commonMiddleware'
+import auth0 from 'lib/auth0'
 
-const handler = (req, res) => {
-  // Destroy the session.
-  // https://github.com/expressjs/cookie-session#destroying-a-session
-  req.session = null
-  res.status(200).json({ status: true })
+export default async function logout(req, res) {
+  try {
+    await auth0.handleLogout(req, res)
+  } catch (error) {
+    console.error(error)
+    res.status(error.status || 500).end(error.message)
+  }
 }
-
-export default commonMiddleware(handler)

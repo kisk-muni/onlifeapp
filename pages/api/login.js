@@ -1,34 +1,29 @@
-import { verifyIdToken } from '../../utils/auth/firebaseAdmin'
-import commonMiddleware from '../../utils/middleware/commonMiddleware'
+import auth0 from 'lib/auth0'
 
-const handler = (req, res) => {
-  if (!req.body) {
-    return res.status(400)
+export default async function login(req, res) {
+  const {
+    query: { next },
+    method,
+  } = req
+  try {
+    let redirectURL = process.env.SITE_URL
+    if (next) {
+      if (next.charAt(0) === '/') {
+        redirectURL += next
+      } else {
+        redirectURL += '/' + next
+      }
+    }
+    await auth0.handleLogin(req, res, {
+      getState: (req) => {
+        return {
+          someValue: '123',
+          redirectTo: redirectURL
+        };
+      }
+    });
+  } catch (error) {
+    console.error(error)
+    res.status(error.status || 500).end()
   }
-  const { token } = req.body
-  
-  // Here, we decode the user's Firebase token and store it in a cookie. Use
-  // express-session (or similar) to store the session data server-side.
-  // An alternative approach is to use Firebase's `createSessionCookie`. See:
-  // https://firebase.google.com/docs/auth/admin/manage-cookies
-  // Firebase docs:
-  //   "This is a low overhead operation. The public certificates are initially
-  //    queried and cached until they expire. Session cookie verification can be
-  //    done with the cached public certificates without any additional network
-  //    requests."
-  // However, in a serverless environment, we shouldn't rely on caching, so
-  // it's possible Firebase's `verifySessionCookie` will make frequent network
-  // requests in a serverless context.
-  return verifyIdToken(token)
-    .then(decodedToken => {
-      // console.log('invoked: /api/login', decodedToken)
-      req.session.decodedToken = decodedToken
-      req.session.token = token
-      return res.status(200).json({ status: true, decodedToken })
-    })
-    .catch(error => {
-      return res.status(500).json({ error })
-    })
 }
-
-export default commonMiddleware(handler)

@@ -1,9 +1,0 @@
-mutation SubmitQuiz($input: SubmitQuizInput!) {
-  submitQuiz(input: $input) {
-    submitted
-    submittedQuiz
-    responseAttempt
-    points
-    maxPoints
-  }
-}

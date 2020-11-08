@@ -1,16 +1,16 @@
-import { useUserQuery } from '../apollo/user.graphql'
 import Router from 'next/router'
 import { NextPage } from 'next'
+import useUser from '../data/useUser'
 
 function redirect(next?: string) {
   if (!next) {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: Router.asPath },
     })
   } else {
     Router.push({
-      pathname: '/prihlaseni',
+      pathname: '/api/login',
       query: { next: next },
     })
   }
@@ -18,29 +18,27 @@ function redirect(next?: string) {
 
 const withAuthRedirect = (
   PageComponent: NextPage,
-  { next, roles }: {next?: string, roles?: string[]} = {}
+  { next = '', roles }: {next?: string, roles?: string[]} = {}
 ): NextPage => {
   return ({...pageProps}) => {
-    const { data, loading, error } = useUserQuery()
+    const { user, loading, error } = useUser()
     if (!loading) {
-      if (!data?.user) {
+      if (!user) {
         redirect(next)
+        return (<></>)
       } else if (roles) {
         roles.forEach((role) => {
           switch (role) {
             case 'student':
-              if (data?.user?.isTeacher) {
+              if (!user?.in_group) {
                 redirect(next)
+                return (<></>)
               }
               break;
             case 'teacher':
-              if (!data?.user?.isTeacher) {
+              if (!user?.is_teacher) {
                 redirect(next)
-              }
-              break;
-            case 'notInGroup':
-              if (data?.user?.isInGroup) {
-                redirect(next)
+                return (<></>)
               }
               break;
             default:
@@ -48,8 +46,9 @@ const withAuthRedirect = (
           }
         })
       }
+      return (<PageComponent {...pageProps} />)
     }
-    return (<PageComponent {...pageProps} />)
+    return (<></>)
   }
 }
 

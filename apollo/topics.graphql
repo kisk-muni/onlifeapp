@@ -1,7 +1,0 @@
-query Topics {
-  topics {
-    thumbnail
-    name
-    id
-  }
-}

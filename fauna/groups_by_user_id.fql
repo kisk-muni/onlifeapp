@@ -1,0 +1,6 @@
+Map(
+  Paginate(
+    Match(Index("group_by_user_id"), "google-oauth2|111543279386588369100")
+  ),
+  Lambda("X", Get(Var("X")))
+)

@@ -1,5 +1,0 @@
-mutation JoinGroupAttempt($input: JoinGroupAttemptInput!) {
-  joinGroupAttempt(input: $input) {
-    name
-  }
-}

@@ -34,3 +34,7 @@ yarn-error.log*
 # Local dotenv files
 # https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables
 .env*.local
+
+# fauna database secret key file
+.faunarc
+.vercel

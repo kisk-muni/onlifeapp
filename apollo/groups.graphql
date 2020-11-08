@@ -1,7 +1,0 @@
-query Groups {
-  groups {
-    id
-    name
-    color
-  }
-}

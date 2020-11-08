@@ -4,7 +4,7 @@ const API_TOKEN = process.env.CMS_DATOCMS_API_TOKEN
 // See: https://www.datocms.com/blog/offer-responsive-progressive-lqip-images-in-2020
 const responsiveImageFragment = `
   fragment responsiveImageFragment on ResponsiveImage {
-  srcSet
+    srcSet
     webpSrcSet
     sizes
     src
@@ -284,14 +284,26 @@ export async function getAllPostsForGroup(slug, preview) {
         slug
         titulek
         url
+        thumbnailPicture {
+          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 800, h: 400 }) {
+            ...responsiveImageFragment
+          }
+          customData
+        }
         content {
           ... on QuizblockRecord {
             id
             quizLink {
+              _modelApiKey
               id
               slug
               title
             }
+          }
+          ... on LeadingTextRecord {
+            _modelApiKey
+            id
+            text
           }
         }
         children {
@@ -312,6 +324,7 @@ export async function getAllPostsForGroup(slug, preview) {
         }
       }
     }
+    ${responsiveImageFragment}
   `,
     { preview }
   )
