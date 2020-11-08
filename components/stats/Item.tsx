@@ -140,10 +140,10 @@ const Item = ({question, index, statsQuestion}: {question: Question, index: numb
           })}
           <Box sx={{bg: '#666', height: '2px', width: '100%'}}></Box>
           <Box sx={{position: 'relative'}}>
-            <Box sx={{':after': {height: '20px', width: '2px', bg: '#666', content: '""', position: 'absolute', top: '-20px', left: '6.5px'}, position: 'absolute', top: '10px', left: '-8px', width: 16, height: 16, textAlign: 'center'}}>
+            <Box sx={{':after': {height: '20px', width: '2px', bg: '#666', content: '""', position: 'absolute', top: '-20px', left: '6px'}, position: 'absolute', top: '10px', left: '-8px', width: 16, height: 16, textAlign: 'center'}}>
               0
             </Box>
-            <Box sx={{':after': {height: '20px', width: '2px', bg: '#666', content: '""', position: 'absolute', top: '-20px', right: '6.5px'}, position: 'absolute', top: '10px', right: '-8px', width: 16, height: 16, textAlign: 'center'}}>
+            <Box sx={{':after': {height: '20px', width: '2px', bg: '#666', content: '""', position: 'absolute', top: '-20px', right: '6px'}, position: 'absolute', top: '10px', right: '-8px', width: 16, height: 16, textAlign: 'center'}}>
               {data_max != 0 && data_max}
             </Box>
           </Box>
