@@ -160,7 +160,7 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
         if (feedbackItem !== null) {
           feedbackItem.data.feedbackResponses.forEach(feedbackResponse => {
             const chosen = feedbackResponse.chosen ? 1 : 0
-            if (feedbackResponse.choiceText in item.choices && chosen == 1) {
+            if (feedbackResponse.choiceText in item.choices) {
               item.choices[feedbackResponse.choiceText] += chosen
             } else {
               item.choices[feedbackResponse.choiceText] = chosen
@@ -181,7 +181,6 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
       }
       return { ...current, ...student};
     }, {})
-
     res.json({
       submissions: submissions,
       questions: questions,

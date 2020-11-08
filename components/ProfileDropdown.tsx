@@ -56,8 +56,10 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
         </Flex>
       </Lstyle>
       <Menu sx={{zIndex: 101}}>
+          {/*
           <Link href="/nastaveni"><MenuItem text="Nastavení" /></Link>
           <MenuDivider />
+          */}
           <Link href="/api/logout"><MenuItem text="Odhlásit se" /></Link>
         </Menu>
     </Popover>)

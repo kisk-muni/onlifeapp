@@ -83,7 +83,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                   <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>otázek</Text>
                 </Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
-                  <Heading variant="ultratitle">60+</Heading>
+                  <Heading variant="ultratitle">70+</Heading>
                   <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>kvízů</Text>
                 </Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column'}}>
