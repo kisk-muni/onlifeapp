@@ -271,7 +271,7 @@ const theme = {
     },
     cta: {
       variant: "buttons.primary",
-      fontSize: 2
+      fontSize: 2,
     },
     ctaLg: {
       variant: "buttons.primary",

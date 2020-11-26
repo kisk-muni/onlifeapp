@@ -25,7 +25,7 @@ const Message = ({avatar, message, name}: {avatar: string, message: string, name
     .message-bubble {
       position: relative;
       border-radius: 1rem;
-      font-size: 19px;
+      font-size: 18px;
       padding: 12px 16px;
       background: #0070f3;
       color: rgba(255,255,255,.94);
