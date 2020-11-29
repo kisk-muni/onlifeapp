@@ -48,7 +48,6 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
           variant: 'styles.navlink',
         }}>
         <Flex sx={{alignItems: 'center'}}>
-          { name && <span sx={{display: ['none', null, 'block']}}>{ name } </span>}
           <Avatar
             sx={{ml: 2}}
             src={photoURL}
