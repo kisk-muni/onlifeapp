@@ -27,7 +27,7 @@ const SignIn = () => (
       <Container sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
         <Heading variant="specialtitle" as="h1" sx={{textAlign: 'center'}}>Učte s námi<br/>informační<br/>gramotnost.</Heading>
         <Link passHref href="/api/registrace-ucitele">
-          <Button as="a" variant="lg" sx={{mt: 4, backgroundImage: t => t.util.gx('instagram', 'primary'), display: 'block'}}>Zaregistrovat se jako učitel</Button>
+          <Button as="a" variant="lg" sx={{mt: 4, ':hover,:focus': {color: 'background', textDecoration: 'none'}, backgroundImage: t => t.util.gx('instagram', 'primary'), display: 'block'}}>Zaregistrovat se jako učitel</Button>
         </Link>
       </Container>
     </Box>
@@ -113,7 +113,7 @@ const SignIn = () => (
           <Flex sx={{justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
             <Box>
               <Heading variant="ultratitle">
-                Sledujute,<br/>jak se žákům<br/>daří.
+                Sledujte,<br/>jak se žákům<br/>daří.
               </Heading>
             </Box>
           </Flex>
