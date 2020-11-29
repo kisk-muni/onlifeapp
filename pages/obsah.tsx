@@ -43,7 +43,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                           quizBlock?.id &&
                             <Box key={cindex} sx={{mb: 4}}>
                               <Heading variant="subheadline" sx={{mb: 1}}>{quizBlock?.quizLink?.title}</Heading>
-                              <Text>{process.env.NEXT_PUBLIC_SITE_URL + "/kviz/" + quizBlock?.quizLink?.slug}</Text>
+                              <Text>{process.env.NEXT_PUBLIC_SITE_URL + "kviz/" + quizBlock?.quizLink?.slug}</Text>
                             </Box>
                         )
                       })}
