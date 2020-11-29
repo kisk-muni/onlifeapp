@@ -31,7 +31,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
           <Grid columns={[2]}>
             <Flex sx={{justifyContent: 'center', flexDirection: 'column'}}>
               <Heading variant="specialtitle" sx={t => t.util.gxText('instagram', 'primary')}>Kvízy<br/>informační<br/>gramotnosti<br/>pro SŠ</Heading>
-              <Text sx={{mt: 5, mb: 3, fontSize: 2, maxWidth: 400}}>Klepnutím na Zaregistrovat se vyjádříte svůj souhlas s našimi <Link href="/podminky-sluzby" passHref><a>smluvními podmínkami</a></Link>.</Text>
+              <Text sx={{mt: 5, mb: 3, fontSize: 2, maxWidth: 400}}>Klepnutím na Zaregistrovat se vyjádříte svůj souhlas s našimi <Link href="/podminky-sluzby" passHref><a sx={{color: 'primary', ':hover,:focus': {color: 'primary'}}}>smluvními podmínkami</a></Link>.</Text>
               <Flex sx={{alignItems: 'center'}}>
                 <Link passHref href="/api/registrace">
                   <Button
