@@ -79,7 +79,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               </Heading>
               <Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
-                  <Heading sx={{fontSize: 8, color: 'orange'}}>360+</Heading>
+                  <Heading sx={{fontSize: 8, color: 'primary'}}>360+</Heading>
                   <Text variant="caption" sx={{textTransform: 'uppercase', fontSize: 3}}>otázek</Text>
                 </Flex>
                 <Flex sx={{justifyContent: 'flex-end', flexDirection: 'column', mr: 4}}>
