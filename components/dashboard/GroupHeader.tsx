@@ -97,7 +97,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
             <Lstyle
               sx={{
                 variant: 'styles.navlink',
-                ml: 4,
+                mx: 4,
                 py: 2,
               }}>
               Moje třídy
@@ -125,7 +125,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
                   borderRadius: '50%'
                   }}></div>
               </Fragment>
-             : <ProfileDropdown sx={{ml: 4}} name={user.name} email={user.email} photoURL={user.picture} />
+             : <ProfileDropdown name={user.name} email={user.email} photoURL={user.picture} />
           }
         </Flex>
       </Grid>

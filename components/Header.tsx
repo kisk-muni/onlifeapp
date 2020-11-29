@@ -65,7 +65,7 @@ const Header = () => {
               <Lstyle
                 sx={{
                   variant: 'styles.navlink',
-                  ml: 4,
+                  mx: 4,
                 }}>
                   <Button
                     sx={{
@@ -77,7 +77,7 @@ const Header = () => {
               </Lstyle>
             </Link>
           }
-          <ProfileDropdown sx={{ml: 4}} name={user.name} email={user.email} photoURL={user.picture} />
+          <ProfileDropdown name={user.name} email={user.email} photoURL={user.picture} />
       </Fragment>
     }
   } else {
