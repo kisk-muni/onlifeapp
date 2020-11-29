@@ -2,6 +2,7 @@
 import { jsx, Text, Heading, Flex, Box, Card, Grid, Container, Button } from 'theme-ui'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
+import Link from 'next/link'
 import StarterLayout from 'components/StarterLayout'
 
 const features = [
@@ -25,7 +26,9 @@ const SignIn = () => (
     <Box sx={{py: 6}}>
       <Container sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
         <Heading variant="specialtitle" as="h1" sx={{textAlign: 'center'}}>Učte s námi<br/>informační<br/>gramotnost.</Heading>
-        <Button variant="lg" sx={{mt: 4, backgroundImage: t => t.util.gx('instagram', 'primary'), display: 'block'}}>Zaregistrovat se jako učitel</Button>
+        <Link passHref href="/api/registrace-ucitele">
+          <Button as="a" variant="lg" sx={{mt: 4, backgroundImage: t => t.util.gx('instagram', 'primary'), display: 'block'}}>Zaregistrovat se jako učitel</Button>
+        </Link>
       </Container>
     </Box>
     <Box sx={{py: [5, 6, 6], bg: 'snow'}}>
@@ -36,9 +39,6 @@ const SignIn = () => (
               <Heading variant="ultratitle">
                 Vytvářejte<br/>a spravujte<br/>třídy.
               </Heading>
-              <Text variant="lead">
-                U každé otázky dostanete<br/>zpětnou vazbu našich tutorů.
-              </Text>
             </Box>
           </Flex>
           <Flex sx={{ alignItems: 'center', justifyContent: 'center'}}>
@@ -102,9 +102,6 @@ const SignIn = () => (
               <Heading variant="ultratitle">
                 Vybírejte<br/>vhodná<br/>témata.
               </Heading>
-              <Text variant="lead">
-                U každé otázky dostanete<br/>zpětnou vazbu našich tutorů.
-              </Text>
             </Box>
           </Flex>
         </Grid>
@@ -118,9 +115,6 @@ const SignIn = () => (
               <Heading variant="ultratitle">
                 Sledujute,<br/>jak se žákům<br/>daří.
               </Heading>
-              <Text variant="lead">
-                U každé otázky dostanete<br/>zpětnou vazbu našich tutorů.
-              </Text>
             </Box>
           </Flex>
           <Flex sx={{ alignItems: 'center', justifyContent: 'flex-end'}}>
