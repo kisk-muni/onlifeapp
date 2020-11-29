@@ -54,7 +54,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
             <Flex sx={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
               <Box>
                 <Heading sx={{textAlign: 'center', mb: 4, fontSize: 6, color: 'muted'}}>
-                  Kdy je <span sx={{borderRadius: '6px', backgroundColor: '#fff2bc', color: 'orange', padding: '0 3px', margin: '0 -3px'}}>vhodné</span> použít<br/>výsečový graf?
+                  Kdy je vhodné použít<br/>výsečový graf?
                   </Heading>
                 <Box sx={{bg: 'white', maxWidth: 450, mb: 3, py: 3, px: '24px', borderRadius: 'default', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 3px 30px 0px', }}>
                   <Text sx={{fontSize: 3}}><b>A.</b> Vývoj HDP České republiky</Text>
