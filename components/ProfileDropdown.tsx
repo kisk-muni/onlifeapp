@@ -48,7 +48,7 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
           variant: 'styles.navlink',
         }}>
         <Flex sx={{alignItems: 'center'}}>
-          <span sx={{display: ['none', null, 'block']}}>{ name ? name : email } </span>
+          { name && <span sx={{display: ['none', null, 'block']}}>{ name } </span>}
           <Avatar
             sx={{ml: 2}}
             src={photoURL}
@@ -60,7 +60,8 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
           <Link href="/nastaveni"><MenuItem text="Nastavení" /></Link>
           <MenuDivider />
           */}
-          <Link href="/api/logout"><MenuItem text="Odhlásit se" /></Link>
+          <Link href="
+          /api/logout"><MenuItem text="Odhlásit se" /></Link>
         </Menu>
     </Popover>)
   }
