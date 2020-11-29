@@ -42,18 +42,9 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
     <Popover
       position={Position.BOTTOM}
     >
-      <Lstyle
-        {...props}
-        sx={{
-          variant: 'styles.navlink',
-        }}>
-        <Flex sx={{alignItems: 'center'}}>
-          <Avatar
-            sx={{ml: 2}}
-            src={photoURL}
-          />
-        </Flex>
-      </Lstyle>
+      <Avatar
+        src={photoURL}
+      />
       <Menu sx={{zIndex: 101}}>
           {/*
           <Link href="/nastaveni"><MenuItem text="Nastavení" /></Link>
