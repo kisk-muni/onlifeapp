@@ -43,6 +43,9 @@ const ProfileDropdown = ({photoURL, name, email, ...props}: ProfileDropdownProps
       position={Position.BOTTOM}
     >
       <Avatar
+        sx={{':hover': {
+          cursor: 'pointer'
+        }}}
         src={photoURL}
       />
       <Menu sx={{zIndex: 101}}>
