@@ -37,4 +37,9 @@ yarn-error.log*
 
 # fauna database secret key file
 .faunarc
+# vercel temps?
 .vercel
+
+# sanity studio
+/studio/node_modules
+
