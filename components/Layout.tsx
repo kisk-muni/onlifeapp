@@ -6,7 +6,7 @@ import { Sticky, StickyProvider } from 'react-stickup'
 
 const Header = () => {
  return (
-  <header
+  <Box as="header"
     sx={{
       display: 'grid',
       gridGap: 3,
