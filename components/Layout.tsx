@@ -74,23 +74,6 @@ const Header = () => {
           <Text sx={{fontSize: 1, color: 'background'}}>Kvízy informační gramotnosti</Text>
       </Link>
     </div>
-    <div
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-      }}>
-      <Link
-        to='/blog'
-        sx={{
-          variant: 'styles.navlink',
-          color: 'background',
-          ml: 3,
-          py: 3,
-        }}>
-        Progress 
-      </Link>
-    </div>
   </Grid>
  )
 }
