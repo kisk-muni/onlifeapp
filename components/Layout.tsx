@@ -8,7 +8,6 @@ const Header = () => {
  return (
   <Grid as="header"
     sx={{
-      display: 'grid',
       gridGap: 3,
       gridTemplateColumns: 'repeat(3, 1fr)',
       px: 3,
