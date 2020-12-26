@@ -6,10 +6,8 @@ import { Sticky, StickyProvider } from 'react-stickup'
 
 const Header = () => {
  return (
-  <Grid as="header"
+  <Grid columns={['repeat(3, 1fr)']} gap={3} as="header"
     sx={{
-      gridGap: 3,
-      gridTemplateColumns: 'repeat(3, 1fr)',
       px: 3,
       py: 1,
       bg: 'primary',
