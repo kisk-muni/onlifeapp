@@ -94,7 +94,7 @@ const Header = () => {
         Progress 
       </Link>
     </div>
-  </header>
+  </Box>
  )
 }
 
