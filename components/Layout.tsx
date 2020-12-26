@@ -1,12 +1,12 @@
 /** @jsx jsx */
 import { ReactNode, createRef } from 'react'
 import Footer from './Footer'
-import { jsx, Link, Box, Text } from 'theme-ui'
+import { jsx, Link, Box, Grid, Text } from 'theme-ui'
 import { Sticky, StickyProvider } from 'react-stickup'
 
 const Header = () => {
  return (
-  <Box as="header"
+  <Grid as="header"
     sx={{
       display: 'grid',
       gridGap: 3,
@@ -94,7 +94,7 @@ const Header = () => {
         Progress 
       </Link>
     </div>
-  </Box>
+  </Grid>
  )
 }
 
