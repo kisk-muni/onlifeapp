@@ -24,7 +24,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
       </Box>
       <Container variant="copy">
         
-        <Heading variant="heading" sx={{mb:4}}>1. OBECNÁ USTANOVENÍ</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>1. OBECNÁ USTANOVENÍ</Heading>
         <Text sx={{mb: 2}}>
           Provozovatelem webové aplikace ONLIFE (dále jen „webová aplikace“ nebo „tato webová aplikace“) je Filozofická fakulta Masarykovy univerzity, se sídlem Arna Nováka 1/1, 602 00 Brno, IČO 00216224 (dále jen jako „Provozovatel“), která je v souladu se zák. č. 121/2000 Sb., zákon o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (dále jen „Autorský zákon“), oprávněna vykonávat majetková práva autorská k obsahu na těchto Internetových stránkách, pokud není uvedeno jinak.
         </Text>
@@ -44,7 +44,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
           Webová aplikace pro ukládání dat uživatelů využívá služby (servery) třetích stran. Autetizaci tj. ověřování identity uživatelů a jejich správu, zajišťuje služba Auth0 (https://auth0.com). Ostatní data jsou uložena v databázi Fauna (https://fauna.com/). Tato data zahrnují veškeré ostatní informace, jako jsou průchod kurzem, výsledky kvízů a vztahy mezi uživateli.
         </Text>
         
-        <Heading variant="heading" sx={{mb:4}}>2. SOUHLAS S PODMÍNKAMI UŽÍVÁNÍ</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>2. SOUHLAS S PODMÍNKAMI UŽÍVÁNÍ</Heading>
         <Text sx={{mb: 2}}>
           Aby Uživatel mohl používat Internetové stránky, musí nejprve vyjádřit souhlas s Podmínkami užití. Pokud s Podmínkami užití nesouhlasí, nemůže Internetové stránky používat.
         </Text>
@@ -58,7 +58,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
           b) tím, že začne webovou aplikaci skutečně používat. V takovém případě bere na vědomí a souhlasí s tím, že Provozovatel považuje používání webové aplikace Uživatelem za projev souhlasu s Podmínkami užívání od okamžiku, kdy je Uživatel začne skutečně užívat dle následující sekce Způsob užívání aplikace.
         </Text>
         
-        <Heading variant="heading" sx={{mb:4}}>3. ZPŮSOB POUŽÍVÁNÍ</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>3. ZPŮSOB POUŽÍVÁNÍ</Heading>
         <Text sx={{mb: 2}}>
           Webovou aplikaci je možné využívat pro registraci a přihlášení.
         </Text>
@@ -84,7 +84,7 @@ const Index: NextPage<Props> = ({ allPosts }) => {
           Provozovatel si dále vyhrazuje právo smazat uživatelské účty, které jsou využívány v rozporu s těmito Podmínkami užití, s obecně uznávanými etickými či morálními pravidly společnosti nebo s předpisy platnými na území České republiky. Provozovatel si rovněž vyhrazuje právo smazat uživatelské účty, jež narušují stabilitu a chod webové aplikace ONLIFE.
         </Text>
         
-        <Heading variant="heading" sx={{mb:4}}>4. OMEZENÍ ODPOVĚDNOSTI PROVOZOVATELE</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>4. OMEZENÍ ODPOVĚDNOSTI PROVOZOVATELE</Heading>
         <Text sx={{mb: 2}}>
           Provozovatel neručí za správnost a úplnost informací ve webové aplikace. Provozovatel nenese žádnou odpovědnost za jakékoliv případné škody, které Uživateli mohou vzniknout v souvislosti s užíváním webové aplikace.
         </Text>
@@ -96,7 +96,7 @@ Provozovatel nenese žádnou odpovědnost za obsah internetových stránek třet
           Provozovatel může kdykoliv bez předchozího upozornění provádět změny informací na webové aplikace, a to včetně těchto Podmínek užití.  
         </Text>
         
-        <Heading variant="heading" sx={{mb:4}}>5. OCHRANA OSOBNÍCH ÚDAJŮ</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>5. OCHRANA OSOBNÍCH ÚDAJŮ</Heading>
         <Text sx={{mb: 2}}>
           Ve smyslu zákona č. 101/2000, o ochraně osobních údajů a o změně některých zákonů Uživatel souhlasí, že Poskytovatel uchovává ve své databázi údaje vložené Uživatelem. Jde zejména o: uživatelské jméno, jméno a příjmení, e-mailovou adresu a heslo. Ve svém uživatelském profilu může případně uživatel doplnit další osobní údaje, přičemž je informován o tom, které informace jsou povinné a které jsou volitelné pro užívání systému.
         </Text>
@@ -110,7 +110,7 @@ Provozovatel nenese žádnou odpovědnost za obsah internetových stránek třet
           Osobní údaje nebudou dále předávány třetím osobáms výjimkou služeb uvedených v čl. 1 odst. 5  v tomto odstavci.
         </Text>
         
-        <Heading variant="heading" sx={{mb:4}}>6. ZÁVĚREČNÁ USTANOVENÍ</Heading>
+        <Heading variant="heading" sx={{mb:4, mt: 4}}>6. ZÁVĚREČNÁ USTANOVENÍ</Heading>
         <Text sx={{mb: 2}}>
           Tyto podmínky je oprávněn měnit či upravovat pouze Provozovatel. Provozovatel si zároveň vyhrazuje právo měnit tyto podmínky kdykoli podle vlastního uvážení, a to i bez předchozího upozornění Uživatele. Uživatel je povinen se řídit vždy aktuálním zněním těchto Podmínek užití. Jakékoli takové úpravy jsou pro Uživatele závaznéPodmínky užívání stránek jsou účinné dnem jejich zveřejnění. Uživatel je povinen se pravidelně seznamovat s případnými změnami těchto podmínek. Přístupem ke stránkám a jejich využíváním Uživatel s Podmínkami užití i jejich případnými změnami souhlasí.
         </Text>
