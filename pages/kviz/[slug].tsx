@@ -340,7 +340,7 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
                 value="true"
                 />
                 <Text sx={{maxWidth: 600}}>
-                  Souhlasím s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet s lorem impusm dolor sit amet
+                  Vyplněný kvíz je výsledkem mé vlastní práce a učení.
                 </Text>
             </Label>
           </Box>
