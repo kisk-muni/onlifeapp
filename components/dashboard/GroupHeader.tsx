@@ -100,7 +100,7 @@ const GroupHeader = ({currentPage}: {currentPage?: string, hideSubnav?: boolean}
                 mx: 4,
                 py: 2,
               }}>
-              Moje třídy
+              Mé třídy
             </Lstyle>
           </Link>
           {

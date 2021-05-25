@@ -47,7 +47,7 @@ const Header = () => {
                   ml: 4,
                   py: 2,
                 }}>
-                Přehled tříd
+                Mé třídy
               </Lstyle>
             </Link>
           }
