@@ -180,20 +180,18 @@ const KvizPage: NextPage<Props> = ({quiz}) => {
             </Box>
           </Fragment>
         }
-        <Card sx={{px: 0, py: "0!important"}}>
+        <Card sx={{px: 0, py: "0!important", mt: 4}}>
           {feedbackList.data?.submissions.map((attempt, index) => {
             if (showQuiz) {
               return (
                 <Box sx={{mt: 2, mb: 3, borderRadius: '4px'}}>
-                  <Message>
-                    <Flex sx={{justifyContent: 'space-between'}}>
-                      <Text>Váš nejlepší výsledek v tomto kvízu je <b>{ attempt.points + ' / ' + attempt.max_points } bodů</b></Text>
-                      <Slink onClick={() => {
-                        reset()
-                        setShowQuiz(false)
-                      }}>Ukončit vyplňování</Slink>
-                    </Flex>
-                  </Message>
+                  <Flex sx={{justifyContent: 'space-between'}}>
+                    <Text>Váš nejlepší výsledek v tomto kvízu je <b>{ attempt.points + ' / ' + attempt.max_points } bodů</b></Text>
+                    <Slink onClick={() => {
+                      reset()
+                      setShowQuiz(false)
+                    }}>Ukončit vyplňování</Slink>
+                  </Flex>
                 </Box>
               )
             }
