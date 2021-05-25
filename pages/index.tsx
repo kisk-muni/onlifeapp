@@ -1,9 +1,10 @@
 /** @jsx jsx */
-import {useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import StarterLayout from 'components/StarterLayout'
 import Router from 'next/router'
 import Message from 'components/Message'
 import { jsx, Text, Heading, Container, Card, AspectRatio, Button, Image, Grid, Box, Flex } from 'theme-ui'
+import { Classes, Dialog, Spinner } from "@blueprintjs/core"
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { getAllPostsForGroup } from 'utils/api'
@@ -17,6 +18,7 @@ interface Props {
 
 const Index: NextPage<Props> = ({ allPosts }) => {
   const user = useUser()
+  const [isOpen, setIsOpen] = useState(false)
   useEffect(() => {
     if (!user.loading && user.user) {
       Router.push('/prehled')
@@ -33,16 +35,15 @@ const Index: NextPage<Props> = ({ allPosts }) => {
               <Heading variant="specialtitle" sx={t => t.util.gxText('instagram', 'primary')}>Kvízy<br/>informační<br/>gramotnosti<br/>pro SŠ</Heading>
               <Text sx={{mt: 5, mb: 3, fontSize: 2, maxWidth: 400}}>Klepnutím na Zaregistrovat se vyjádříte svůj souhlas s našimi <Link href="/podminky-sluzby" passHref><a sx={{color: 'primary', ':hover,:focus': {color: 'primary'}}}>smluvními podmínkami</a></Link>.</Text>
               <Flex sx={{alignItems: 'center'}}>
-                <Link passHref href="/api/registrace">
-                  <Button
-                    variant="ctaLg"
-                    sx={{
-                      mr: 3,
-                      bg: 'foreground',
-                    }}>
-                    Zaregistrovat se
-                  </Button>
-                </Link>
+                <Button
+                  variant="ctaLg"
+                  onClick={() => setIsOpen(true)}
+                  sx={{
+                    mr: 3,
+                    bg: 'foreground',
+                  }}>
+                  Zaregistrovat se
+                </Button>
                 <Link passHref href="/api/login">
                   <Button
                     variant="outlineLg">
@@ -51,6 +52,47 @@ const Index: NextPage<Props> = ({ allPosts }) => {
                 </Link>
               </Flex>
             </Flex>
+            <Dialog
+              canOutsideClickClose
+              autoFocus
+              sx={{background: '#fff', maxWidth: 320, boxShadow: '0 30px 60px rgba(0,0,0,0.12)'}}
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+            >
+              <Flex sx={{flexDirection: 'column', alignItems: 'center', mt: 4}}>
+                <Heading sx={{fontSize: 2, textAlign: 'center', mb: 2}}>Vyberte možnost</Heading>
+                <Link passHref href="/api/registrace">
+                  <Button
+                    variant="secondary"
+                    sx={{
+                      mt: 3,
+                      fontSize: 3, 
+                      width: '100%',
+                      borderRadius: 0,
+                      fontWeight: 400,
+                      borderTop: '1px solid',
+                      borderBottom: '1px solid',
+                      borderColor: 'border',
+                    }}>
+                    Jsem student
+                  </Button>
+                </Link>
+                <Link passHref href="/api/registrace-ucitele">
+                  <Button
+                    variant="secondary"
+                    sx={{
+                      width: '100%',
+                      fontSize: 3, 
+                      fontWeight: 400,
+                      borderRadius: 0,
+                      borderBottom: '1px solid',
+                      borderColor: 'border',
+                    }}>
+                    Jsem učitel 
+                  </Button>
+                </Link>
+              </Flex>
+            </Dialog>
             <Flex sx={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
               <Box>
                 <Heading sx={{textAlign: 'center', mb: 4, fontSize: 6, color: 'muted'}}>
