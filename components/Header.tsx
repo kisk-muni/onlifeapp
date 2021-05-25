@@ -12,15 +12,6 @@ const Header = () => {
   if (!loading) {
     if (!user || error) {
       userNav = <Fragment>
-        <Link passHref href="/ucitele">
-          <Lstyle
-            sx={{
-              variant: 'styles.navlink',
-              ml: 4,
-            }}>
-            Pro učitele
-          </Lstyle>
-        </Link>
         {
           Router.asPath !== '/' && <Fragment>
             <Link passHref href="/api/login">
