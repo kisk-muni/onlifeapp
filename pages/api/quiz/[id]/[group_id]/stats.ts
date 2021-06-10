@@ -31,14 +31,28 @@ export type Question = {
   question: string
   type: 'checkbox' | 'singleselect'
   required: boolean
-  choices: {[key: string]: number}
+  choices: {[key: string]: number}  
 }
 
+type ResponseSubmissions = null | {
+  '@ref': {
+    id: string
+  },
+  ts: number
+  data: {
+    quiz_id: string
+    user: {
+      '@ref': {
+        id: string
+      }
+    }
+    points: number
+    max_points: number
+  }
+}[]
+
 export type Response = {
-  submissions?: {
-    submission_id: string
-    student_id: string
-  }[]
+  submissions?: ResponseSubmissions
   questions?: Question[]
   students?: {[key: string]: {
     name: string
@@ -82,17 +96,25 @@ interface FaunaData {
       }[]
     }[]
     submissions: null | {
-        submission_ref: {
+      '@ref': { // its actually ref.id until its stringified
+        id: string
+      },
+      ts: number
+      data: {
+        quiz_id: string
+        user: {
+          '@ref': {
             id: string
-        },
-        student: {
-          id: string
+          }
         }
+        points: number
+        max_points: number
+      }
     }[]
     students: {
       ref: {
         id: string
-      },
+      }
       ts: number
       data: {
         name: string
@@ -124,6 +146,11 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
     res.status(400).json({message: 'group_id není číslo.'})
   }
   try {
+    // console.log([
+    //   'user:', user.sub,
+    //   'group:', group_id,
+    //   'quiz:', id
+    // ])
     const response: FaunaData = await serverClient.query(
       q.Call(q.Function("group_quiz_stats_best"), [
         user.sub,
@@ -131,19 +158,19 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
         id
       ])
     )
-    const submissions = response.submissions.reduce(
-      (filtered, current) => {
-        if (current != null) {
-          filtered.push(
-            {
-              submission_id: current.submission_ref.id,
-              student_id: current.student.id
-            }
-          )
-        }
-        return filtered
-      }, [])
-    
+    //console.log(response)
+    const students = response.students.reduce((current, next) => {
+      const student = {}
+      student[next.ref.id] = {
+        name: next.data.name,
+        picture: next.data.picture,
+        is_teacher: next.data.is_teacher
+      }
+      return { ...current, ...student};
+    }, {})
+
+    const submissions = response.submissions 
+
     const questions = response.feedback.reduce((current, next) => {
       const item = {
         id: next.question_id,
@@ -171,23 +198,14 @@ export default auth0.requireAuthentication(async function joinGroupAttempt(req: 
       current.push(item)
       return current 
     }, [])
-
-    const students = response.students.reduce((current, next) => {
-      const student = {}
-      student[next.ref.id] = {
-        name: next.data.name,
-        picture: next.data.picture,
-        is_teacher: next.data.is_teacher
-      }
-      return { ...current, ...student};
-    }, {})
-    res.json({
+    console.log(submissions)
+    res.status(200).json({
       submissions: submissions,
       questions: questions,
       students: students
     })
-    return
   } catch (error) {
+    console.log(error)
     if (!error?.description) {
       res.status(400).json({message: error?.message})
     } else {

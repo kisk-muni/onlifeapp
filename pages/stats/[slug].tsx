@@ -29,7 +29,12 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
   let engagedText = ''
   const stats = useSWR<Response>('/api/quiz/' + quiz?.id as string + '/' + router.query.trida + '/stats', fetcher)
   console.log(stats.data)
-  const engagedCount = stats.data?.submissions.length
+  let engagedCount = 0
+  stats.data?.submissions.forEach(s => {
+    if (s) {
+      engagedCount+=1
+    }
+  });
   if (engagedCount === 0 || engagedCount >= 5 ) {
     engagedText = 'zapojených studentů'
   } else if (engagedCount === 1) {
@@ -71,13 +76,34 @@ const StatsPage: NextPage<Props> = ({quiz}) => {
                 />*/}
               </Flex>
               <Box>
+                {!stats.data
+                ? <Spinner size={24} />
+                : <Box sx={{mb: 3}}>
+                    {stats.data.submissions.map(submission => {
+                      if (submission) {
+                        return (
+                          <Flex>
+                            <Text sx={{mr: 2}}>{
+                            stats.data.students[submission?.data.user['@ref'].id].name}</Text>
+                            <Text>
+                              {submission?.data?.points}{'/'}{submission?.data?.max_points}
+                            </Text>
+                          </Flex>
+                        )
+                      }
+                    })}
+                  </Box>
+                }
                 {
                   quiz?.items.map((question, index) => {
                     //return <Box>{question.question}</Box>
                     const stat = stats?.data?.questions?.filter(statQuestion => statQuestion.id == question.id)
                     // choices={stat.length > 0 ? stat[0].choices : {}}
                     return (
+                      <>
                       <Item question={question} key={index} statsQuestion={stat?.length > 0 ? stat[0] : undefined} index={index} />
+                      {/*<p>{JSON.stringify(question)}</p>*/}
+                      </>
                     )
                   })
                 }
